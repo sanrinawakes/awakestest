@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awaken Mandala 診断</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            min-height: 45px; 
+            font-size: 1.6em;
+        }
+        #question-text {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #question-supplement {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 25px;
+            min-height: 35px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            line-height: 1.7;
+        }
+        #choices-area button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.05em;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        #choices-area button:hover {
+            background-color: #2980b9;
+        }
+        #choices-area button:active {
+            transform: scale(0.98);
+        }
+        #choices-area button.selected {
+            background-color: #2ecc71;
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+        #next-question-button, #start-button, #restart-button {
+            background-color: #e67e22;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.15em;
+            margin-top: 25px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        #next-question-button:hover, #start-button:hover, #restart-button:hover {
+            background-color: #d35400;
+        }
+        #next-question-button:active, #start-button:active, #restart-button:active {
+            transform: scale(0.98);
+        }
+        #next-question-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #question-counter {
+            font-size: 1em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        #progress-bar-container {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            height: 10px;
+            overflow: hidden; /* バーがはみ出ないように */
+        }
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 4px;
+            transition: width 0.3s ease-in-out;
+        }
+        #result-screen {
+             margin-top: 30px;
+        }
+        #result-code {
+            font-size: 2.5em;
+            color: #c0392b;
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            display: inline-block; /* 幅を内容に合わせる */
+        }
+        #start-screen p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Awaken Mandala 診断</h1>
+
+        <div id="start-screen">
+            <p>この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。</p>
+            <p>全120問の質問にお答えいただくことで、あなたの現在のタイプと意識レベルが明らかになります。</p>
+            <button id="start-button">診断を開始する</button>
+        </div>
+
+        <div id="quiz-screen" style="display:none;">
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            <div id="question-counter"></div>
+            <h2 id="question-text">（ここに質問文が表示されます）</h2>
+            <p id="question-supplement">（ここに補足文が表示されます）</p>
+            <div id="choices-area">
+                </div>
+            <button id="next-question-button" disabled>次へ</button>
+        </div>
+
+        <div id="result-screen" style="display:none;">
+            <h2>診断結果</h2>
+            <p>あなたのAwaken Mandalaコードは...</p>
+            <h3 id="result-code">（ここに結果コードが表示されます）</h3>
+            <p>（詳細な結果の解説は今後のアップデートで表示されます。このコードを記録しておいてください。）</p>
+            <button id="restart-button">もう一度診断する</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const choiceScores = [-2, -1, 0, 1, 2]; // 「全く当てはまらない」から「非常によく当てはまる」のスコア
+            const choiceTexts = [
+                "全く当てはまらない",
+                "あまり当てはまらない",
+                "どちらとも言えない",
+                "少し当てはまる",
+                "非常によく当てはまる"
+            ];
+
+            // =====================================================================================
+            // !!! ステップBで提供する全120問の質問データをこの allQuestions 配列の [] の中にペーストしてください !!!
+            // =====================================================================================
+            const allQuestions = [  { id: 1, question: "自分の将来を考えると、希望よりも不安や無力感を抱くことの方が多いと感じますか？", supplement: "（例えば、キャリアプランや社会情勢について考えたとき、具体的な希望を描くよりも先に、漠然とした恐れや「自分にはどうすることもできない」という諦めの気持ちが心を占める、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+{ id: 2, question: "過去半年以内に、予期せぬ大きな出費や収入の変動により、生活費の支払いやローンの返済について具体的な心配をしたり、何らかの対応（例：家族に相談する、一時的に借りる、支払いを遅らせるなど）を検討したりする必要が生じたことはありましたか？", supplement: "（例えば、急な入院で高額な医療費がかかり貯蓄が大きく減ってしまった、ボーナスカットで予定していた支払いが厳しくなった、など具体的な出来事を指します。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+{ id: 3, question: "現在の経済的な状況に不満を感じたり、自分では改善が難しいと感じたりすることが多いですか？", supplement: "（例えば、収入や貯蓄額が自分の理想とかけ離れていると感じ、そのことばかり考えて気分が落ち込んだり、努力する気力を失いかけたりする、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+{ id: 4, question: "過去3ヶ月以内に、ご自身で設定した具体的な学習目標やスキルアップのための計画（例：「週に〇時間英語を勉強する」「資格試験の参考書を〇ページまで進める」「新しいソフトウェアの基本操作を習得する」など）を、実際に計画通りに継続して実行できていますか？", supplement: "（例えば、年初に立てた個人的な成長目標や、最近始めた自己啓発の取り組みについて、誘惑や他の忙しさに負けず、実際に継続的な努力ができているかどうかを振り返ってみてください。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2] },
+{ id: 5, question: "日常生活において、自分とは異なる意見や価値観を持つ人に対しても、その背景を理解しようと努め、尊重することができますか？", supplement: "（例えば、議論の場で自分と正反対の意見が出ても、感情的に反発するのではなく、「そういう考え方もあるのか」と相手の立場や意図を理解しようと試みる、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 6, question: "現在の仕事や社会的な活動において、自分なりの目標を持ち、それを通じて自己の成長や何らかの達成感を得ていると感じますか？", supplement: "（例えば、今の仕事で「このスキルを習得する」「このプロジェクトを成功させる」といった自分なりの目標があり、日々その達成に向けて努力し、手応えを感じている、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 7, question: "見返りを特に期待することなく、純粋な喜びや思いやりから、誰かや何かのために自分の時間やエネルギーを使うことがありますか？", supplement: "（例えば、困っている友人や家族を助けるために自分の時間を割いたり、ボランティア活動に参加したりすることに、損得勘定なしに喜びを感じる、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 8, question: "自分の人生で起きる出来事について、その多くは自分以外の要因（例：偶然、運、他人など）によって決まると感じやすいですか？", supplement: "（例えば、成功した時は「運が良かっただけ」、失敗した時は「あの人のせいだ」というように、自分の人生のコントロールが自分以外の何かにあると感じることが多い、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+{ id: 9, question: "時折、理由やきっかけがはっきりしなくても、深い安らぎや、周囲の世界との一体感のようなものを感じる瞬間がありますか？", supplement: "（例えば、美しい自然に触れた時や瞑想中、あるいは何気ない日常の中で、言葉では表現しにくいような、心が満たされる静かな平和や、全てと溶け合うような感覚を体験する、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 10, question: "ご自身の健康（食事、睡眠、運動など）について、具体的な目標や計画を立て、それを実際にある程度継続できていますか？ それとも、気にはなるものの具体的な行動には移せていないことが多いですか？", supplement: "（例えば、「週に3回30分運動する」「毎日7時間睡眠をとる」「野菜中心の食事を心がける」といった目標に対し、実際に取り組めているか、あるいは「いつかやろう」と思いつつ先延ばしにしているか、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2]},
+{ id: 11, question: "他人から批判されたり、自分の弱点を指摘されたりすることを恐れて、自分を守るために心を閉ざしてしまうことがありますか？", supplement: "（例えば、会議で自分の意見に反対されたり、上司から注意を受けたりすると、ひどく落ち込んだり、その後自分の意見を言うのが怖くなったりする、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+{ id: 12, question: "自分の思い通りに物事が進まないと、つい周囲の人や環境のせいにしてしまい、不平や不満を口にすることがありますか？", supplement: "（例えば、プロジェクトが遅延した際、「チームメンバーが協力的でないからだ」「会社のシステムが悪いからだ」と、自分以外の要因に原因を求め、愚痴っぽくなることがある、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+{ id: 13, question: "過去1ヶ月に、約束の時間に遅れたり、提出物の締め切りを守れなかったりしたことが、やむを得ない事情を除いて、何度かありましたか？", supplement: "（例えば、友人との待ち合わせに寝坊で遅刻したり、仕事のレポートを期限までに提出できなかったりしたことが、病気や事故といった特別な理由以外であったか、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+{ id: 14, question: "意見が対立した際、相手の立場や感情を真摯に理解しようと努め、お互いが納得できるような解決策を根気強く探求しようとしますか？", supplement: "（例えば、家族やパートナーと意見が衝突したとき、自分の主張だけを通そうとせず、相手がなぜそう思うのかをじっくり聞き、お互いが気持ちよく合意できる点を見つけようと努力する、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2] },
+{ id: 15, question: "毎月の収入と支出について、ご自身で記録または把握しており、その収支バランス（黒字か赤字か、あるいはほぼ収支均衡か）を具体的に認識していますか？", supplement: "（例えば、家計簿アプリ、表計算ソフト、銀行口座の定期的な確認などを通じて、毎月のお金の流れを把握し、黒字なのか赤字なのか、あるいはどの程度の余裕があるのかを具体的に言える状態か、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [0, 1, 2] },
+{ id: 16, question: "私がお願いすれば、細かい説明はしなくても積極的に親身になって協力してくれると確信できる人が、あなたの周りに10人以上いますか？", supplement: "（本当に困った時や心からの助けが必要な時、事情を根掘り葉掘り聞かれることなく「わかった、できる限りのことをするよ」と快く手を差し伸べてくれるような、深い信頼関係で結ばれた友人、家族、同僚などを具体的に思い浮かべてみてください。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2] },
+{ id: 17, question: "ここ数週間を振り返って、「ああ、疲れたな」と心身の強い疲労を感じ、気力が湧かない日が続くことが多いですか？", supplement: "（例えば、朝スッキリ起きられなかったり、仕事や家事など日常的な活動をこなすのが億劫だったり、以前は楽しめていたことにも興味が持てず、ただ休んでいたいと感じる日が多い、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+{ id: 18, question: "日々の生活や仕事の中で、次々と起こる出来事や押し寄せる情報に対して、ご自身の対応能力を超えていると感じ、精神的に「いっぱいいっぱい」になってしまうことがよくありますか？", supplement: "（例えば、やるべきことが山積みで何から手をつけていいか分からなくなって思考が停止したり、周囲の期待やプレッシャーに押しつぶされそうになったり、感情のコントロールが難しくなったりする、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+{ id: 19, question: "日常生活の中で、以前は気にならなかったような些細なことでイライラしたり、あるいは特定の理由がなくても漠然とした不安感や焦燥感に襲われたりすることが、ここ数週間で増えたと感じますか？", supplement: "（例えば、電車の遅延やレジの行列といった普段なら受け流せることにカッとしたり、特に心配事がないはずなのに胸がザワザワして落ち着かなかったり、漠然と「何か悪いことが起きるのではないか」と感じたりする状態など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+{ id: 20, question: "自分の内側から湧き出るインスピレーションや直感を信頼し、それに基づいて新しいことを始めたり、自分自身を表現したりすることに喜びを感じますか？", supplement: "（例えば、論理的な理由はないけれど「これをやるべきだ」と強く感じることに従ってみたり、絵を描いたり音楽を奏でたりするように、自分の内面にあるものを自由に表現したりすることにワクワクする、など。）", targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 21, question: "何か問題や不都合なことが起きたとき、その原因を自分以外の他者や環境に求めたり、あるいは自分の立場や感情を何とかして正当化しようとしたりする傾向が、ご自身によく当てはまりますか？", supplement: "（例えば、仕事でミスをした際に「上司の指示が曖昧だったから」「運が悪かった」と考えたり、人間関係でトラブルになった際に「相手が一方的に悪い」と結論づけたり、自分の行動や感情の正しさを強く主張してしまう、など。）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null }, { id: 22, question: "新しいアイデアを思いついたり、複雑な問題について深く考えたりするのは、主に一人で静かに過ごしている時ですか？", supplement: "（例えば、賑やかな場所で人と話しながらよりも、自室や図書館などで誰にも邪魔されずに思考を巡らせている時に、最も良い考えが浮かぶ、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 23, question: "大勢の人と長時間過ごした後には、一人になって自分の内面と向き合い、エネルギーを回復させる時間が必要だと感じますか？", supplement: "（例えば、楽しいパーティーの後でも、一人で静かに過ごすことで精神的なバランスを取り戻し、再び元気になる、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 24, question: "何かを発言したり行動したりする前に、まず自分の頭の中でじっくりと言葉を選んだり、計画を立てたりする方ですか？", supplement: "（例えば、会議で意見を言う前に、事前に要点をまとめたり、頭の中でシミュレーションしたりする、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 25, question: "重要な情報を得たとき、すぐに誰かと共有するよりも、まず一人でその意味合いをじっくりと考える時間を持ちたいですか？", supplement: "（例えば、興味深いニュースを見ても、すぐSNSで話題にするのではなく、自分の中でその背景や影響を考察したい、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 26, question: "自分の趣味や興味のあることに没頭する時間は、他人との交流よりも優先したいと感じることが多いですか？", supplement: "（例えば、週末の予定を立てる際、友人との集まりよりも、自分の好きな読書や創作活動の時間を確保したいと思う、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 27, question: "自分の考えや感情を深く理解するためには、日記を書いたり、瞑想したりするなど、一人で内省する時間を持つことが不可欠だと感じますか？", supplement: "（例えば、モヤモヤした気持ちを整理したい時、誰かに話すよりもまず自分で静かに考えたり、紙に書き出したりする方がしっくりくる、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 28, question: "新しい情報を学ぶ際、自分のペースでじっくりと読み解いたり、何度も反芻したりする方が、内容を深く理解できると思いますか？", supplement: "（例えば、セミナーに参加した後、すぐに他の人と感想を話し合うよりも、まず一人で資料を読み返して内容を自分なりに消化したい、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 29, question: "周囲の騒音や多くの人の話し声がある環境では、集中力を維持するのが難しく、静かな場所を好みますか？", supplement: "（例えば、仕事や勉強をする際、カフェの喧騒よりも、静かな自室や図書館の個室の方が格段にはかどる、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 30, question: "他者からの過度な注目を浴びたり、常に人に見られていると感じる状況は、心地悪いと感じやすいですか？", supplement: "（例えば、大勢の前でスピーチをするのは得意ではなく、できるだけ目立たないようにしていたいと思う、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 31, question: "込み入った人間関係や感情的なドラマに関わるよりも、距離を置いて静観していたいと思いますか？", supplement: "（例えば、友人同士の揉め事に巻き込まれそうになった時、積極的に仲裁に入るよりは、そっと見守るか、関わらないようにする、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 32, question: "自分の内面の世界（空想、思考、感情など）が豊かで、一人でいても退屈することは少ないですか？", supplement: "（例えば、特に何もしていなくても、自分の頭の中で色々なことを考えたり、想像を巡らせたりするだけで時間を過ごせる、など。）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 33, question: "初対面の人とも気兼ねなく会話を始めることができ、新しい出会いを楽しむことができますか？", supplement: "（例えば、パーティーやセミナーなどで、自分から積極的に話しかけて輪を広げていくことができる、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 34, question: "多くの人と関わったり、活気のあるイベントに参加したりすると、気分が高揚し、エネルギーが湧いてくるのを感じますか？", supplement: "（例えば、フェスやスポーツ観戦など、大勢の人々と一体感を感じる場に行くと、普段以上の元気が出る、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 35, question: "問題解決やアイデア出しは、一人で考えるよりも、他の人と話し合ったり、意見を交換したりする中で進展することが多いですか？", supplement: "（例えば、ブレインストーミング会議のように、多様な意見が飛び交う中で刺激を受け、良いアイデアが生まれやすい、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 36, question: "自分の考えや経験を、積極的に他の人に話したり、共有したりすることに喜びを感じますか？", supplement: "（例えば、面白い出来事があったらすぐに友人に話したくなったり、SNSで発信したりする、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 37, question: "グループで何かを達成しようとする時、率先して発言したり、周りをまとめたりする役割を担うことが多いですか？", supplement: "（例えば、チームプロジェクトで、自然とリーダーシップを取ったり、議論を活発にするムードメーカーになったりする、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 38, question: "多くの人と知り合い、幅広い交友関係を築くことに喜びを感じ、そのために積極的に行動しますか？", supplement: "（例えば、新しいコミュニティに参加したり、異業種交流会に出かけたりして、人脈を広げるのが好きだ、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 39, question: "何か面白いことや新しい情報を見聞きしたら、すぐに誰かに話して共有したくなりますか？", supplement: "（例えば、美味しいレストランを見つけたら、すぐに友人に教えたり、SNSで紹介したりしたくなる、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 40, question: "退屈な状況や単調な作業が続くと、エネルギーが低下し、外部からの新しい刺激や変化を求めますか？", supplement: "（例えば、家でじっとしているのが苦手で、何か面白いイベントはないかと探したり、急に友人を誘って出かけたりする、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 41, question: "グループの中で、自然と会話の中心になったり、場を盛り上げたりする役割を担うことが多いですか？", supplement: "（例えば、飲み会などで、自分から話題を提供したり、周りの人に話を振ったりして、皆が楽しめるように場をリードすることがある、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 42, question: "自分の意見や考えを、ためらわずに、はっきりと口に出して表現する方ですか？", supplement: "（例えば、会議などで、自分の考えが少数意見であっても、臆せずに発言することができる、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 43, question: "他の人と一緒に活動することで、一人でやるよりも大きな達成感や喜びを感じることができますか？", supplement: "（例えば、チームスポーツや共同プロジェクトのように、仲間と力を合わせて目標を達成することに強いやりがいを感じる、など。）", targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 44, question: "一人でじっくりと集中する時間も大切にしたいと思う一方で、人と積極的に関わることから刺激や学びを得たいとも思いますか？", supplement: "（例えば、午前中は集中して個人の作業をし、午後はチームで会議やディスカッションをする、といった働き方に心地よさを感じる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 45, question: "その時の状況や目的に応じて、周りの人と活発にコミュニケーションを取るモードと、静かに自分の内面と向き合うモードを意識的に切り替えることができますか？", supplement: "（例えば、プレゼンテーションでは情熱的に語りかけ、質疑応答では相手の意見をじっくり聞く、といったように使い分けができる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 46, question: "一人で過ごす時間と、他の人と一緒に過ごす時間のバランスが取れている時に、最も自分らしく、心地よくいられると感じますか？", supplement: "（例えば、週末に友人と出かける日と、家でゆっくり趣味に没頭する日の両方があることで、充実感を得られる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 47, question: "新しい環境に入ったとき、まずは周囲を観察してじっくり馴染もうとする面と、積極的に人と関わって早く溶け込もうとする面の両方があると思いますか？", supplement: "（例えば、転校や転職の際、最初は様子を見つつも、気になる人には自分から話しかけてみる、といった行動を取る、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 48, question: "大勢での賑やかな集まりも楽しめますが、時には少人数でじっくりと深い話をする時間も同じくらい大切だと感じますか？", supplement: "（例えば、大人数のパーティーも好きだけど、親しい友人2～3人とカフェで長時間語り合うのも好き、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 49, question: "仕事や学習において、一人で集中して深く掘り下げる作業と、チームで協力して進める作業のどちらも、バランス良く行うことを好みますか？", supplement: "（例えば、個人でのリサーチや資料作成と、チームでのディスカッションや共同作業の両方に、それぞれ異なる価値や面白さを見出せる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 50, question: "大勢で賑やかに過ごすのも楽しいと感じる一方で、時には一人で静かにリラックスする時間も同じくらい必要だと感じますか？", supplement: "（例えば、週末に友人とアクティブに過ごした後、次の日は家でゆっくりと自分の時間を楽しむことで、心身のバランスが取れる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 51, question: "初対面の人に対して、相手の様子を見ながら、積極的に話しかけるべきか、少し距離を置いて接するべきかを自然と判断できますか？", supplement: "（例えば、相手が話し好きそうなら自分もオープンに接し、シャイなタイプなら無理に話させず、相手のペースに合わせることができる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 52, question: "会話の際、自分の意見を述べることと、相手の話を注意深く聞くことのバランスをうまくとれる方だと思いますか？", supplement: "（例えば、一方的に話し続けるのではなく、相手の反応を見ながら話を進め たり、適切なタイミングで質問を投げかけたりできる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 53, question: "新しいグループに参加する際、最初はじっくりと周囲を観察し、状況を把握してから徐々に自分を出していくことが多いですか？", supplement: "（例えば、新しい職場やサークルに入った時、すぐに中心になろうとするのではなく、まずは全体の雰囲気や人間関係を理解しようと努める、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 54, question: "自分のエネルギーレベルや気分に応じて、社交的な活動に参加するか、あるいは一人の時間を優先するかを柔軟に選択できますか？", supplement: "（例えば、「今日は疲れているから家で休もう」「今日は元気があるから友人と会おう」と、その時々の自分の状態に合わせて無理なく予定を調整できる、など。）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null }, { id: 55, question: "新しいプロジェクトやアイデアについて考える時、既存の枠にとらわれず、未来の可能性や斬新なコンセプトに心を惹かれることが多いですか？", supplement: "（例えば、会議で「前例がないから難しい」と言われるようなアイデアでも、その革新性や将来性にワクワクする、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 56, question: "日常の出来事や情報の中から、他の人が見過ごしがちなパターンや隠れた意味を見つけ出し、そこから新しい洞察やアイデアを得ることが得意ですか？", supplement: "（例えば、いくつかの異なるニュース記事を読んで、それらの間に共通する社会の動きや未来の兆候を読み取る、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 57, question: "詳細な実行計画や過去の実績よりも、直感やインスピレーション、そして「こうなったら素晴らしい」という未来のビジョンに基づいて、新しい行動を起こすことに魅力を感じますか？", supplement: "（例えば、完璧な計画を待つよりも、強い確信やひらめきに従って、まずは一歩踏み出してみようと思う、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 58, question: "未知の分野や新しい技術について学ぶことに、強い好奇心や興奮を感じますか？", supplement: "（例えば、AIや宇宙開発といった新しい技術の話題が出ると、それが社会や人類の未来をどう変えるのか想像してワクワクする、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 59, question: "将来のトレンドを予測したり、5年後、10年後といった長期的な視点で物事を構想したりするのが好きですか？", supplement: "（例えば、現在の社会の変化から数年後のライフスタイルを想像し、そこから新しいビジネスチャンスを考える、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 60, question: "会話の中で、具体的な事実よりも、抽象的なアイデアや概念について議論することに魅力を感じますか？", supplement: "（例えば、友人と「幸せとは何か」といった哲学的なテーマや、「未来の社会はどうなるか」といった壮大なテーマについて語り合うのが好き、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 61, question: "既存のルールや常識にとらわれず、「もし～だったらどうなるだろう？」と自由な発想で物事を考えるのが好きですか？", supplement: "（例えば、SF小説を読んだり、突拍子もないアイデアをブレインストーミングしたりすることに楽しさを感じる、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 62, question: "新しい理論や複雑なシステムを理解しようとする時、その全体像や基本原理を掴むことを重視しますか？", supplement: "（例えば、新しいソフトウェアを学ぶ際、個々の機能を覚えるよりも、まずそのソフトが何を目指して作られたのか、どんな構造になっているのかを理解したい、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 63, question: "ルーティンワークや決まりきった作業よりも、常に新しい課題や変化に富んだ仕事に取り組みたいと思いますか？", supplement: "（例えば、毎日同じ作業を繰り返すよりも、新しいプロジェクトに次々と挑戦したり、未知の分野を開拓したりする仕事にやりがいを感じる、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 64, question: "物事の表面的な事象だけでなく、その背後にある意味や可能性、象徴的な解釈などを探求することに関心がありますか？", supplement: "（例えば、映画を観た後、ストーリーだけでなく、監督が伝えたかったメッセージや隠されたテーマについて深く考えたり、他の人と議論したりするのが好き、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 65, question: "将来の目標を設定する際、具体的で達成可能な目標よりも、まだ誰も成し遂げたことのないような、革新的で大きな夢を描くことにワクワクしますか？", supplement: "（例えば、「来月までに売上10%アップ」よりも、「5年以内に業界の常識を覆すような新しいサービスを立ち上げる」といった目標に情熱を燃やす、など。）", targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 66, question: "新しいことを学ぶ際、抽象的な理論や全体像よりも、具体的な事例、実践的な手順、そして五感で確認できる詳細な情報を重視しますか？", supplement: "（例えば、料理のレシピを学ぶなら、材料の正確な分量や手順が写真付きで詳細に書かれているものの方が理解しやすい、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 67, question: "実績があり信頼できる方法や、慣れ親しんだやり方で物事を進めることに安心感を覚え、リスクの少ない確実な道を選ぶことが多いですか？", supplement: "（例えば、旅行の計画を立てる際、冒険的な未知の場所よりも、事前に情報収集しやすく、多くの人が訪れている安全な観光地を選ぶ、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 68, question: "日々の生活や仕事において、ある程度の予測可能性や秩序、安定性が保たれていることを好み、急な変化や先の見えない不確実な状況はできるだけ避けたいと感じますか？", supplement: "（例えば、毎日のルーティンが決まっている方が心地よく、突然の予定変更や予期せぬトラブルが起こると大きなストレスを感じやすい、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 69, question: "物事の細部や具体的なデータに注意を払い、それらを正確に把握し、記録や管理をしっかり行うことを大切にしますか？", supplement: "（例えば、契約書を読むときは細かな条項まで時間をかけて確認したり、家計簿をつけるときは1円単位で丁寧に記録したりする、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 70, question: "過去の経験やそこで得た教訓に基づいて、堅実に物事を判断し、着実に実行していくことを好みますか？", supplement: "（例えば、新しい仕事に取り組む際、過去の類似したプロジェクトの成功例や失敗例を参考にしたり、経験豊富な先輩のアドバイスを重視したりする、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 71, question: "何かを説明する際、比喩や抽象的な言葉よりも、具体的で分かりやすい言葉を選び、事実に基づいて話すことを心がけますか？", supplement: "（例えば、会議で報告する際、曖昧な表現を避け、数値や具体的な事例を挙げて説明する、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 72, question: "新しい場所へ行くとき、行き当たりばったりで楽しむよりも、事前に地図や情報を調べて、計画通りに行動する方が安心できますか？", supplement: "（例えば、旅行に行くなら、事前に電車の時刻や観光地の開館時間をしっかり調べて、効率的なスケジュールを立てたい、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 73, question: "物事を始める前に、必要な道具や情報が全て揃っているかを確認し、準備万端で臨むことを好みますか？", supplement: "（例えば、料理を始める前に、レシピをしっかり読み込み、材料や調理器具を全て用意してから取り掛かる、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 74, question: "「もし～だったら」という仮定の話よりも、「今、実際にどうなっているのか」という現実的な側面に意識が向きやすいですか？", supplement: "（例えば、会議で未来の可能性について議論していても、「で、現状の課題は何だっけ？」と現実的な問題点に意識が戻ることが多い、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 75, question: "伝統的な行事や長年受け継がれてきた慣習に対して、敬意を払い、その価値を認める傾向がありますか？", supplement: "（例えば、お祭りや季節の行事など、昔から続いている地域の文化や風習を大切にしたいと思う、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 76, question: "約束や締め切りをきちんと守り、責任を持って自分の役割を果たすことを非常に重要だと考えていますか？", supplement: "（例えば、仕事で任されたタスクは、期限内に確実に完了させることを常に心がけている、など。）", targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 77, question: "新しいアイデアや提案に触れたとき、その斬新さや可能性に興味を持つと同時に、「それは現実にどのように役立ち、実現可能なのか？」という実用的な視点からも冷静に評価しますか？", supplement: "（例えば、画期的な新商品のアイデアを聞いて「面白い！」と思う一方で、「でも、製造コストは？市場のニーズは本当に存在する？」とすぐに考える、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 78, question: "長年続いてきた方法や伝統の良さを理解し尊重しつつも、それが現状に合わないと感じれば、新しい技術や考え方を柔軟に取り入れ、より良い形に改善していくことを好みますか？", supplement: "（例えば、会社の古い業務プロセスに対して、その歴史的経緯は理解しつつも、新しいITツールを導入して大幅な効率化を提案する、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 79, question: "理想論と現実的な制約（予算、時間、人員など）のバランスを考慮しながら、最も効果的で、かつ着実に実行可能な解決策や計画を見つけ出すのが得意だと思いますか？", supplement: "（例えば、限られた予算と期限の中で、最大限の成果を出すための現実的なプロジェクトプランを具体的に立てることができる、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 80, question: "新しいことを試す際には、まず小さな範囲でテストしたり、関連情報を多角的に集めたりして、リスクを管理しながら慎重に、かつ段階的に進めたいと考えますか？", supplement: "（例えば、新しいマーケティング手法を導入する前に、まず一部の顧客層で試してみて効果を測定し、問題点を改善してから全体に展開する、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 81, question: "抽象的な概念や長期的なビジョンも理解しようと努めますが、最終的にはそれが具体的な行動や日々の業務、そして目に見える結果にどう結びつくのかを重視しますか？", supplement: "（例えば、会社の経営理念に共感しても、「では、その理念を実現するために、私の部署では明日から具体的に何をすべきか？」と考える、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 82, question: "新しいアイデアに対して、その革新性に期待しつつも、実際に導入する際にはどのような問題が起こりうるか、現実的なリスクも考慮しますか？", supplement: "（例えば、最新のAIツールを導入する提案を聞いて「面白そうだ」と思う一方で、「セキュリティは大丈夫か？既存システムとの連携は？」といった点を心配する、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 83, question: "過去の成功体験や既存のノウハウを参考にしつつも、それに固執せず、新しい状況に合わせてやり方を柔軟に変えていくことができますか？", supplement: "（例えば、以前うまくいった営業方法でも、顧客層が変われば通用しないと考え、新しいアプローチを試すことができる、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 84, question: "理想を追求することも大切だと思いますが、それと同じくらい、今ある資源（時間、お金、人手など）の中で実現可能な最善策を見つけることが重要だと考えますか？", supplement: "（例えば、完璧な製品を作るには時間がかかりすぎる場合、ある程度の品質で期限内にリリースし、後から改善していくという現実的な判断ができる、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 85, question: "長期的なビジョンと、日々の具体的なタスクの両方を見据え、それらをバランス良く結びつけて行動計画を立てることができますか？", supplement: "（例えば、「将来は独立したい」という夢と、「そのために今月はこのスキルを習得する」という短期目標を両立させて努力できる、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 86, question: "新しい情報や知識を学ぶ際、それが自分の仕事や生活にどう役立つのか、具体的な応用方法を考えながら学ぶことが多いですか？", supplement: "（例えば、ビジネス書を読んで新しい理論を学んだら、「これを自分のチームの課題解決にどう活かせるだろう？」と考える、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 87, question: "物事を白黒はっきりさせるよりも、状況に応じてグレーゾーンを認めたり、多様な視点を取り入れたりして、柔軟に対応することの方が多いですか？", supplement: "（例えば、ある問題に対して「これが絶対正しい」と断定するのではなく、「こういう見方もあるし、ああいう見方もある」と複数の可能性を考慮する、など。）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null }, { id: 88, question: "何か重要な決定を下す際、あなたは客観的なデータや論理的な分析に基づいて判断することが、ご自身によく当てはまりますか？", supplement: "（例えば、新しい家電を選ぶとき、デザインや口コミよりも、機能スペックやエネルギー効率、価格などを比較検討して決める、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 89, question: "問題の原因を突き止める際、感情的な側面は一旦整理し、事実関係を詳細に把握し、原因と結果を体系的・論理的に考えることを好みますか？", supplement: "（例えば、プロジェクトで問題が発生した際、誰かの責任を追及するよりも先に、何が起きたのか、なぜ起きたのかをデータや時系列で冷静に分析しようとする、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 90, question: "非効率な手順や矛盾を含む説明に接した際、強い違和感を覚え、客観的な正しさや合理性に基づいて改善・修正したいと思いますか？", supplement: "（例えば、会議の資料に論理的な矛盾を見つけた場合、人間関係に配慮しつつも、その矛盾点を指摘し、より正確な情報に基づいて議論を進めたいと思う、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 91, question: "他者と意見が対立した際、感情的な応酬に陥ることを避け、論点や事実関係を明確にし、冷静かつ建設的に話し合うことを重視しますか？", supplement: "（例えば、議論が白熱してきても、一呼吸置いて「この問題の本質は何だったか」「客観的な事実はどうか」と立ち返り、論点を整理しようとする、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 92, question: "自分の行動や判断の理由を説明する際、感覚的な表現よりも、客観的な根拠や論理的な道筋を立てて、誰にでも理解できるように伝えようとしますか？", supplement: "（例えば、「なぜその方法を選んだのですか？」と聞かれた際に、「なんとなく良さそうだから」ではなく、「データAとデータBを比較した結果、この方法が最も効率的だと判断しました」と説明する、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 93, question: "複雑な問題を解決する際、感情的な要素をできるだけ排除し、論理的なステップに分解して考えることを好みますか？", supplement: "（例えば、難しい課題に直面したとき、パニックにならず、問題を小さなタスクに分け、それぞれに合理的な解決策を考える、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 94, question: "他者の意見を聞く際、その内容の論理性や客観的な根拠を重視し、感情的な訴えかけにはあまり影響されない方ですか？", supplement: "（例えば、プレゼンテーションを聞くとき、話し手の情熱よりも、提示されたデータの信頼性や議論の一貫性に注目する、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 95, question: "自分の判断が正しいと確信した場合、たとえ周囲から反対されても、その論理的な正当性を粘り強く説明しようとしますか？", supplement: "（例えば、会議で自分の提案が受け入れられなくても、感情的にならず、データや論理を示して再度説得を試みる、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 96, question: "物事の原理原則や根本的な仕組みを理解することに知的な満足感を覚え、それを追求する傾向がありますか？", supplement: "（例えば、新しい機械の操作を覚える際、ただ使い方を覚えるだけでなく、なぜそう動くのかという構造や原理まで知りたくなる、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 97, question: "公平性や正義感を強く持ち、個人的な好みや人間関係に左右されず、常に一貫した基準で判断しようとしますか？", supplement: "（例えば、チーム内で役割分担を決める際、仲が良いかどうかではなく、各メンバーの能力や適性を客観的に評価して割り当てる、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 98, question: "感情的になっている人に対して、まずはその人の感情を受け止めるよりも、問題の客観的な状況や具体的な解決策を提示しようとすることが多いですか？", supplement: "（例えば、友人が仕事の失敗で落ち込んでいるとき、慰めの言葉よりも先に「具体的に何があったの？」「こうすれば次は大丈夫だよ」と問題解決に焦点を当てようとする、など。）", targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 99, question: "何か重要な決定を下す際、あなたは個人的な感情や周囲の意見を優先することが、ご自身によく当てはまりますか？", supplement: "（例えば、チームで何かを決める際、最も効率的な案よりも、メンバー全員が納得し、気持ちよく取り組める案を選ぶ、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 100, question: "他の人の喜びや悲しみに強く共感し、その感情に寄り添って自分の行動を決めることが、ご自身によく当てはまりますか？", supplement: "（例えば、友人が失恋して落ち込んでいるのを見たら、自分のことのように胸が痛み、すぐに連絡を取って話を聞こうとする、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 101, question: "たとえ論理的に効率的でなくても、関係者全員が納得し、心地よくいられるような結論やプロセスを導くことを重視するのが、ご自身によく当てはまりますか？", supplement: "（例えば、イベントの準備で、多少手間がかかっても、参加者全員が楽しめるようなサプライズや配慮を加えたいと思う、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 102, question: "人から相談を受けたとき、すぐに具体的な解決策を提示するよりも、まず相手の気持ちをじっくりと聴き、共感し、受け止めることを最も大切にしますか？", supplement: "（例えば、後輩から仕事の悩みを打ち明けられたら、「こうすればいい」と即答する前に、「それは大変だったね」「辛かったでしょう」とまず相手の感情に寄り添う言葉をかける、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 103, question: "チームやグループ全体の調和を保つために、自分の意見を少し控えたり、他者の意見を積極的に受け入れたりすることが多いですか？", supplement: "（例えば、会議で自分の意見と異なる意見が多数派だった場合、全体の雰囲気を考慮し、対立を避けるために歩み寄ろうとする、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 104, question: "他の人が困っているのを見ると、見過ごすことができず、自然と手助けをしたいという気持ちになりますか？", supplement: "（例えば、道で荷物をたくさん持って困っているお年寄りを見かけたら、ためらわずに駆け寄って「お手伝いしましょうか？」と声をかける、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 105, question: "チームやグループの中で、誰かが孤立していたり、不快な思いをしていたりするのに気づきやすく、その人のために何かできることはないかと考えますか？", supplement: "（例えば、飲み会で一人だけ輪に入れていない人がいたら、積極的に話しかけたり、話題を振ってあげたりする、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 106, question: "相手の言葉だけでなく、表情や声のトーン、仕草などから、その人の本当の気持ちを察するのが得意だと思いますか？", supplement: "（例えば、友人が口では「大丈夫」と言っていても、その表情や声の調子から「何か悩んでいるな」「無理しているな」と感じ取り、心配する、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 107, question: "自分の行動や言葉が、相手にどのような感情的な影響を与えるかを常に意識し、できるだけポジティブな影響を与えようとしますか？", supplement: "（例えば、誰かにフィードバックをする際、相手の気持ちを不必要に傷つけないように言葉を選んだり、励ましや感謝の言葉を意識的に添えたりする、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 108, question: "個人的な価値観や倫理観に反するような行動や決定に対しては、たとえそれが合理的で多くの利益を生むとしても、強い抵抗を感じますか？", supplement: "（例えば、会社の方針が利益最優先で、環境破壊や非倫理的な手段を容認するようなものであれば、たとえ自分の評価に影響するとしても、それに反対の声を上げることがある、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 109, question: "人との深いつながりや信頼関係を築くことを人生の大きな喜びの一つだと感じ、そのために時間や労力を惜しまない方ですか？", supplement: "（例えば、大切な友人や家族とは、どんなに忙しくても定期的に連絡を取り合ったり、一緒に質の高い時間を過ごしたりすることを非常に重要視する、など。）", targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 110, question: "複雑な問題に直面した際、客観的な分析や論理的な正しさだけでなく、関係者の感情や価値観、そしてその決定がもたらす人間的・倫理的な影響も総合的に考慮して、最善の道を探ろうとすることが、ご自身によく当てはまりますか？", supplement: "（例えば、会社のリストラ計画を考える際、経営的な合理性だけでなく、従業員の生活や感情にも配慮した上で、可能な限り痛みの少ない方法を模索する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 111, question: "自分自身の感情（例えば興奮や落胆など）が判断に影響を与えそうだと認識した際、その感情を冷静に受け止めつつ、客観的な情報や論理的な思考とバランスを取りながら、より適切な意思決定をすることが、ご自身によく当てはまりますか？", supplement: "（例えば、大きな契約が取れそうで興奮していても、契約内容の細部まで冷静に確認し、リスクがないか客観的に判断する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 112, question: "意見が対立している状況において、それぞれの立場にある論理と感情の両方を深く理解しようと努め、双方にとってより良い、あるいは一段高い視点からの解決策や共通の基盤を見つけ出そうとするのが、ご自身によく当てはまりますか？", supplement: "（例えば、部署間の予算の取り合いで意見が割れた際、それぞれの言い分（論理）と、その背景にある想い（感情）を汲み取り、会社全体として最適な資源配分となるような新しい提案をする、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 113, question: "他者を評価する際、その人の具体的な能力や目に見える実績（論理的側面）だけでなく、その人の人柄、努力のプロセス、周囲への配慮（感情的・人間的側面）も総合的に見て判断しようとしますか？", supplement: "（例えば、部下のパフォーマンスを評価する際、達成した数値だけでなく、その過程での困難への対処やチームへの貢献、成長意欲なども含めて総合的に評価する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 114, question: "何か新しいルールや方針を導入する際、その合理性や効率性（論理的側面）だけでなく、それが関係する人々のモチベーションや組織の文化、人間関係にどのような影響を与えるか（感情的・人間的側面）も考慮に入れますか？", supplement: "（例えば、新しい社内システムを導入する際、その便利さだけでなく、従業員が使い方を覚える負担や、コミュニケーションのあり方がどう変わるかなども事前に考慮する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 115, question: "困難な交渉や対立が予想される場面でも、相手の論理的な主張と感情的な背景の両方を理解しようと努め、双方にとって受け入れ可能な着地点を探ることができますか？", supplement: "（例えば、顧客との間で厳しい条件交渉になった際、相手の会社の事情（論理）と担当者の立場（感情）を考慮し、互いにメリットのある妥協点を見つけ出す、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 116, question: "自分の直感や感情的な反応も大切にしつつ、それを鵜呑みにせず、客観的な情報や論理的な分析と照らし合わせてから最終的な判断を下すようにしていますか？", supplement: "（例えば、新しい投資話に「これは儲かりそうだ！」と直感的に感じても、すぐに飛びつかず、関連するリスクや市場データを冷静に分析してから最終的に決める、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 117, question: "他者にフィードバックを伝える際、伝えるべき厳しい内容（論理・事実）と、相手の感情への配慮（共感・励まし）のバランスをうまくとることができますか？", supplement: "（例えば、部下の改善点を指摘する際、具体的な問題点を明確に伝えつつも、相手の努力や良い点を認め、成長を期待する言葉を添える、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 118, question: "チームの目標達成（論理的成果）と、チームメンバーの満足度や良好な人間関係（感情的側面）の両方を同じくらい重要だと考え、その両立を目指しますか？", supplement: "（例えば、プロジェクトリーダーとして、納期を守り高い成果を出すことと、メンバーがやりがいを感じて楽しく協力し合えるチーム環境を作ることを、どちらも大切にする、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 119, question: "自分の価値観や信念（感情的側面）と、社会のルールや現実的な制約（論理的側面）の間で葛藤が生じたとき、それらを安易にどちらか一方に寄せるのではなく、両立させる道や新しい視点を探ろうとしますか？", supplement: "（例えば、「環境保護は非常に大切だが、経済活動も人々の生活には必要」という状況で、どちらかを完全に犠牲にするのではなく、持続可能な新しいビジネスモデルやライフスタイルを模索する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+{ id: 120, question: "物事を判断する際、短期的な効率性や成果（論理的側面）だけでなく、その判断が長期的にどのような影響をもたらすか、人間関係や社会全体にとって望ましいものか（倫理的・感情的側面）も考慮に入れますか？", supplement: "（例えば、ある事業の撤退を検討する際、短期的な赤字解消というメリットだけでなく、従業員の雇用や地域社会への長期的な影響も総合的に考慮して最終判断する、など。）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null }
+//
+]; 
+            // 例：以下のようなオブジェクトを120個、カンマ区切りで [] の中に入れます。
+            // { id: 1, question: "質問文...", supplement: "（補足文...）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null },
+            // { id: 2, question: "質問文...", supplement: "（補足文...）", targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2] },
+            // ...
+            // { id: 22, question: "質問文...", supplement: "（補足文...）", targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null },
+            // ...など全120問分
+
+            const startScreen = document.getElementById('start-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const resultScreen = document.getElementById('result-screen');
+
+            const startButton = document.getElementById('start-button');
+            const questionCounterEl = document.getElementById('question-counter');
+            const questionTextEl = document.getElementById('question-text');
+            const questionSupplementEl = document.getElementById('question-supplement');
+            const choicesAreaEl = document.getElementById('choices-area');
+            const nextQuestionButton = document.getElementById('next-question-button');
+            const resultCodeEl = document.getElementById('result-code');
+            const restartButton = document.getElementById('restart-button');
+            const progressBar = document.getElementById('progress-bar');
+
+            let currentQuestionIndex = 0;
+            let userRawAnswers = []; 
+            
+            let scores = {
+                S1: 0, M1: 0, P1: 0, V2: 0, M2: 0, G2: 0, A3: 0, M3: 0, E3: 0, CL: 0
+            };
+
+            startButton.addEventListener('click', startQuiz);
+            nextQuestionButton.addEventListener('click', loadNextQuestion);
+            restartButton.addEventListener('click', restartQuiz);
+
+            function startQuiz() {
+                if (allQuestions.length === 0) {
+                    alert("質問データが読み込まれていません。script.js内のallQuestions配列に質問データを入力してください。");
+                    return;
+                }
+                startScreen.style.display = 'none';
+                resultScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                currentQuestionIndex = 0;
+                userRawAnswers = new Array(allQuestions.length).fill(null);
+                for (let key in scores) { scores[key] = 0; }
+                updateProgressBar();
+                loadQuestion(currentQuestionIndex);
+            }
+
+            function updateProgressBar() {
+                const progress = allQuestions.length > 0 ? ((currentQuestionIndex) / allQuestions.length) * 100 : 0;
+                progressBar.style.width = progress + '%';
+            }
+
+            function loadQuestion(index) {
+                if (index < allQuestions.length) {
+                    const questionData = allQuestions[index];
+                    questionCounterEl.textContent = `質問 ${index + 1} / ${allQuestions.length}`;
+                    questionTextEl.textContent = questionData.question;
+                    questionSupplementEl.textContent = questionData.supplement || "";
+                    
+                    choicesAreaEl.innerHTML = '';
+                    choiceTexts.forEach((text, i) => {
+                        const button = document.createElement('button');
+                        button.textContent = text;
+                        button.dataset.score = choiceScores[i]; 
+                        button.addEventListener('click', () => selectAnswer(index, choiceScores[i], button));
+                        choicesAreaEl.appendChild(button);
+                    });
+                    nextQuestionButton.disabled = true;
+                } else {
+                    showResults();
+                }
+            }
+
+            function selectAnswer(questionIndex, score, selectedButton) {
+                userRawAnswers[questionIndex] = score;
+                const buttons = choicesAreaEl.querySelectorAll('button');
+                buttons.forEach(button => button.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                nextQuestionButton.disabled = false;
+            }
+
+            function loadNextQuestion() {
+                currentQuestionIndex++;
+                updateProgressBar();
+                loadQuestion(currentQuestionIndex);
+            }
+
+            function calculateAndDetermineTypes() {
+                for (let key in scores) { scores[key] = 0; } // スコアをリセット
+
+                allQuestions.forEach((q, index) => {
+                    const rawAnswerScore = userRawAnswers[index];
+                    if (rawAnswerScore === null) { 
+                        console.warn(`質問ID ${q.id} が未回答です。`); // ユーザーには見えない
+                        return; 
+                    }
+
+                    let processedScore = q.scoreEffect === -1 ? -rawAnswerScore : rawAnswerScore;
+
+                    if (q.targetScore === "CL") {
+                        scores.CL += processedScore;
+                    } else if (scores.hasOwnProperty(q.targetScore)) {
+                        scores[q.targetScore] += rawAnswerScore; 
+                    }
+                });
+
+                let axis1Type, axis2Type, axis3Type;
+                // 第1軸 (S1, M1, P1) - M優先
+                if (scores.M1 >= scores.S1 && scores.M1 >= scores.P1) axis1Type = "M";
+                else if (scores.S1 >= scores.P1) axis1Type = "S";
+                else axis1Type = "P";
+
+                // 第2軸 (V2, M2, G2) - M優先
+                if (scores.M2 >= scores.V2 && scores.M2 >= scores.G2) axis2Type = "M";
+                else if (scores.V2 >= scores.G2) axis2Type = "V";
+                else axis2Type = "G";
+                
+                // 第3軸 (A3, M3, E3) - M優先
+                if (scores.M3 >= scores.A3 && scores.M3 >= scores.E3) axis3Type = "M";
+                else if (scores.A3 >= scores.E3) axis3Type = "A";
+                else axis3Type = "E";
+                
+                const typeCode = axis1Type + axis2Type + axis3Type;
+
+                // 意識レベル判定
+                // 閾値案 (21問 x ±2点 = -42 to +42)
+                const clThresholds = {
+                    l1Cap: -29, // Level 1: -42 to -29
+                    l2Cap: -15, // Level 2: -28 to -15
+                    l3Cap: -1,  // Level 3: -14 to -1
+                    l4Cap: 13,  // Level 4: 0   to 13
+                    l5Cap: 27,  // Level 5: 14  to 27
+                    // Level 6: 28 to 42
+                };
+                let provisionalLevel;
+                if (scores.CL <= clThresholds.l1Cap) provisionalLevel = 1;
+                else if (scores.CL <= clThresholds.l2Cap) provisionalLevel = 2;
+                else if (scores.CL <= clThresholds.l3Cap) provisionalLevel = 3;
+                else if (scores.CL <= clThresholds.l4Cap) provisionalLevel = 4;
+                else if (scores.CL <= clThresholds.l5Cap) provisionalLevel = 5;
+                else provisionalLevel = 6;
+
+                // チェック質問10問による補正 (No.95でFIXしたルール)
+                let clearedCheckQuestions = 0;
+                allQuestions.forEach((q, index) => {
+                    if (q.isCheckQuestion) {
+                        const rawAnswerScore = userRawAnswers[index];
+                        // checkClearIf が配列で、その配列にrawAnswerScoreが含まれていればクリア
+                        if (q.checkClearIf && Array.isArray(q.checkClearIf) && q.checkClearIf.includes(rawAnswerScore)) {
+                            clearedCheckQuestions++;
+                        }
+                    }
+                });
+                
+                let finalConsciousnessLevel = provisionalLevel;
+                if (clearedCheckQuestions <= 4) { 
+                    finalConsciousnessLevel = Math.min(provisionalLevel, 2); 
+                } else if (clearedCheckQuestions <= 6) { 
+                    finalConsciousnessLevel = Math.min(provisionalLevel, 3); 
+                } else if (clearedCheckQuestions === 7) { 
+                    finalConsciousnessLevel = Math.min(provisionalLevel, 4); 
+                } else if (clearedCheckQuestions === 8) { 
+                    finalConsciousnessLevel = Math.min(provisionalLevel, 5); 
+                } 
+                // 9問以上クリアでレベル6到達の可能性 (provisionalLevelが6ならそのまま)
+
+                return { typeCode, consciousnessLevel: finalConsciousnessLevel };
+            }
+
+            function showResults() {
+                quizScreen.style.display = 'none';
+                progressBar.style.width = '100%';
+                if (allQuestions.length === 0 || userRawAnswers.includes(null)) {
+                     resultCodeEl.textContent = "エラー：全ての質問に回答してください、または質問データを確認してください。";
+                } else {
+                    const results = calculateAndDetermineTypes();
+                    resultCodeEl.textContent = `${results.typeCode}-${results.consciousnessLevel}`;
+                }
+                resultScreen.style.display = 'block';
+            }
+
+            function restartQuiz() {
+                startScreen.style.display = 'block';
+                resultScreen.style.display = 'none';
+                currentQuestionIndex = 0;
+                userRawAnswers.fill(null);
+                for (let key in scores) { scores[key] = 0; }
+                progressBar.style.width = '0%';
+            }
+        });
+    </script>
+</body>
+</html>
