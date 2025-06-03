@@ -1,0 +1,76 @@
+{
+  "ja": {
+    "title": "Awakening Conscious Type Exam",
+    "startButton": "診断を開始する",
+    "nextButton": "次へ",
+    "prevButton": "戻る",
+    "restartButton": "もう一度診断する",
+    "resultTitle": "診断結果",
+    "resultIntro": "あなたのAwakening Conscious Type Exam診断コードは...",
+    "resultNote": "詳細な結果の解説は今後のアップデートで表示されます。このコードを記録しておいてください。",
+    "introText1": "この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。",
+    "introText2": "全107問の質問にお答えいただくことで、あなたの現在のタイプと人生のステージが明らかになります。",
+    "questionCounter": "質問 {current} / {total}",
+    "choices": {
+      "strongly_disagree": "全く当てはまらない",
+      "disagree": "あまり当てはまらない",
+      "neutral": "どちらとも言えない",
+      "agree": "当てはまる",
+      "strongly_agree": "よく当てはまる"
+    },
+    "mChoices": {
+      "axis1": [
+        "主に一人で静かに自分の内面と向き合っている時間",
+        "主に他の人と活発に交流し、刺激を受け合っている時間",
+        "一人の時間と他人といる時間の両方を大切にし、そのバランスが取れている時"
+      ],
+      "axis2": [
+        "常に新しいアイデアや未来の可能性を追い求める",
+        "現実的で確実な方法や過去の経験を重んじる",
+        "新しい可能性に目を向けつつも、現実的な視点や実用性を忘れず、バランス良く物事を進める時"
+      ],
+      "axis3": [
+        "主に論理的な正しさや客観的なデータ・事実を重視する",
+        "主に関わる人々の気持ちや全体の調和を重視する",
+        "論理的な正しさと人々の気持ちの両方を同じくらい大切にし、そのバランスが取れた結論を出す時"
+      ]
+    }
+  },
+  "en": {
+    "title": "Awakening Conscious Type Exam",
+    "startButton": "Start Assessment",
+    "nextButton": "Next",
+    "prevButton": "Back",
+    "restartButton": "Take Assessment Again",
+    "resultTitle": "Your Results",
+    "resultIntro": "Your Awakening Conscious Type Exam code is...",
+    "resultNote": "Detailed analysis will be available in future updates. Please save this code.",
+    "introText1": "This assessment helps you explore your inner self and illuminate your path to transformation.",
+    "introText2": "By answering all 107 questions, your current type and life stage will be revealed.",
+    "questionCounter": "Question {current} / {total}",
+    "choices": {
+      "strongly_disagree": "Strongly Disagree",
+      "disagree": "Disagree",
+      "neutral": "Neutral",
+      "agree": "Agree",
+      "strongly_agree": "Strongly Agree"
+    },
+    "mChoices": {
+      "axis1": [
+        "Mainly spending time alone quietly facing my inner self",
+        "Mainly actively interacting with others and receiving stimulation",
+        "Valuing both time alone and time with others in a balanced way"
+      ],
+      "axis2": [
+        "Always pursuing new ideas and future possibilities",
+        "Valuing practical, reliable methods and past experience",
+        "Looking at new possibilities while maintaining practical perspective and balance"
+      ],
+      "axis3": [
+        "Mainly valuing logical correctness and objective data/facts",
+        "Mainly valuing people's feelings and overall harmony",
+        "Equally valuing both logic and feelings to reach balanced conclusions"
+      ]
+    }
+  }
+}
