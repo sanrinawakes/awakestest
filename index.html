@@ -1,350 +1,1537 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awakening Conscious Type Exam</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awakening Conscious Type Exam</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Noto+Sans:wght@300;400;700&family=Noto+Sans+Arabic:wght@300;400;700&family=Noto+Sans+Thai:wght@300;400;700&family=Noto+Sans+Devanagari:wght@300;400;700&display=swap');
 
-        :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --dark-bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.5);
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --border: rgba(148, 163, 184, 0.1);
-            --glow: rgba(99, 102, 241, 0.5);
-        }
+:root {
+--primary-gradient: linear-gradient(135deg, #7c4dff 0%, #3949ab 100%);
+--secondary-gradient: linear-gradient(135deg, #536dfe 0%, #3f51b5 100%);
+--background-gradient: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+--card-background: rgba(255, 255, 255, 0.98);
+--text-primary: #2d3436;
+--text-secondary: #636e72;
+--shadow-soft: 0 10px 30px rgba(0,0,0,0.2);
+--shadow-hover: 0 15px 40px rgba(0,0,0,0.25);
+--border-radius: 20px;
+--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--dark-bg);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-        }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
 
-        /* アニメーション背景 */
-        .bg-animation {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background: var(--dark-bg);
-            overflow: hidden;
-        }
+body {
+font-family: 'Noto Sans JP', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Thai', 'Noto Sans Devanagari', sans-serif;
+background: var(--background-gradient);
+color: var(--text-primary);
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+line-height: 1.6;
+position: relative;
+overflow-x: hidden;
+}
 
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            top: -25%;
-            left: -25%;
-            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
-        }
+body::before {
+content: '';
+position: fixed;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+background-size: 50px 50px;
+animation: backgroundMove 20s linear infinite;
+z-index: -1;
+}
 
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+@keyframes backgroundMove {
+0% { transform: translate(0, 0); }
+100% { transform: translate(50px, 50px); }
+}
 
-        .container {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+.container {
+background: var(--card-background);
+backdrop-filter: blur(10px);
+padding: 40px;
+border-radius: var(--border-radius);
+box-shadow: var(--shadow-soft);
+width: 100%;
+max-width: 800px;
+text-align: center;
+transition: var(--transition);
+animation: fadeInUp 0.6s ease-out;
+}
 
-        h1 {
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px var(--glow));
-        }
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
 
-        h2 {
-            color: var(--text-primary);
-            margin: 20px 0;
-            font-size: 1.8em;
-        }
+h1 {
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 30px;
+font-size: 2.5em;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
 
-        p {
-            color: var(--text-secondary);
-            font-size: 1.1em;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
+h2 {
+color: var(--text-primary);
+margin: 30px 0 20px;
+font-size: 1.8em;
+font-weight: 400;
+}
 
-        button {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 10px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.language-selector {
+position: absolute;
+top: 20px;
+right: 20px;
+z-index: 1000;
+}
 
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
+.language-selector select {
+background: var(--card-background);
+border: 2px solid transparent;
+border-radius: 10px;
+padding: 10px 20px;
+font-size: 0.9em;
+cursor: pointer;
+box-shadow: var(--shadow-soft);
+transition: var(--transition);
+appearance: none;
+background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-position: right 10px center;
+background-size: 20px;
+padding-right: 40px;
+}
 
-        button:disabled {
-            background: linear-gradient(135deg, #4b5563, #6b7280);
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
+.language-selector select:hover {
+border-color: #5c6bc0;
+transform: translateY(-2px);
+box-shadow: var(--shadow-hover);
+}
 
-        button.secondary {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
+#start-screen p, #result-screen p {
+font-size: 1.1em;
+color: var(--text-secondary);
+margin-bottom: 25px;
+line-height: 1.8;
+}
 
-        button.secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
+#question-text {
+font-size: 1.3em;
+color: var(--text-primary);
+margin-bottom: 15px;
+text-align: left;
+font-weight: 400;
+}
 
-        #quiz-screen, #result-screen {
-            display: none;
-        }
+#question-supplement {
+font-size: 0.95em;
+color: var(--text-secondary);
+margin-bottom: 30px;
+text-align: left;
+padding: 20px;
+background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+border-left: 4px solid #5c6bc0;
+border-radius: 10px;
+line-height: 1.8;
+}
 
-        .question-text {
-            font-size: 1.2em;
-            margin: 20px 0;
-            text-align: left;
-            line-height: 1.8;
-        }
+#choices-area {
+display: flex;
+flex-direction: column;
+gap: 15px;
+margin-bottom: 30px;
+}
 
-        .question-supplement {
-            background: rgba(99, 102, 241, 0.1);
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-            font-size: 0.95em;
-            color: var(--text-secondary);
-            border-radius: 8px;
-            line-height: 1.7;
-        }
+#choices-area button {
+background: white;
+border: 2px solid #e0e0e0;
+padding: 18px 25px;
+border-radius: 15px;
+cursor: pointer;
+font-size: 1.05em;
+transition: var(--transition);
+text-align: left;
+position: relative;
+overflow: hidden;
+}
 
-        .choice-button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid transparent;
-            text-align: left;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
+#choices-area button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: var(--primary-gradient);
+transition: var(--transition);
+z-index: -1;
+}
 
-        .choice-button:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--primary);
-        }
+#choices-area button:hover {
+transform: translateY(-3px);
+box-shadow: var(--shadow-hover);
+border-color: #5c6bc0;
+}
 
-        .choice-button.selected {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: transparent;
-            color: white;
-            font-weight: 600;
-        }
+#choices-area button:hover::before {
+left: 0;
+}
 
-        #progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
+#choices-area button:hover {
+color: white;
+}
 
-        #progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 4px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
-        }
+#choices-area button.selected {
+background: var(--primary-gradient);
+color: white;
+border-color: transparent;
+transform: scale(1.02);
+box-shadow: 0 5px 20px rgba(92, 107, 192, 0.4);
+}
 
-        .language-selector {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+.button-primary {
+background: var(--primary-gradient);
+color: white;
+border: none;
+padding: 15px 40px;
+border-radius: 30px;
+cursor: pointer;
+font-size: 1.1em;
+font-weight: 500;
+transition: var(--transition);
+margin: 10px;
+box-shadow: 0 4px 15px rgba(92, 107, 192, 0.3);
+}
 
-        .language-selector select {
-            background: var(--card-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
+.button-secondary {
+background: white;
+color: #5c6bc0;
+border: 2px solid #5c6bc0;
+padding: 15px 40px;
+border-radius: 30px;
+cursor: pointer;
+font-size: 1.1em;
+font-weight: 500;
+transition: var(--transition);
+margin: 10px;
+}
 
-        #result-code {
-            font-size: 3em;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            padding: 30px;
-            margin: 30px 0;
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            display: inline-block;
-        }
+.button-primary:hover:not(:disabled) {
+transform: translateY(-3px);
+box-shadow: 0 8px 25px rgba(92, 107, 192, 0.4);
+}
 
-        #question-counter {
-            color: var(--text-secondary);
-            font-size: 0.95em;
-            margin-bottom: 20px;
-        }
+.button-secondary:hover:not(:disabled) {
+background: #5c6bc0;
+color: white;
+transform: translateY(-3px);
+box-shadow: 0 8px 25px rgba(92, 107, 192, 0.4);
+}
 
-        .button-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
+.button-primary:disabled, .button-secondary:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+}
 
-        /* ローディング画面 */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
+#question-counter {
+font-size: 0.95em;
+color: var(--text-secondary);
+margin-bottom: 25px;
+font-weight: 300;
+}
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+#progress-bar-container {
+width: 100%;
+background: rgba(224, 224, 224, 0.5);
+border-radius: 20px;
+margin-bottom: 30px;
+height: 8px;
+overflow: hidden;
+position: relative;
+}
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+#progress-bar {
+height: 100%;
+background: var(--primary-gradient);
+border-radius: 20px;
+transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
 
-        /* レスポンシブ対応 */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            button {
-                padding: 14px 30px;
-                font-size: 1em;
-            }
-        }
-    </style>
+#progress-bar::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+);
+animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+
+#result-code {
+font-size: 3em;
+font-weight: 700;
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin: 30px 0;
+padding: 20px;
+display: inline-block;
+animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.05); }
+100% { transform: scale(1); }
+}
+
+.button-container {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-top: 30px;
+flex-wrap: wrap;
+}
+
+/* RTL言語対応 */
+[dir="rtl"] {
+text-align: right;
+}
+
+[dir="rtl"] #question-text,
+[dir="rtl"] #question-supplement {
+text-align: right;
+}
+
+[dir="rtl"] #choices-area button {
+text-align: right;
+}
+
+[dir="rtl"] .language-selector {
+left: 20px;
+right: auto;
+}
+
+[dir="rtl"] #question-supplement {
+border-left: none;
+border-right: 4px solid #667eea;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 600px) {
+.container {
+padding: 25px;
+}
+h1 {
+font-size: 2em;
+}
+.button-primary, .button-secondary {
+padding: 12px 30px;
+font-size: 1em;
+}
+}
+</style>
 </head>
 <body>
-    <div class="bg-animation"></div>
+<div class="language-selector">
+<select id="language-select" onchange="changeLanguage()">
+<option value="ja">日本語</option>
+<option value="en">English</option>
+<option value="es">Español</option>
+<option value="pt">Português</option>
+<option value="ru">Русский</option>
+<option value="zh-TW">繁體中文</option>
+<option value="zh-CN">简体中文</option>
+<option value="th">ภาษาไทย</option>
+<option value="hi">हिन्दी</option>
+<option value="ar">العربية</option>
+<option value="fr">Français</option>
+<option value="de">Deutsch</option>
+</select>
+</div>
 
-    <div id="loading-screen">
-        <div class="loading-spinner"></div>
-    </div>
+<div class="container">
+<h1 id="main-title">Awakening Conscious Type Exam ACT診断</h1>
 
-    <div class="language-selector">
-        <select id="language-select" onchange="changeLanguage()">
-            <option value="ja">日本語</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="ar">العربية</option>
-            <option value="zh-TW">繁體中文</option>
-            <option value="zh-CN">简体中文</option>
-            <option value="th">ไทย</option>
-            <option value="pt-BR">Português (BR)</option>
-            <option value="pt-PT">Português (PT)</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="ru">Русский</option>
-        </select>
-    </div>
+<div id="start-screen">
+<p id="intro-text-1">この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。</p>
+<p id="intro-text-2">全107問の質問にお答えいただくことで、あなたの現在のタイプと人生のステージが明らかになります。</p>
+<button id="start-button" class="button-primary" onclick="startQuiz()">診断を開始する</button>
+</div>
 
-    <div class="container">
-        <div id="start-screen">
-            <h1>Awakening Conscious Type Exam</h1>
-            <p id="intro-text-1">この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。</p>
-            <p id="intro-text-2">全107問の質問にお答えいただくことで、あなたの現在のタイプと人生のステージが明らかになります。</p>
-            <button onclick="startQuiz()" id="start-button">診断を開始する</button>
-        </div>
+<div id="quiz-screen" style="display:none;">
+<div id="progress-bar-container">
+<div id="progress-bar"></div>
+</div>
+<div id="question-counter"></div>
+<h2 id="question-text"></h2>
+<p id="question-supplement"></p>
+<div id="choices-area"></div>
+<div class="button-container">
+<button id="prev-question-button" class="button-secondary" onclick="loadPreviousQuestion()">戻る</button>
+<button id="next-question-button" class="button-primary" onclick="loadNextQuestion()" disabled>次へ</button>
+</div>
+</div>
 
-        <div id="quiz-screen">
-            <div id="progress-bar">
-                <div id="progress-fill"></div>
-            </div>
-            <div id="question-counter">質問 1 / 107</div>
-            <h2 class="question-text" id="question-text"></h2>
-            <div class="question-supplement" id="question-supplement"></div>
-            <div id="choices-area"></div>
-            <div class="button-container">
-                <button class="secondary" onclick="prevQuestion()" id="prev-button" style="display: none;">戻る</button>
-                <button onclick="nextQuestion()" id="next-button" disabled>次へ</button>
-            </div>
-        </div>
+<div id="result-screen" style="display:none;">
+<h2 id="result-title">診断結果</h2>
+<p id="result-text">あなたのAwakening Conscious Type Exam ACT診断コードは...</p>
+<h3 id="result-code"></h3>
+<p id="result-note">（詳細な結果の解説は今後のアップデートで表示されます。このコードを記録しておいてください。）</p>
+<button id="restart-button" class="button-primary" onclick="restartQuiz()">もう一度診断する</button>
+</div>
+</div>
 
-        <div id="result-screen">
-            <h1 id="result-title">診断結果</h1>
-            <p id="result-intro">あなたのAwakening Conscious Type Exam診断コードは...</p>
-            <div id="result-code">計算中...</div>
-            <p id="result-note">詳細な結果の解説は今後のアップデートで表示されます。このコードを記録しておいてください。</p>
-            <button onclick="restartQuiz()" id="restart-button">もう一度診断する</button>
-        </div>
-    </div>
+<script>
+// 翻訳データ
+const translations = {
+ja: {
+title: "Awakening Conscious Type Exam ACT診断",
+introText1: "この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。",
+introText2: "全107問の質問にお答えいただくことで、あなたの現在のタイプと人生のステージが明らかになります。",
+startButton: "診断を開始する",
+nextButton: "次へ",
+prevButton: "戻る",
+resultTitle: "診断結果",
+resultText: "あなたのAwakening Conscious Type Exam ACT診断コードは...",
+resultNote: "（詳細な結果の解説は今後のアップデートで表示されます。このコードを記録しておいてください。）",
+restartButton: "もう一度診断する",
+questionCounter: "質問 {current} / {total}",
+choices: {
+strongly_disagree: "全く当てはまらない",
+disagree: "あまり当てはまらない",
+neutral: "どちらとも言えない",
+agree: "当てはまる",
+strongly_agree: "よく当てはまる"
+},
+error: "エラー：質問データが正しく読み込まれていません。"
+},
+en: {
+title: "Awakening Conscious Type Exam",
+introText1: "This assessment helps you explore your inner self and illuminate the path of self-transformation.",
+introText2: "By answering all 107 questions, your current type and life stage will be revealed.",
+startButton: "Start Assessment",
+nextButton: "Next",
+prevButton: "Back",
+resultTitle: "Your Results",
+resultText: "Your Awakening Conscious Type Exam code is...",
+resultNote: "(Detailed explanations will be available in future updates. Please record this code.)",
+restartButton: "Take Again",
+questionCounter: "Question {current} / {total}",
+choices: {
+strongly_disagree: "Strongly Disagree",
+disagree: "Disagree",
+neutral: "Neutral",
+agree: "Agree",
+strongly_agree: "Strongly Agree"
+},
+error: "Error: Question data not loaded correctly."
+},
+es: {
+title: "Examen de Tipo Consciente Despertando",
+introText1: "Esta evaluación te ayuda a explorar tu interior e iluminar el camino de la autotransformación.",
+introText2: "Al responder las 107 preguntas, se revelará tu tipo actual y etapa de vida.",
+startButton: "Iniciar Evaluación",
+nextButton: "Siguiente",
+prevButton: "Atrás",
+resultTitle: "Tus Resultados",
+resultText: "Tu código del Examen de Tipo Consciente Despertando es...",
+resultNote: "(Las explicaciones detalladas estarán disponibles en futuras actualizaciones. Por favor, guarda este código.)",
+restartButton: "Repetir",
+questionCounter: "Pregunta {current} / {total}",
+choices: {
+strongly_disagree: "Totalmente en Desacuerdo",
+disagree: "En Desacuerdo",
+neutral: "Neutral",
+agree: "De Acuerdo",
+strongly_agree: "Totalmente de Acuerdo"
+},
+error: "Error: Los datos de las preguntas no se cargaron correctamente."
+},
+pt: {
+title: "Exame do Tipo Consciente Desperto",
+introText1: "Esta avaliação ajuda você a explorar seu interior e iluminar o caminho da autotransformação.",
+introText2: "Ao responder todas as 107 perguntas, seu tipo atual e estágio de vida serão revelados.",
+startButton: "Iniciar Avaliação",
+nextButton: "Próximo",
+prevButton: "Voltar",
+resultTitle: "Seus Resultados",
+resultText: "Seu código do Exame do Tipo Consciente Desperto é...",
+resultNote: "(Explicações detalhadas estarão disponíveis em atualizações futuras. Por favor, anote este código.)",
+restartButton: "Fazer Novamente",
+questionCounter: "Pergunta {current} / {total}",
+choices: {
+strongly_disagree: "Discordo Totalmente",
+disagree: "Discordo",
+neutral: "Neutro",
+agree: "Concordo",
+strongly_agree: "Concordo Totalmente"
+},
+error: "Erro: Dados das perguntas não carregados corretamente."
+},
+ru: {
+title: "Экзамен Пробужденного Сознательного Типа",
+introText1: "Эта оценка поможет вам исследовать свой внутренний мир и осветить путь самотрансформации.",
+introText2: "Ответив на все 107 вопросов, вы узнаете свой текущий тип и жизненный этап.",
+startButton: "Начать Оценку",
+nextButton: "Далее",
+prevButton: "Назад",
+resultTitle: "Ваши Результаты",
+resultText: "Ваш код Экзамена Пробужденного Сознательного Типа...",
+resultNote: "(Подробные объяснения будут доступны в будущих обновлениях. Пожалуйста, запишите этот код.)",
+restartButton: "Пройти Снова",
+questionCounter: "Вопрос {current} / {total}",
+choices: {
+strongly_disagree: "Совершенно Не Согласен",
+disagree: "Не Согласен",
+neutral: "Нейтрально",
+agree: "Согласен",
+strongly_agree: "Полностью Согласен"
+},
+error: "Ошибка: Данные вопросов загружены неправильно."
+},
+"zh-TW": {
+title: "覺醒意識類型測驗",
+introText1: "這個評估幫助您探索內在自我，照亮自我轉化的道路。",
+introText2: "通過回答所有107個問題，您當前的類型和人生階段將被揭示。",
+startButton: "開始評估",
+nextButton: "下一個",
+prevButton: "返回",
+resultTitle: "您的結果",
+resultText: "您的覺醒意識類型測驗代碼是...",
+resultNote: "（詳細解釋將在未來更新中提供。請記錄此代碼。）",
+restartButton: "重新測試",
+questionCounter: "問題 {current} / {total}",
+choices: {
+strongly_disagree: "完全不同意",
+disagree: "不同意",
+neutral: "中立",
+agree: "同意",
+strongly_agree: "完全同意"
+},
+error: "錯誤：問題數據未正確加載。"
+},
+"zh-CN": {
+title: "觉醒意识类型测验",
+introText1: "这个评估帮助您探索内在自我，照亮自我转化的道路。",
+introText2: "通过回答所有107个问题，您当前的类型和人生阶段将被揭示。",
+startButton: "开始评估",
+nextButton: "下一个",
+prevButton: "返回",
+resultTitle: "您的结果",
+resultText: "您的觉醒意识类型测验代码是...",
+resultNote: "（详细解释将在未来更新中提供。请记录此代码。）",
+restartButton: "重新测试",
+questionCounter: "问题 {current} / {total}",
+choices: {
+strongly_disagree: "完全不同意",
+disagree: "不同意",
+neutral: "中立",
+agree: "同意",
+strongly_agree: "完全同意"
+},
+error: "错误：问题数据未正确加载。"
+},
+th: {
+title: "แบบทดสอบประเภทจิตสำนึกที่ตื่นขึ้น",
+introText1: "การประเมินนี้ช่วยให้คุณสำรวจตัวตนภายในและส่องสว่างเส้นทางการเปลี่ยนแปลงตนเอง",
+introText2: "โดยการตอบคำถามทั้งหมด 107 ข้อ ประเภทและขั้นตอนชีวิตปัจจุบันของคุณจะถูกเปิดเผย",
+startButton: "เริ่มการประเมิน",
+nextButton: "ถัดไป",
+prevButton: "กลับ",
+resultTitle: "ผลลัพธ์ของคุณ",
+resultText: "รหัสแบบทดสอบประเภทจิตสำนึกที่ตื่นขึ้นของคุณคือ...",
+resultNote: "(คำอธิบายโดยละเอียดจะมีให้ในการอัปเดตในอนาคต โปรดบันทึกรหัสนี้)",
+restartButton: "ทำอีกครั้ง",
+questionCounter: "คำถาม {current} / {total}",
+choices: {
+strongly_disagree: "ไม่เห็นด้วยอย่างยิ่ง",
+disagree: "ไม่เห็นด้วย",
+neutral: "เป็นกลาง",
+agree: "เห็นด้วย",
+strongly_agree: "เห็นด้วยอย่างยิ่ง"
+},
+error: "ข้อผิดพลาด: ข้อมูลคำถามไม่ได้โหลดอย่างถูกต้อง"
+},
+hi: {
+title: "जागृत चेतना प्रकार परीक्षा",
+introText1: "यह मूल्यांकन आपको अपने भीतरी स्व का पता लगाने और आत्म-परिवर्तन के मार्ग को प्रकाशित करने में मदद करता है।",
+introText2: "सभी 107 प्रश्नों का उत्तर देकर, आपका वर्तमान प्रकार और जीवन चरण प्रकट होगा।",
+startButton: "मूल्यांकन शुरू करें",
+nextButton: "अगला",
+prevButton: "वापस",
+resultTitle: "आपके परिणाम",
+resultText: "आपका जागृत चेतना प्रकार परीक्षा कोड है...",
+resultNote: "(विस्तृत स्पष्टीकरण भविष्य के अपडेट में उपलब्ध होंगे। कृपया इस कोड को रिकॉर्ड करें।)",
+restartButton: "फिर से लें",
+questionCounter: "प्रश्न {current} / {total}",
+choices: {
+strongly_disagree: "पूर्णतः असहमत",
+disagree: "असहमत",
+neutral: "तटस्थ",
+agree: "सहमत",
+strongly_agree: "पूर्णतः सहमत"
+},
+error: "त्रुटि: प्रश्न डेटा सही तरीके से लोड नहीं हुआ।"
+},
+ar: {
+title: "اختبار نوع الوعي المستيقظ",
+introText1: "يساعدك هذا التقييم على استكشاف ذاتك الداخلية وإضاءة طريق التحول الذاتي.",
+introText2: "من خلال الإجابة على جميع الأسئلة الـ 107، سيتم الكشف عن نوعك الحالي ومرحلة حياتك.",
+startButton: "ابدأ التقييم",
+nextButton: "التالي",
+prevButton: "السابق",
+resultTitle: "نتائجك",
+resultText: "رمز اختبار نوع الوعي المستيقظ الخاص بك هو...",
+resultNote: "(ستتوفر التفسيرات التفصيلية في التحديثات المستقبلية. يرجى تسجيل هذا الرمز.)",
+restartButton: "أعد الاختبار",
+questionCounter: "السؤال {current} / {total}",
+choices: {
+strongly_disagree: "أعارض بشدة",
+disagree: "أعارض",
+neutral: "محايد",
+agree: "أوافق",
+strongly_agree: "أوافق بشدة"
+},
+error: "خطأ: لم يتم تحميل بيانات الأسئلة بشكل صحيح."
+},
+fr: {
+title: "Examen du Type de Conscience Éveillée",
+introText1: "Cette évaluation vous aide à explorer votre moi intérieur et à éclairer le chemin de la transformation personnelle.",
+introText2: "En répondant aux 107 questions, votre type actuel et votre étape de vie seront révélés.",
+startButton: "Commencer l'Évaluation",
+nextButton: "Suivant",
+prevButton: "Retour",
+resultTitle: "Vos Résultats",
+resultText: "Votre code d'Examen du Type de Conscience Éveillée est...",
+resultNote: "(Des explications détaillées seront disponibles dans les futures mises à jour. Veuillez enregistrer ce code.)",
+restartButton: "Refaire",
+questionCounter: "Question {current} / {total}",
+choices: {
+strongly_disagree: "Fortement en Désaccord",
+disagree: "En Désaccord",
+neutral: "Neutre",
+agree: "D'accord",
+strongly_agree: "Fortement d'Accord"
+},
+error: "Erreur : Les données des questions ne sont pas chargées correctement."
+},
+de: {
+title: "Erwachtes Bewusstseinstyp-Prüfung",
+introText1: "Diese Bewertung hilft Ihnen, Ihr inneres Selbst zu erkunden und den Weg der Selbsttransformation zu beleuchten.",
+introText2: "Durch die Beantwortung aller 107 Fragen werden Ihr aktueller Typ und Ihre Lebensstufe offenbart.",
+startButton: "Bewertung Starten",
+nextButton: "Weiter",
+prevButton: "Zurück",
+resultTitle: "Ihre Ergebnisse",
+resultText: "Ihr Erwachtes Bewusstseinstyp-Prüfungscode ist...",
+resultNote: "(Detaillierte Erklärungen werden in zukünftigen Updates verfügbar sein. Bitte notieren Sie diesen Code.)",
+restartButton: "Wiederholen",
+questionCounter: "Frage {current} / {total}",
+choices: {
+strongly_disagree: "Stimme überhaupt nicht zu",
+disagree: "Stimme nicht zu",
+neutral: "Neutral",
+agree: "Stimme zu",
+strongly_agree: "Stimme voll zu"
+},
+error: "Fehler: Fragedaten wurden nicht korrekt geladen."
+}
+};
 
-    <script src="js/app.js"></script>
+let currentLanguage = 'ja';
+let currentQuestionIndex = 0;
+let userRawAnswers = [];
+let scores = {
+S1: 0, M1: 0, P1: 0, V2: 0, M2: 0, G2: 0, A3: 0, M3: 0, E3: 0, CL: 0
+};
+
+// 言語変更関数
+function changeLanguage() {
+const select = document.getElementById('language-select');
+currentLanguage = select.value;
+updateUILanguage();
+// RTL言語の場合、方向を変更
+if (currentLanguage === 'ar') {
+document.body.setAttribute('dir', 'rtl');
+} else {
+document.body.removeAttribute('dir');
+}
+}
+
+// UI言語更新
+function updateUILanguage() {
+const t = translations[currentLanguage];
+document.getElementById('main-title').textContent = t.title;
+document.getElementById('intro-text-1').textContent = t.introText1;
+document.getElementById('intro-text-2').textContent = t.introText2;
+document.getElementById('start-button').textContent = t.startButton;
+document.getElementById('next-question-button').textContent = t.nextButton;
+document.getElementById('prev-question-button').textContent = t.prevButton;
+document.getElementById('result-title').textContent = t.resultTitle;
+document.getElementById('result-text').textContent = t.resultText;
+document.getElementById('result-note').textContent = t.resultNote;
+document.getElementById('restart-button').textContent = t.restartButton;
+}
+
+// 選択肢のスコアとテキスト
+const choiceScores = [-2, -1, 0, 1, 2];
+
+// 3択質問用のテキスト
+const mChoiceTexts = {
+axis1: {
+ja: ["主に一人で静かに自分の内面と向き合っている時間", "主に他の人と活発に交流し、刺激を受け合っている時間", "一人の時間と他人といる時間の両方を大切にし、そのバランスが取れている時"],
+en: ["Mainly spending time alone quietly facing my inner self", "Mainly actively interacting with others and being stimulated", "Valuing both alone time and time with others in balance"],
+es: ["Principalmente pasando tiempo solo enfrentando mi ser interior", "Principalmente interactuando activamente con otros", "Valorando tanto el tiempo solo como con otros en equilibrio"],
+pt: ["Principalmente passando tempo sozinho enfrentando meu eu interior", "Principalmente interagindo ativamente com outros", "Valorizando tanto o tempo sozinho quanto com outros em equilíbrio"],
+ru: ["В основном проводя время в одиночестве, обращаясь к своему внутреннему я", "В основном активно взаимодействуя с другими", "Ценя как время в одиночестве, так и время с другими в балансе"],
+"zh-TW": ["主要是獨自安靜地面對內在自我的時間", "主要是與他人積極互動並受到刺激的時間", "重視獨處和與他人相處的時間並保持平衡"],
+"zh-CN": ["主要是独自安静地面对内在自我的时间", "主要是与他人积极互动并受到刺激的时间", "重视独处和与他人相处的时间并保持平衡"],
+th: ["ส่วนใหญ่ใช้เวลาอยู่คนเดียวอย่างเงียบๆ เผชิญหน้ากับตัวตนภายใน", "ส่วนใหญ่มีปฏิสัมพันธ์กับผู้อื่นอย่างกระตือรือร้น", "ให้ความสำคัญทั้งเวลาอยู่คนเดียวและเวลาอยู่กับผู้อื่นอย่างสมดุล"],
+hi: ["मुख्य रूप से अकेले शांति से अपने भीतरी स्व का सामना करते हुए समय बिताना", "मुख्य रूप से दूसरों के साथ सक्रिय रूप से बातचीत करना", "अकेले समय और दूसरों के साथ समय दोनों को संतुलन में महत्व देना"],
+ar: ["قضاء الوقت بشكل أساسي بمفردي بهدوء في مواجهة ذاتي الداخلية", "التفاعل بنشاط مع الآخرين بشكل أساسي", "تقدير كل من الوقت بمفردي والوقت مع الآخرين بتوازن"],
+fr: ["Passer principalement du temps seul à faire face à mon moi intérieur", "Interagir principalement activement avec les autres", "Valoriser à la fois le temps seul et le temps avec les autres en équilibre"],
+de: ["Hauptsächlich Zeit allein verbringen und sich dem inneren Selbst stellen", "Hauptsächlich aktiv mit anderen interagieren", "Sowohl Zeit allein als auch Zeit mit anderen im Gleichgewicht schätzen"]
+},
+axis2: {
+ja: ["常に新しいアイデアや未来の可能性を追い求める", "現実的で確実な方法や過去の経験を重んじる", "新しい可能性に目を向けつつも、現実的な視点や実用性を忘れず、バランス良く物事を進める時"],
+en: ["Always pursuing new ideas and future possibilities", "Valuing practical methods and past experiences", "Looking at new possibilities while maintaining practical perspectives in balance"],
+es: ["Siempre persiguiendo nuevas ideas y posibilidades futuras", "Valorando métodos prácticos y experiencias pasadas", "Mirando nuevas posibilidades mientras mantiene perspectivas prácticas en equilibrio"],
+pt: ["Sempre buscando novas ideias e possibilidades futuras", "Valorizando métodos práticos e experiências passadas", "Olhando para novas possibilidades enquanto mantém perspectivas práticas em equilíbrio"],
+ru: ["Всегда преследуя новые идеи и будущие возможности", "Ценя практические методы и прошлый опыт", "Рассматривая новые возможности, сохраняя практические перспективы в балансе"],
+"zh-TW": ["總是追求新想法和未來的可能性", "重視實際方法和過去的經驗", "在關注新可能性的同時保持實際觀點的平衡"],
+"zh-CN": ["总是追求新想法和未来的可能性", "重视实际方法和过去的经验", "在关注新可能性的同时保持实际观点的平衡"],
+th: ["มักแสวงหาแนวคิดใหม่และความเป็นไปได้ในอนาคตเสมอ", "ให้คุณค่ากับวิธีการปฏิบัติและประสบการณ์ในอดีต", "มองหาความเป็นไปได้ใหม่ๆ พร้อมรักษามุมมองเชิงปฏิบัติในความสมดุล"],
+hi: ["हमेशा नए विचारों और भविष्य की संभावनाओं का पीछा करना", "व्यावहारिक तरीकों और पिछले अनुभवों को महत्व देना", "व्यावहारिक दृष्टिकोण को संतुलन में बनाए रखते हुए नई संभावनाओं को देखना"],
+ar: ["السعي دائمًا وراء الأفكار الجديدة والاحتمالات المستقبلية", "تقدير الأساليب العملية والخبرات السابقة", "النظر إلى الاحتمالات الجديدة مع الحفاظ على وجهات النظر العملية في التوازن"],
+fr: ["Toujours poursuivre de nouvelles idées et possibilités futures", "Valoriser les méthodes pratiques et les expériences passées", "Regarder de nouvelles possibilités tout en maintenant des perspectives pratiques en équilibre"],
+de: ["Immer neue Ideen und zukünftige Möglichkeiten verfolgen", "Praktische Methoden und vergangene Erfahrungen schätzen", "Neue Möglichkeiten betrachten und dabei praktische Perspektiven im Gleichgewicht halten"]
+},
+axis3: {
+ja: ["主に論理的な正しさや客観的なデータ・事実を重視する", "主に関わる人々の気持ちや全体の調和を重視する", "論理的な正しさと人々の気持ちの両方を同じくらい大切にし、そのバランスが取れた結論を出す時"],
+en: ["Mainly valuing logical correctness and objective data/facts", "Mainly valuing people's feelings and overall harmony", "Equally valuing both logical correctness and people's feelings in balanced conclusions"],
+es: ["Valorando principalmente la corrección lógica y datos/hechos objetivos", "Valorando principalmente los sentimientos de las personas y la armonía general", "Valorando igualmente la corrección lógica y los sentimientos en conclusiones equilibradas"],
+pt: ["Valorizando principalmente a correção lógica e dados/fatos objetivos", "Valorizando principalmente os sentimentos das pessoas e a harmonia geral", "Valorizando igualmente a correção lógica e os sentimentos em conclusões equilibradas"],
+ru: ["В основном ценя логическую правильность и объективные данные/факты", "В основном ценя чувства людей и общую гармонию", "Одинаково ценя как логическую правильность, так и чувства людей в сбалансированных выводах"],
+"zh-TW": ["主要重視邏輯正確性和客觀數據/事實", "主要重視人們的感受和整體和諧", "在平衡的結論中同等重視邏輯正確性和人們的感受"],
+"zh-CN": ["主要重视逻辑正确性和客观数据/事实", "主要重视人们的感受和整体和谐", "在平衡的结论中同等重视逻辑正确性和人们的感受"],
+th: ["ให้ความสำคัญกับความถูกต้องเชิงตรรกะและข้อมูล/ข้อเท็จจริงเชิงวัตถุเป็นหลัก", "ให้ความสำคัญกับความรู้สึกของผู้คนและความกลมกลืนโดยรวมเป็นหลัก", "ให้ความสำคัญทั้งความถูกต้องเชิงตรรกะและความรู้สึกของผู้คนอย่างเท่าเทียมในข้อสรุปที่สมดุล"],
+hi: ["मुख्य रूप से तार्किक शुद्धता और वस्तुनिष्ठ डेटा/तथ्यों को महत्व देना", "मुख्य रूप से लोगों की भावनाओं और समग्र सामंजस्य को महत्व देना", "संतुलित निष्कर्षों में तार्किक शुद्धता और लोगों की भावनाओं दोनों को समान रूप से महत्व देना"],
+ar: ["تقدير الصحة المنطقية والبيانات/الحقائق الموضوعية بشكل أساسي", "تقدير مشاعر الناس والانسجام العام بشكل أساسي", "تقدير كل من الصحة المنطقية ومشاعر الناس بالتساوي في استنتاجات متوازنة"],
+fr: ["Valoriser principalement la justesse logique et les données/faits objectifs", "Valoriser principalement les sentiments des gens et l'harmonie générale", "Valoriser également la justesse logique et les sentiments dans des conclusions équilibrées"],
+de: ["Hauptsächlich logische Korrektheit und objektive Daten/Fakten schätzen", "Hauptsächlich die Gefühle der Menschen und die allgemeine Harmonie schätzen", "Sowohl logische Korrektheit als auch die Gefühle der Menschen in ausgewogenen Schlussfolgerungen gleichermaßen schätzen"]
+}
+};
+
+// 質問データの定義（簡略化のため最初の数問のみ表示）
+const allQuestions = [
+// === 意識レベル測定用質問（32問）===
+// === レベル1-2（恐怖・怒り・プライド）測定: 6問 ===
+{ id: 1, question: "朝起きた時、「また今日も同じような一日か」という重い気持ちになり、布団から出るのが辛いと感じることがありますか？",
+supplement: "（例えば、目覚ましが鳴っても「あと5分...」を繰り返したり、会社や学校に行くことを考えるだけで気が重くなったりすること）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 2, question: "予期せぬ出費があった時、「どうしよう」と不安になり、実際に借金をしたり、支払いを待ってもらったりする必要がありますか？",
+supplement: "（例えば、急な医療費や家電の故障で、貯金を崩しても足りず、カードローンを使ったり、家族に借りたりせざるを得ない状況）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 3, question: "うまくいかないことがあると、「自分は運が悪い」「周りの人のせいだ」「環境が悪い」と考えてしまうことが多いですか？",
+supplement: "（例えば、仕事で失敗すると「上司の指示が悪い」、人間関係がうまくいかないと「相手が変わっている」など、自分以外に原因を求めること）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 4, question: "他人から批判されたり間違いを指摘されると、深く傷ついて落ち込んだり、その人を避けたくなったりしますか？",
+supplement: "（例えば、ちょっとした注意でも「自分はダメだ」と感じたり、その後その人と会うのが気まずくて別の道を通ったりすること）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 5, question: "日常的にイライラしたり、些細なことで怒りを感じたり、誰かを心の中で批判していることがありますか？",
+supplement: "（例えば、レジで並んでいる時に「遅い！」とイライラしたり、テレビを見て「この人嫌い」と思ったり、家族の行動に「なんでこうなの」と腹を立てたりすること）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 6, question: "社会のニュースを見て「この国はもうダメだ」「権力者が悪い」と怒りや無力感を感じ、SNSなどで批判的な意見を発信することがありますか？",
+supplement: "（例えば、政治のニュースを見て憤慨してTwitterで批判したり、「庶民は搾取されている」といった投稿をシェアしたりすること）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2], isLevel6Condition: false, isMChoice: false },
+
+// === レベル3（勇気・中立・意欲）測定: 6問 ===
+{ id: 7, question: "困難な状況でも「なんとかなる」「自分にもできることがある」と前向きに考え、実際に行動を起こすことができますか？",
+supplement: "（例えば、仕事で大きな課題を任されても「まずはここから始めよう」と一歩踏み出したり、問題が起きても「解決策を探そう」と動けること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 8, question: "自分で決めた目標や習慣（運動、勉強、片付けなど）を、少なくとも1ヶ月以上継続できていますか？",
+supplement: "（例えば、「毎日10分ストレッチ」「週3回ジョギング」「寝る前の読書」など、完璧でなくても概ね続けられているかどうか）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 9, question: "異なる意見を持つ人と接する時、どちらが正しいか判断するより、「それぞれに理由があるのだろう」と中立的な立場で理解しようとしますか？",
+supplement: "（例えば、政治的な議論でも「なるほど、その立場からはそう見えるのか」と両方の視点を理解しようとし、すぐに白黒つけようとしないこと）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 10, question: "現状をより良くするために、具体的な計画を立てて、小さくても実際の行動に移していますか？",
+supplement: "（例えば、収入を増やすために資格の勉強を始めたり、健康のために食事を見直したり、人間関係改善のために自分から連絡を取ったりすること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 11, question: "以前は嫌いだった人や苦手だった状況でも、今は比較的平静に対処できるようになっていますか？",
+supplement: "（例えば、昔は顔も見たくなかった人とも普通に挨拶できたり、苦手だった場面（人前で話すなど）でも落ち着いて対応できるようになったこと）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 12, question: "日々の生活の中で、小さな成長や改善を実感し、「少しずつでも前進している」と感じることがありますか？",
+supplement: "（例えば、仕事のスキルが向上したり、家族との会話が増えたり、部屋が前より片付いているなど、日常の中での前向きな変化を感じること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === レベル4（受容・理性・愛）測定: 6問 ===
+{ id: 13, question: "他人の失敗や欠点を見ても、批判するより「誰にでもあることだ」と温かく受け入れられることが多いですか？",
+supplement: "（例えば、同僚のミスを見ても「自分もやったことがある」と共感したり、家族の欠点も「それも含めてその人らしさ」と受け入れられること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 14, question: "感情的になりそうな場面でも、一旦深呼吸して、事実を整理してから冷静に対応できることが多いですか？",
+supplement: "（例えば、カッとなりそうな時も「待てよ、実際は何が起きたんだ？」と考え直したり、相手の立場も考慮して理性的な判断ができること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 15, question: "意見の対立があっても、お互いの根底にある思いを理解し合い、建設的な解決策を見つけられることが多いですか？",
+supplement: "（例えば、家族で意見が分かれても「君はこうしたいんだね」と受け止め、みんなが納得できる新しい案を一緒に作り上げられること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 16, question: "見返りを期待せず、相手の幸せが自分の喜びになるような、純粋な思いやりの行動を取ることがありますか？",
+supplement: "（例えば、誰も見ていなくても困っている人を助けたり、相手が気づかなくても陰で支えたり、「ありがとう」を言われなくても満足できる行動）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 17, question: "複雑な問題に対して、感情論や偏見を排除し、データと論理に基づいて、より大きな視点から解決策を見出せますか？",
+supplement: "（例えば、家族の問題でも感情的にならず全体最適を考えたり、仕事で利害が対立しても客観的な基準で判断できること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 18, question: "本当に困った時に心から頼れる人が、家族以外にも10人以上いて、お互いに深い信頼関係を築けていますか？",
+supplement: "（例えば、深夜でも電話できる友人、人生相談ができる先輩、困った時に駆けつけてくれる仲間など、利害関係を超えた繋がりがある人の数）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+// === レベル5（喜び・平和・至福）測定: 6問 ===
+{ id: 19, question: "日常の何気ない瞬間に、深い喜びや感謝の気持ちが湧き上がり、「生きているだけで素晴らしい」と感じることがありますか？",
+supplement: "（例えば、朝日を見て心が震えたり、ご飯を食べながら「ありがたい」と涙が出そうになったり、理由もなく幸せな気持ちに包まれること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 20, question: "以前なら動揺していた出来事（批判、失敗、喪失など）があっても、深い部分では平静を保ち、それも人生の一部として受け入れられますか？",
+supplement: "（例えば、大きな失敗をしても「これも必要な経験」と感じたり、誰かに批判されても内なる平和が乱されない状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 21, question: "物事の表面的な対立や矛盾を超えて、より深い調和や統一性を感じ取ることができますか？",
+supplement: "（例えば、争っている両者の根底には同じ願いがあると見抜いたり、一見バラバラな出来事の中に大きな流れを感じ取ったりすること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 22, question: "自分の内側から湧き出る直感や創造性を信頼し、それに従って自由に表現したり行動したりできていますか？",
+supplement: "（例えば、論理的な説明はできなくても「これだ！」と感じることに従ったり、人の目を気にせず自分らしい表現をしたりすること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 23, question: "他者の成功や幸せを、嫉妬や比較なしに、心から一緒に喜べることが多いですか？",
+supplement: "（例えば、同僚の昇進を「良かったね！」と純粋に祝福したり、友人の幸せな報告を聞いて自分も幸せな気持ちになること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 24, question: "人生で起こるすべての出来事に深い意味があると感じ、たとえ困難でも「これでよかった」と思えることが多いですか？",
+supplement: "（例えば、過去の辛い経験も「あれがあったから今の自分がある」と感謝できたり、起こることすべてに必然性を感じること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === レベル6（悟り・一体性）測定: 3問 ===
+{ id: 25, question: "日常で接するすべての人に対して、批判や判断なく、自然に慈愛の気持ちで接することができていますか？",
+supplement: "（例えば、どんな人にも仏性や神性を見出し、乞食から社長まで分け隔てなく、すべての人に深い敬意と愛を感じる状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: true, isMChoice: false },
+
+{ id: 26, question: "思考や感情を、それに同一化することなく、ただ観察している純粋な意識として在ることが、日常的にできていますか？",
+supplement: "（例えば、怒りが湧いても「怒りがある」と観察し、思考が流れても「思考している」と気づき、それらに巻き込まれない透明な意識状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: true, isMChoice: false },
+
+{ id: 27, question: "自他の境界が消え、すべての存在と深い一体感を感じ、宇宙全体が一つの意識であることを実感として知っていますか？",
+supplement: "（例えば、他人の痛みが自分の痛み、他人の喜びが自分の喜びとして直接感じられ、木や石にも意識を感じる非二元の状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: true, isMChoice: false },
+
+// === レベル2（葛藤・空回り）の追加質問 ===
+{ id: 28, question: "一生懸命努力しているのに、なぜか空回りして結果が出ず、『もっと頑張らないと』と自分を追い込んでしまうことがありますか？",
+supplement: "（例えば、仕事で誰よりも長時間働いているのに評価されなかったり、ダイエットを厳しくやっているのに効果が出なかったりして、『まだ努力が足りないんだ』と自分を責めてしまうような状態）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2], isLevel6Condition: false, isMChoice: false },
+
+{ id: 29, question: "『これをやれば認められる』『これができれば幸せになれる』と思って頑張るけれど、達成してもすぐに次の目標を探してしまい、満足感が続かないことがありますか？",
+supplement: "（例えば、資格を取れば認められると思って勉強したのに、取得後も不安で次の資格を探したり、『痩せたら自信が持てる』と思ってダイエットしても、痩せてもまだ不安が消えないような状況）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === レベル3→4の移行期質問 ===
+{ id: 30, question: "以前は『自分のやり方が正しい』と強く思っていたことでも、最近は『他の人のやり方にも良さがあるかも』と柔軟に考えられるようになってきましたか？",
+supplement: "（例えば、仕事の進め方で衝突していた同僚のやり方を観察して『なるほど、そういう利点もあるのか』と素直に認められたり、子育ての方法で夫婦の意見が違っても『両方試してみよう』と思えるようになったような変化）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === レベル4→5の移行期質問 ===
+{ id: 31, question: "人のためになることをする時、『良い人だと思われたい』という気持ちよりも、純粋に『この人の役に立ちたい』『世の中が少しでも良くなれば』という思いで行動することが増えていますか？",
+supplement: "（例えば、ボランティアをする時も『履歴書に書ける』とかではなく、純粋に困っている人の笑顔が見たくて参加したり、誰も見ていなくてもゴミを拾ったりするような、見返りを求めない行動が自然にできること）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === レベル5の追加質問（創造性・貢献）===
+{ id: 32, question: "自分の才能や経験を活かして、社会や他者に価値を提供することに深い喜びを感じ、それが自然なライフワークになっていますか？",
+supplement: "（例えば、自分の得意分野で人を助けたり、培ってきた知識を次世代に伝えたり、創作活動で人々に感動を与えたりすることが、義務感ではなく自然な喜びとして日常的に行えている状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 第1軸：内向/外向（25問）===
+// === 内向型（S1）の質問: 8問 ===
+{ id: 33, question: "何か新しいことを思いついたり、難しい問題についてじっくり考えを深めたりするのは、周りに誰もいない静かな場所で、一人でいる時が多いですか？",
+supplement: "（例えば、たくさんの人がいる賑やかなカフェで友人と話している時よりも、自分の部屋や図書館のような静かな場所で、誰にも邪魔されずに一人で考え事をしている時に、一番良いアイデアが浮かんだり、考えがまとまったりする）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 34, question: "大勢の人と長時間一緒に過ごした後には、一人になって静かに自分の心と向き合い、「ふーっ」と一息ついてエネルギーを取り戻す時間が必要だと感じますか？",
+supplement: "（例えば、楽しいお祭りや友人たちとの旅行の後でも、一人でゆっくりお茶を飲んだり、好きな音楽を聴いたりすることで、心のバランスが元に戻り、また元気になれる）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 35, question: "誰かに何かを伝えたり、何か新しいことを始めたりする前には、まず自分の頭の中で「何をどう言おうかな」「どんな順番でやろうかな」と、じっくり言葉を選んだり計画を練ったりする方ですか？",
+supplement: "（例えば、大切な人に気持ちを伝える手紙を書く前に、まず下書きをして何度も読み返したり、料理を作る前にレシピをしっかり確認して手順を頭の中で組み立てたりする）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 36, question: "自分の好きなことや趣味に夢中になる時間は、他の人との付き合いよりも大切で、できるだけ優先したいと感じることが多いですか？",
+supplement: "（例えば、週末の予定を立てる際、友人からの誘いがあっても、自分の好きな読書の時間や、一人でゆっくりと散歩する時間をまず確保したいと思うことが多い）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 37, question: "何か新しいことを学ぶとき、大勢で一緒にワイワイ学ぶよりも、自分のペースでじっくりと資料を読んだり、何度も納得いくまで考えたりする方が、内容を深く自分のものにできると感じますか？",
+supplement: "（例えば、料理教室で新しいレシピを習った後、すぐに他の人と感想を言い合うよりも、まず家に帰って一人でレシピを読み返し、自分なりに手順を再確認したり、実際に作ってみたりする方が身につく）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 38, question: "周りがガヤガヤしていたり、たくさんの人の話し声が聞こえたりする環境では、なかなか集中できず、静かで落ち着いた場所で作業や読書をすることを好みますか？",
+supplement: "（例えば、大切な仕事や勉強をする際、賑やかなカフェやオープンスペースよりも、静かな自分の部屋や図書館の隅っこの方が、断然はかどると感じる）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 39, question: "他の人たちが感情的にもつれたり、複雑な人間関係で悩んだりしているような場面に遭遇した際、あなたは積極的に間に入って何かをしようとするよりも、実際に距離を置き、直接的には関わらないようにすることが多いですか？",
+supplement: "（例えば、友人グループの中で誰かと誰かが言い争いを始めた時、ハラハラしながらも自分からはあまり口を出さず、その場が自然と収まるのを待ったり、そっとその場を離れたりするような、具体的な行動や対応の仕方）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 40, question: "あなたの頭の中や心の中には、豊かな空想の世界や、次々と思いつく考え事、あるいは様々な感情などが広がっていて、一人でいてもあまり退屈することはないですか？",
+supplement: "（例えば、特に何もしていなくても、自分の頭の中で色々な物語を想像したり、興味のあることについて深く考えを巡らせたり、過去の出来事を思い出して様々な感情を味わったりするだけで、時間はあっという間に過ぎていく）",
+targetScore: "S1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 外向型（P1）の質問: 8問 ===
+{ id: 41, question: "初めて会う人が多い集まりでも、あまり緊張せずに自分から話しかけ、新しい出会いとしてその場を楽しむことができますか？",
+supplement: "（例えば、地域のイベントや趣味の集まりなどで、知らない人ばかりでも物怖じせずに会話の輪に入っていったり、新しい友達を作ろうと積極的に行動したりする）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 42, question: "たくさんの人と一緒に賑やかに過ごしたり、活気のあるお祭りやイベントに参加したりすると、気分が高揚し、「楽しい！」「元気が出てきた！」と感じることが多いですか？",
+supplement: "（例えば、友人たちとのホームパーティーや、大勢で盛り上がるコンサートなどに行くと、普段よりもテンションが上がり、エネルギーが満ちてくるような体験）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 43, question: "何か困ったことの解決策を考えたり、新しいアイデアを出したりする時、一人でじっくり考えるよりも、他の人とワイワイ話し合ったり、意見を交換したりする中で良い考えが浮かぶことが多いですか？",
+supplement: "（例えば、仕事で行き詰まった時、一人でウンウン唸るよりも、同僚や友人に相談して話しているうちに「あ、そうか！」と解決の糸口が見つかったり、面白いアイデアが湧いてきたりする）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 44, question: "ご自身の考えや最近あった面白い出来事、あるいは感動したことなどを、他の人に話して聞かせたり、積極的に共有したりすることに、心からの喜びを感じますか？",
+supplement: "（例えば、週末に見た映画の感想を月曜日に職場で話したくてたまらない、といった感じ。自分の体験や思いを誰かと分かち合うこと自体が楽しい、と感じるかどうか）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 45, question: "何人かのグループで何かを一緒に行う時（例えば、旅行の計画、地域のイベント準備など）、自然とみんなの意見を聞いたり、率先して発言したり、場をまとめたりする役割を担うことが多いですか？",
+supplement: "（例えば、友人たちとバーベキューの計画を立てる際、みんなの希望を聞きながら場所や日程を提案したり、当日の役割分担を決めたりと、自然と中心になって話を進めている）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 46, question: "一人で静かに過ごす時間が長すぎたり、単調な作業が続いたりすると、だんだん気分が沈んできて、外に出かけたり、誰かと話したりして新しい刺激や変化を求めたくなりますか？",
+supplement: "（例えば、週末にずっと家に一人でいると何だか物足りなくなってきて、急に友人を誘って遊びに行きたくなったり、何か新しいことを始めたくなったりする）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 47, question: "自分の意見や考えを、周りの人にためらわずに、はっきりと口に出して伝えることができますか？",
+supplement: "（例えば、会議などで、自分の考えが他の人と違っていても、「私はこう思います」と臆せずに発言したり、自分の希望や要求をストレートに伝えたりすることができるかどうか）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 48, question: "一人で黙々と何かを成し遂げるよりも、他の人たちと一緒に力を合わせ、協力し合って何かを達成することに、より大きな喜びや「やった！」という達成感を感じますか？",
+supplement: "（例えば、文化祭の準備やチームスポーツのように、仲間と目標を共有し、励まし合いながら一緒に何かを作り上げたり、困難を乗り越えたりすることに、強いやりがいや感動を覚える）",
+targetScore: "P1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === バランス型（M1）の質問: 8問 ===
+{ id: 49, question: "一人でじっくりと何かに集中する時間も大切だと感じる一方で、他の人と積極的に関わって新しい刺激を受けたり、何かを学んだりすることも同じくらい大切だと感じ、実際に両方の時間を持とうとしますか？",
+supplement: "（例えば、午前中は自分の部屋で静かに読書や勉強に集中し、午後は友人たちと集まって新しい趣味の活動に参加する、といったように、一人の時間と人と関わる時間の両方をバランス良く楽しむのが自分に合っていると感じ、そうした時間の使い方を実践している）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 50, question: "その時々の状況や目的に合わせて、周りの人と活発におしゃべりをして場を盛り上げる役割と、静かに相手の話を聞いたり自分の内面と向き合ったりする役割を、意識して使い分けることができますか？",
+supplement: "（例えば、大勢の集まりでは積極的に皆に話しかけて場を和ませるけれど、一対一で相談に乗る時はじっくり相手の話を聞くことに集中する、といったように、その場に応じて自分の振る舞いを自然と調整している）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 51, question: "一人で静かに過ごす時間と、他の人とワイワイ楽しく過ごす時間の両方が、あなたにとっては同じくらい大切で、そのバランスが取れている時に「ああ、自分らしいな」「満たされているな」と最も心地よく感じますか？",
+supplement: "（例えば、週末に友人と賑やかに出かける日もあれば、次の日は家で一人でゆっくりと趣味に没頭する日もある、といったように、どちらか一方に偏るのではなく、両方の時間があることで心が満たされ、充実感を得られる）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 52, question: "新しい場所やグループ（例えば、初めて参加する習い事の教室や、新しい職場など）に入った時、あなたは周りの状況や人々の様子をよく見て、時には積極的に自分から話しかけて早く打ち解けようとし、また別の時にはまずじっくりと人間関係や全体の雰囲気を観察してから関わっていく、というように、その場に応じた関わり方を柔軟に使い分けていますか？",
+supplement: "（例えば、新しい職場で歓迎会のような賑やかな場があれば、自分から積極的に参加して多くの人と話そうと試みるけれど、普段の業務が始まってからは、まず周りの仕事の進め方や人間関係を静かに観察してから、自分の関わり方を決めていく、といったように、一方的なパターンではなく、状況に合わせて自分の出方を選んでいる）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 53, question: "大勢で賑やかに楽しむパーティーのような集まりも好きですが、それと同じくらい、気心の知れた友人2～3人とカフェなどでじっくりと深い話をする時間も大切だと感じ、実際にどちらの時間も楽しんでいますか？",
+supplement: "（例えば、大人数でワイワイ盛り上がるのも楽しいけれど、時には親しい友人と二人きりで、普段は話せないような真面目な話や心の内を語り合う時間も、あなたにとってはかけがえのない時間である。つまり、どちらの状況も実際に経験し、どちらも同じくらい大切にしているということ）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 54, question: "仕事や何かを学ぶ時、一人で集中して深く考えたり調べたりする作業と、他の人と協力して意見を出し合ったり一緒に作業したりすることのどちらも、状況に応じてバランス良く行うことを好みますか？",
+supplement: "（例えば、レポートを書く時はまず一人で資料を読み込んで集中して書き進め、その後で他の人に読んでもらって意見を聞いたり、チームで役割分担して共同で何かを作り上げたりする、といった両方のアプローチを大切にしている）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 55, question: "初めて会う人に対して、相手の雰囲気や話し方をよく見て、積極的に自分から話しかけた方が良さそうか、それとも少し距離を置いて相手のペースに合わせた方が良さそうかを、自然と判断して対応を変えることができますか？",
+supplement: "（例えば、相手がとても話し好きでオープンな人だと感じたら、自分も積極的に色々質問したり話したりするけれど、相手が少しシャイで控えめなタイプだと感じたら、無理に話させようとせず、まずはにこやかに相槌を打つことから始める）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 56, question: "あなたが、一人でじっくり考えたり作業したりすることで得られる深い集中力や自分なりのアイデアと、他の人と活発に関わることで得られる新しい情報や人からの刺激の両方を、ご自身の目標を達成したり、日々の生活をより豊かにしたりするために、バランス良く、そして効果的に活かせていると実感していますか？",
+supplement: "（例えば、お料理の新しいレシピを考える時、まず一人で静かに『どんな味の組み合わせがいいかな』と集中して考え、その後友人たちに『こんなアイデアどう思う？』と聞いて意見をもらい、さらに良いものに仕上げていく。また、家の片付けをする時も、一人で黙々と整理する時間と、家族と『この配置どう？』と相談しながら進める時間の両方を使って、より使いやすい空間を作り上げる、といったように、内向きの活動と外向きの活動の良いところを組み合わせて活用できている）",
+targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 特別な3択M質問（第1軸）===
+{ id: 57, question: "あなたが最も『自分らしく、満たされている』と感じ、充実感を得られるのは、主に以下のどの時間の使い方をしている時ですか？",
+supplement: "（3つの選択肢から1つだけ選んでください）", targetScore: "M1", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: true },
+
+// === 第2軸：直観/現実（25問）===
+// === 直観型（V2）の質問: 8問 ===
+{ id: 58, question: "何か新しい企画やアイデアを考えるとき、これまでのやり方や常識にとらわれず、「こんなことができたら面白いな」「未来はこうなるかもしれない」と、自由な発想で新しい可能性を探求することがよくありますか？",
+supplement: "（例えば、町内会のイベントを企画する際、去年と同じことをするのではなく、「今まで誰もやったことのない、あっと驚くような企画はできないかな？」とワクワクしながら考える）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 59, question: "何か新しいことを始める際、細かく計画を立てたり過去のデータを分析したりするよりも、「これは絶対にうまくいく！」という強い直感や「こうなったら最高だ！」という未来のイメージに導かれて、思い切って行動を起こすことが多いですか？",
+supplement: "（例えば、お店を開きたいと思った時、完璧な事業計画書ができるのを待つよりも、「この場所ならきっとお客さんがたくさん来る！」という強いひらめきを信じて、まず物件を探し始めるような）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 60, question: "これまで全く知らなかった分野のことや、新しく登場した技術（例えばAIや宇宙開発など）について学ぶことに、強い好奇心が刺激され、「もっと知りたい！」とワクワクすることがよくありますか？",
+supplement: "（例えば、テレビやネットで最先端の科学技術のニュースを見ると、「これが私たちの生活をどう変えるんだろう？」と想像が膨らみ、関連する記事を夢中になって読んでしまう）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 61, question: "数年後、あるいは十年後といった少し先の未来がどうなっているかを想像したり、社会や自分の生活がどう変わっていくかを長期的な視点で考えたりすることが好きで、実際にそうした空想や構想に時間を費やしていますか？",
+supplement: "（例えば、現在の社会の動きを見ながら「10年後にはこんな乗り物が当たり前になっているかもしれないな」と想像したり、自分の人生の長期的な目標や夢について思いを巡らせたりするのが、あなたにとって楽しい時間である）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 62, question: "既存のルールや「こうあるべきだ」という常識にとらわれず、「もし全く違うやり方をしたらどうなるだろう？」「こんなことは可能だろうか？」と、自由な発想で物事を考えたり、新しい可能性を試してみたりすることが好きですか？",
+supplement: "（例えば、料理をする時、レシピ通りに作るだけでなく、「ここにこの調味料を加えたらもっと美味しくなるかも？」と自分なりにアレンジを加えたり、普段の散歩道でも「この脇道を入ったらどこに出るんだろう？」と探検してみたりする）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 63, question: "何か新しいことや複雑な仕組み（例えば、新しいアプリの使い方や、社会の制度など）を理解しようとする時、細かい手順や個々の情報を一つ一つ覚えるよりも、まず「これは全体として何を目指しているのか」「どんな基本的な考え方で成り立っているのか」という大きな枠組みや本質を掴むことを重視しますか？",
+supplement: "（例えば、新しいゲームを始める時、操作方法の細かい説明書を読むよりも、まず「このゲームの目的は何で、どうすれば勝てるのか」という全体像を把握しようとしたり、物語の登場人物の細かい設定より、その物語が伝えたい大きなテーマを感じ取ろうとしたりする）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 64, question: "毎日同じことの繰り返しや、手順が決まりきった作業よりも、常に新しい課題に取り組んだり、変化に富んだ活動をしたりする方が、あなたはより「自分らしくいられる」「生き生きできる」と感じ、実際にそうした環境を求めて行動しますか？",
+supplement: "（例えば、決まった時間に同じ作業をする仕事よりも、日によって内容が変わったり、新しいプロジェクトに次々と挑戦したりする仕事の方が、あなたのやる気を引き出し、より能力を発揮できると感じるような）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 65, question: "会話の中で、具体的な出来事や実用的な情報交換よりも、「もし世界がこうなったら...」とか「幸せの本当の意味とは...」といった、目に見えない抽象的な考えや未来の可能性について語り合うことに、より大きな魅力を感じますか？",
+supplement: "（例えば、友人との雑談でも、昨日のテレビ番組の話より、「100年後の人間はどうやって暮らしていると思う？」といったSFのような話題や、人生の意味について深く語り合う方が、心が躍るような）",
+targetScore: "V2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 現実型（G2）の質問: 8問 ===
+{ id: 66, question: "何か新しいことを学ぶとき、フワッとした全体のイメージや可能性の話よりも、「具体的にどうやるの？」「実際に役立つ知識なの？」といった、はっきりとした手順や実際に使える情報を求めることが多いですか？",
+supplement: "（例えば、新しい料理のレシピを学ぶなら、料理研究家の思いや背景の話よりも、まず材料の正確な分量や、具体的な調理の手順、そして美味しく作るためのコツを詳しく知りたい）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 67, question: "何か物事を進めるとき、新しい方法を試して冒険するよりも、以前から実績があって多くの人が「これが確実だ」と言っているやり方や、自分が慣れ親しんだ方法を選ぶことで安心し、実際にそうすることが多いですか？",
+supplement: "（例えば、旅行で新しいホテルを探す際、未知の宿に挑戦するよりも、口コミ評価が高く、多くの人が利用していて安心できるホテルを選んだり、いつも使っている使い慣れた道具やアプリを好んで使い続けたりする）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 68, question: "日々の暮らしや仕事において、ある程度決まった日課や手順があり、先の見通しが立つ安定した状態を心地よいと感じ、急な予定変更や予期せぬ出来事が起こることは、できるだけ避けたいと思っていますか？",
+supplement: "（例えば、毎朝同じ時間に起きて同じルートで通勤する方が落ち着いたり、仕事の手順が明確に決まっている方が安心して取り組めたり、週末の予定も早めに立ててその通りに過ごしたい）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 69, question: "何か大切なこと（例えば、契約書の内容、家電製品の取扱説明書、旅行のスケジュールなど）を確認する際、細かい部分や具体的な数値・データにも注意を払い、それらを正確に把握し、きちんと記録したり管理したりすることを実際に心がけていますか？",
+supplement: "（例えば、大切な書類にサインする前には隅々まで目を通したり、家計簿をつける際にはレシートをきちんと保管して1円単位で記録したり、旅行の持ち物リストを作って一つ一つ確認したりする）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 70, question: "何か新しい判断をしたり行動を起こしたりする際、過去の自分の経験や、そこから学んだ「こうした方がうまくいく」という教訓を思い出し、それを元に堅実に物事を進めていくことが多いですか？",
+supplement: "（例えば、新しい仕事に取り組む際、以前似たような仕事で成功したやり方や、失敗から学んだ注意点を活かそうとしたり、経験豊富な年上の人のアドバイスを「なるほど」と参考にしたりする）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 71, question: "誰かに何かを説明したり伝えたりする時、比喩やあいまいな表現はできるだけ避け、具体的な事実や実際にあった出来事、そして誰にでも分かりやすい言葉を選んで話すようにしていますか？",
+supplement: "（例えば、会議で自分の考えを報告する際、夢や理想を語るよりも、「実際にこれだけの成果が出ました」「具体的な手順はこうです」と、数値や事実を交えて分かりやすく説明することを心がける）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 72, question: "何か新しいことを始める前に（例えば、料理、DIY、新しい趣味など）、まず必要な道具や材料が全て揃っているか、手順や注意点が書かれた説明書などをしっかり読み込んでいるかを確認し、万全の準備を整えてから取り掛かることが多いですか？",
+supplement: "（例えば、日曜大工で棚を作ろうと思ったら、まず設計図をよく見て、必要な木材やネジ、工具が全て揃っているかを確認してから作業を始める。「とりあえずやってみよう」と見切り発車することは少ない）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 73, question: "昔から地域で受け継がれてきたお祭りや、お正月・お盆のような伝統的な行事、あるいは古くからの慣習やしきたりに対して、それらが持つ意味や価値を尊重し、大切に守っていきたいという気持ちを持っていますか？",
+supplement: "（例えば、近所のお祭りがあれば積極的に参加したり、お墓参りや季節の行事を大切にしたり、昔ながらの風習や地域の文化に触れると心が落ち着いたりする。新しいもの好きというよりは、古くからある良いものを大切にしたいという気持ち）",
+targetScore: "G2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === バランス型（M2）の質問: 8問 ===
+{ id: 74, question: "新しいことを始める時、夢や理想を描きながらも、実際に必要な物を買いに行ったり、具体的な準備を始めたりすることが多いですか？",
+supplement: "（例えば、『家庭菜園をやりたい！』と思ったら、その週末には実際にホームセンターに行って土やプランターを見に行ったり、育て方の本を買ってきたりする。ただ『いいなあ』と思うだけでなく、実際に動き始めること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 75, question: "計画通りに物事を進めている途中でも、もっと良い方法を見つけたら、実際に計画を変更して新しいやり方を試すことがありますか？",
+supplement: "（例えば、ダイエットで決めた運動を続けていたけど、友達から聞いた別の方法の方が自分に合いそうだと思ったら、実際にそちらに切り替えてみる。頭で考えるだけでなく、本当にやり方を変える行動力があること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 76, question: "新しい情報や流行を知った時、まず少しだけ試してみて、良ければ本格的に取り入れるという段階的な行動を実際にとっていますか？",
+supplement: "（例えば、新しい健康法を聞いたら、いきなり全部やるのではなく、まず1週間だけ試してみる。新しいアプリも、まず無料版を使ってみる。慎重さと好奇心の両方を実際の行動で示していること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 77, question: "大きな目標を立てる時、理想を描きながらも、実際の時間やお金の制約を考えて、現実的な計画に落とし込んで実行していますか？",
+supplement: "（例えば、『家族で海外旅行に行きたい』という夢があっても、実際の予算と休みを計算して『まず国内の素敵な場所から始めよう』と具体的に宿を予約したり、実際に出かけたりすること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 78, question: "本やテレビで学んだことを、実際に自分の生活で試してみることが多いですか？",
+supplement: "（例えば、健康番組で見た体操を翌日から実際にやってみたり、料理番組のコツを夕飯で試したり、ただ『へー』で終わらせずに実践すること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 79, question: "今までのやり方でうまくいかない時、実際に新しい方法を調べて試したり、人に聞いて変えてみたりしていますか？",
+supplement: "（例えば、掃除の仕方や収納方法を変えてみたり、子供への接し方を本で読んだ新しい方法に実際に変えてみたり、行動を変える柔軟性があること）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 80, question: "物事を「これが絶対に正しい」「あれは完全に間違いだ」と白黒はっきり決めつけるよりも、状況や相手の立場によって色々な見方があることを理解し、「どちらの意見にも一理あるな」と多様な視点を受け入れたり、その時々で最も適切な判断をしたりと、柔軟に対応することの方が多いですか？",
+supplement: "（例えば、ある問題に対して、すぐに一つの答えを出すのではなく、「Aという考え方もあるし、Bという考え方もできる。この場合はCという折衷案がいいかもしれない」というように、様々な可能性を考慮して、型にはまらない柔軟な対応をする）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 81, question: "何か新しい情報や知識を学ぶ際（例えば、本を読んだり、セミナーに参加したり、人から話を聞いたりする時）、ただ知識として頭に入れるだけでなく、「これは自分の仕事や日常生活のこんな場面で役立つかもしれないな」「こうすればもっとうまくいくかもしれない」と、具体的な応用方法を考えながら学ぶことが多いですか？",
+supplement: "（例えば、料理番組を見て新しい調理法を学んだら、「今度、あの残り物の野菜で試してみよう」と考えたり、健康に関する記事を読んだら、「自分の生活習慣でこれを実践してみよう」と具体的な行動に繋げようとしたりする）",
+targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 特別な3択M質問（第2軸）===
+{ id: 82, question: "物事を進めたり、新しい情報に触れたりする際、あなたが最も『しっくりくる』あるいは『自分らしい』と感じるやり方はどのようなものでしょうか？",
+supplement: "（3つの選択肢から1つだけ選んでください）", targetScore: "M2", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: true },
+
+// === 第3軸：思考/感情（25問）===
+// === 思考型（A3）の質問: 8問 ===
+{ id: 83, question: "何か大切なことを決める際、あなたは個人的な気持ちや周りの人の意見も参考にしつつ、最終的には客観的な情報（例えば、データや事実）や論理的な分析に基づいて判断することが多いですか？",
+supplement: "（例えば、引越し先を選ぶとき、友人のおすすめも聞きつつ、最終的には家賃、通勤時間、部屋の広さといった具体的な情報を比較検討して決める。感情よりも事実や論理を優先して結論を出すことが多いかどうか）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 84, question: "何か問題が起きた原因を探ろうとするとき、感情的な部分は一旦横に置いて、まず「何が起きたのか」「なぜそうなったのか」という事実関係を一つ一つ整理し、筋道を立てて考えることを実際に心がけていますか？",
+supplement: "（例えば、料理がレシピ通りに美味しくできなかった時、がっかりする気持ちはあっても、まず「材料の分量は正しかったか？」「手順で間違ったところはなかったか？」と、原因を冷静に分析しようとする）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 85, question: "効率の悪いやり方や、話のつじつまが合わない説明に気づいた時、「これはおかしいな」と違和感を覚え、もっと合理的で、誰が聞いても納得できるような形に直したり、改善したりしたいと思いますか？また、実際にそう提案したり行動したりしますか？",
+supplement: "（例えば、町内会の集金方法がとても手間がかかるものだと感じたら、もっと簡単で間違いのない方法を具体的に考えて提案してみたり、誰かの話が矛盾していると感じたら、相手を責めるのではなく、論点を整理して分かりやすく説明し直したりする）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 86, question: "他の人と意見が食い違った時、お互いの感情や気持ちよりもまずは、主張や論点の内容をはっきりさせ、事実に基づいて冷静に、そして建設的に話し合いますか？",
+supplement: "（例えば、友人との旅行計画で意見が分かれた時、自分の希望を一方的に主張するのではなく、「それぞれの案の良い点は何か、問題点は何か」を落ち着いて整理し、お互いが納得できる結論を見つけようと努力する）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 87, question: "他の人の意見や話を聞く際、その内容が論理的にスッキリしているか、客観的な根拠に基づいているかを重視し、感情的な訴えや熱意は考慮しないことが多いですか？",
+supplement: "（例えば、誰かが新しいアイデアを情熱的に語っていても、そのアイデアが実際にうまくいくかどうかについては、感情論ではなく、データや論理的な可能性に基づいて冷静に判断しようとする）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 88, question: "あなたは、感情に訴えかけるようなコミュニケーション（例えば、感動的な話や情緒的な表現）や、心と心が深く通じ合うような情緒的なやり取りは、少し苦手だと感じますか？",
+supplement: "（例えば、誰かが涙ながらに何かを訴えてきても、どう反応して良いか戸惑ってしまったり、論理的ではない感情的な会話が続くと少し疲れてしまったり、あるいは人と深く気持ちを分かち合うよりも、事実や情報を交換する方が気楽だと感じる）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 89, question: "自分の判断が正しいと強く確信した場合、たとえ周りの人から反対されたり、理解されなかったりしても、その正当性をデータや論理を示して粘り強く説明し、理解を求めようとしますか？",
+supplement: "（例えば、会議で自分の提案が最初は受け入れられなくても、感情的になったり諦めたりするのではなく、「このデータを見てください」「論理的に考えるとこうなります」と、根気強く説得を試みる）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 90, question: "何かを判断したり、人と接したりする際に、公平であることや正義感を大切にし、個人的な好き嫌いやその場の人間関係に流されることなく、常に一貫した基準で行動しようと心がけていますか？",
+supplement: "（例えば、グループ内で何かを決める際、仲の良い友人の意見だからといって無条件に賛成するのではなく、内容そのものが公平で正しいかどうかを基準に判断したり、ルール違反を見かけたら、相手が誰であっても注意したりする）",
+targetScore: "A3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 感情型（E3）の質問: 8問 ===
+{ id: 91, question: "何か大切なことを決める際、データや論理的な正しさよりも、関わる人々の気持ちや全体の調和を最優先に考えて判断することが多いですか？",
+supplement: "（例えば、チームで何かを決める際、最も効率的な案よりも、メンバー全員が納得し、気持ちよく取り組める案を選ぶ）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 92, question: "他の人の嬉しい話を聞けば自分のことのように心から喜び、悲しい話を聞けばまるで自分が体験したかのように深く胸を痛めるなど、相手の感情に強く共感し、その気持ちに寄り添ってご自身の言葉や行動を選ぶことがよくありますか？",
+supplement: "（例えば、友人が試験に合格したと聞けば一緒に飛び上がって喜び、落ち込んでいる人を見れば「何かできることはないかな」と自然に声をかけたり、そっと寄り添ったりするような、相手の気持ちを敏感に感じ取り、それに応じた行動を取る）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 93, question: "たとえ少し手間がかかったり、効率的ではなかったりしても、関わる人みんなが納得し、誰も嫌な気持ちにならず、全体として穏やかで心地よい結論や進め方になることを、何よりも大切にして物事を進めようとしますか？",
+supplement: "（例えば、家族旅行の計画を立てる際、一番安くて早いルートを選ぶよりも、おじいちゃんおばあちゃんも楽しめるように休憩を多く取ったり、みんなの希望を少しずつ取り入れたりして、全員が「楽しかったね」と言えるような結果を優先する）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 94, question: "友人や家族など、誰かから相談を受けたとき、すぐに「こうすればいいよ」と具体的な解決策を教えるよりも、まず相手がどんな気持ちでいるのか、何に困っているのかをじっくりと聴き、その気持ちを「うんうん、そうだよね」と受け止めることを最も大切にしていますか？",
+supplement: "（例えば、後輩から仕事の悩みを打ち明けられたら、すぐに正論でアドバイスをするのではなく、「それは大変だったね」「よく頑張ってるね」とまず相手の頑張りや辛い気持ちに共感し、相手が安心して話せるような雰囲気を作ることを優先する）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 95, question: "道端で困っている様子の人を見かけたり、誰かが助けを必要としていると感じたりした時、見て見ぬふりをすることができず、自然と「何かお手伝いしましょうか？」と声をかけたり、手助けをしたりする行動を取りますか？",
+supplement: "（例えば、駅で大きな荷物を持って階段を上がろうとしているお年寄りを見かけたら、ためらわずに駆け寄って「荷物をお持ちしますよ」と申し出たり、職場で同僚が大量の仕事を抱えて困っていたら「何か手伝えることある？」と声をかけたりするような、自然な思いやりからの行動）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 96, question: "あなたが所属しているグループやチームの中で、誰かが輪に入れず寂しそうにしていたり、あるいは何か不快な思いをしているのではないかと気づきやすく、その人のために「大丈夫？」と声をかけたり、さりげなくフォローしたりするようなことを実践していますか？",
+supplement: "（例えば、飲み会や休憩時間に一人でポツンとしている人がいたら、積極的に話しかけて会話の輪に入れてあげようとしたり、誰かが傷つくような発言があった際に、そっとその人を気遣ったりするような、周りの人の心の動きに敏感で、思いやりのある行動）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 97, question: "他の人と話している時、相手がはっきりと言葉にしなくても、その人の表情、声の調子、ちょっとした仕草などから、「あ、今この人はこう感じているのかな」とその人の本当の気持ちや心の状態を察することが得意だと思いますか？",
+supplement: "（例えば、友人が口では「大丈夫、元気だよ」と言っていても、その声のトーンや目の動きから「何か悩んでいるな」「無理しているな」と感じ取り、そっと気遣うことができるような、言葉にならないサインを読み取る力）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 98, question: "ご自身の行動や言葉が、相手にどのような感情的な影響（嬉しい気持ちにさせるか、悲しい気持ちにさせるかなど）を与えるかを常に意識し、できるだけ相手にとってあたたかく、前向きな気持ちになれるような影響を与えようと心がけて行動していますか？",
+supplement: "（例えば、誰かに何かをお願いする時でも、命令口調ではなく「～していただけると助かります」と丁寧な言葉を選んだり、相手の良いところを見つけて具体的に褒めたり、励ましの言葉を意識的にかけたりするような、思いやりのあるコミュニケーションを実践している）",
+targetScore: "E3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === バランス型（M3）の質問: 8問 ===
+{ id: 99, question: "感情的になった場面でも、実際に一呼吸おいて冷静な対応ができることが多いですか？",
+supplement: "（例えば、家族と口論になりそうな時、カッとなっても実際に深呼吸して『ちょっと落ち着こう』と言えたり、仕事で腹が立っても、メールの返信を一晩寝かせてから冷静に書き直したりすること）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 100, question: "意見が対立した時、実際に両者の話をじっくり聞いて、みんなが納得できる新しい案を提案して実行に移したことがありますか？",
+supplement: "（例えば、家族の外出先で意見が分かれた時、全員の希望を聞いた上で『じゃあ午前中はA、午後はBに行こう』と実際に提案して、その通り行動したような経験）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 101, question: "人を評価する時、仕事の成果だけでなく、実際にその人の普段の振る舞いや周りへの気遣いも含めて判断し、それを言葉や行動で示していますか？",
+supplement: "（例えば、バイトの後輩を評価する時、仕事の速さだけでなく、お客様への笑顔や同僚への気配りも見て『君の優しい接客もすごくいいよ』と実際に褒めたり、PTAの役員を選ぶ時も、能力だけでなく人柄も考えて推薦したりすること）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 102, question: "何かを決める時、効率だけでなく関わる人の気持ちも考えて、実際にみんなに配慮した進め方をしていますか？",
+supplement: "（例えば、家族旅行の計画で、安くて早いルートより、おばあちゃんも楽に移動できるルートを実際に選んで予約したりすること）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 103, question: "何か大切なことを決める際、あなたは『論理的に正しいかどうか』ということと、『関わる人々の気持ちや全体の調和が保たれるかどうか』ということの両方を同じくらい大切に考え、そのバランスが取れた結論を出すことを最も重視して行動しますか？",
+supplement: "（例えば、ある決定が非常に合理的（論理的）であっても、それによって誰かが深く傷ついたり、チームの雰囲気が悪くなったりするなら再考したり、逆に、皆が感情的に賛成していることでも、よくよく考えると論理的な問題点や将来的なリスクがあれば、立ち止まって慎重に検討したりする。常に『頭の納得』と『心の納得』の両方を満たす調和点を探し、それが見つかった時に最も「正しい判断ができた」と感じるかどうか）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 104, question: "『なんとなく嫌な予感』がした時、その直感を無視せず、実際に情報を集めて確認してから行動を決めていますか？",
+supplement: "（例えば、投資話に違和感を感じたら、実際にネットで評判を調べたり、詳しい人に聞いたりしてから断ったりすること）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 105, question: "誰かに改善してほしい点や、少し厳しい内容を伝える必要がある場合、伝えるべき事実や論理（「ここが問題で、こうしてほしい」ということ）を明確に伝えつつも、相手の気持ちを傷つけないように言葉を選んだり、励ましや共感の言葉を添えたりと、伝え方のバランスをうまくとることを実際に心がけていますか？",
+supplement: "（例えば、部下の仕事のミスを指摘する際、ただ「ダメだ」と言うのではなく、「この部分は良くなかったけれど、君のこういうところは素晴らしいから、次はこうすればもっと良くなるよ」と、具体的な問題点と相手への配慮の両方を伝えようとする）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+{ id: 106, question: "目先の利益より、長期的な人間関係や影響を考えて、実際に違う選択をしたことがありますか？",
+supplement: "（例えば、安い業者より、長年の付き合いがある少し高い業者を実際に選んだり、今は損でも将来のために実際に投資したりすること）",
+targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+
+// === 特別な3択M質問（第3軸）===
+{ id: 107, question: "何か大切なことを決める際、あなたが最終的に最も重視し、「これこそが最善の判断だ」と心から納得できるのは、どのような基準で判断した時ですか？",
+supplement: "（3つの選択肢から1つだけ選んでください）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: true }
+];
+
+// グローバル関数として定義
+window.startQuiz = function() {
+if (allQuestions.length !== 107) {
+alert(translations[currentLanguage].error);
+return;
+}
+document.getElementById('start-screen').style.display = 'none';
+document.getElementById('result-screen').style.display = 'none';
+document.getElementById('quiz-screen').style.display = 'block';
+currentQuestionIndex = 0;
+userRawAnswers = new Array(allQuestions.length).fill(null);
+for (let key in scores) { scores[key] = 0; }
+updateProgressBar();
+updatePrevButtonState();
+loadQuestion(currentQuestionIndex);
+}
+
+window.loadNextQuestion = function() {
+currentQuestionIndex++;
+updateProgressBar();
+updatePrevButtonState();
+loadQuestion(currentQuestionIndex);
+}
+
+window.loadPreviousQuestion = function() {
+if (currentQuestionIndex > 0) {
+currentQuestionIndex--;
+updateProgressBar();
+updatePrevButtonState();
+loadQuestion(currentQuestionIndex);
+}
+}
+
+window.restartQuiz = function() {
+document.getElementById('start-screen').style.display = 'block';
+document.getElementById('result-screen').style.display = 'none';
+currentQuestionIndex = 0;
+userRawAnswers = new Array(allQuestions.length).fill(null);
+for (let key in scores) { scores[key] = 0; }
+document.getElementById('progress-bar').style.width = '0%';
+}
+
+function updateProgressBar() {
+const progress = allQuestions.length > 0 ? ((currentQuestionIndex) / allQuestions.length) * 100 : 0;
+document.getElementById('progress-bar').style.width = progress + '%';
+}
+
+function updatePrevButtonState() {
+document.getElementById('prev-question-button').disabled = currentQuestionIndex === 0;
+}
+
+function loadQuestion(index) {
+if (index < allQuestions.length) {
+const questionData = allQuestions[index];
+const t = translations[currentLanguage];
+
+
+// 質問番号を更新
+const counterText = t.questionCounter
+.replace('{current}', index + 1)
+.replace('{total}', allQuestions.length);
+document.getElementById('question-counter').textContent = counterText;
+document.getElementById('question-text').textContent = questionData.question;
+document.getElementById('question-supplement').textContent = questionData.supplement || "";
+
+const choicesArea = document.getElementById('choices-area');
+choicesArea.innerHTML = '';
+
+// 前回の回答を取得
+const previousAnswer = userRawAnswers[index];
+
+if (questionData.isMChoice) {
+let choiceTextsForAxis;
+if (questionData.targetScore && questionData.targetScore.includes("1")) {
+choiceTextsForAxis = mChoiceTexts.axis1[currentLanguage] || mChoiceTexts.axis1.ja;
+} else if (questionData.targetScore && questionData.targetScore.includes("2")) {
+choiceTextsForAxis = mChoiceTexts.axis2[currentLanguage] || mChoiceTexts.axis2.ja;
+} else if (questionData.targetScore && questionData.targetScore.includes("3")) {
+choiceTextsForAxis = mChoiceTexts.axis3[currentLanguage] || mChoiceTexts.axis3.ja;
+} else {
+console.error("MChoiceのtargetScoreが不正です: ", questionData);
+choiceTextsForAxis = ["選択肢1", "選択肢2", "選択肢3"];
+}
+
+choiceTextsForAxis.forEach((text, i) => {
+const button = document.createElement('button');
+button.textContent = text;
+button.dataset.choiceIndex = i;
+if (previousAnswer === i) {
+button.classList.add('selected');
+}
+button.addEventListener('click', () => selectAnswer(index, i, button));
+choicesArea.appendChild(button);
+});
+} else {
+const choiceTexts = [
+t.choices.strongly_disagree,
+t.choices.disagree,
+t.choices.neutral,
+t.choices.agree,
+t.choices.strongly_agree
+];
+choiceTexts.forEach((text, i) => {
+const button = document.createElement('button');
+button.textContent = text;
+button.dataset.score = choiceScores[i];
+if (previousAnswer === choiceScores[i]) {
+button.classList.add('selected');
+}
+button.addEventListener('click', () => selectAnswer(index, choiceScores[i], button));
+choicesArea.appendChild(button);
+});
+}
+// 回答済みの場合は次へボタンを有効化
+document.getElementById('next-question-button').disabled = previousAnswer === null;
+} else {
+showResults();
+}
+}
+
+function selectAnswer(questionIndex, value, selectedButton) {
+userRawAnswers[questionIndex] = value;
+const buttons = document.getElementById('choices-area').querySelectorAll('button');
+buttons.forEach(button => button.classList.remove('selected'));
+selectedButton.classList.add('selected');
+document.getElementById('next-question-button').disabled = false;
+}
+
+function calculateAndDetermineTypes() {
+for (let key in scores) { scores[key] = 0; }
+
+allQuestions.forEach((q, index) => {
+const userAnswer = userRawAnswers[index];
+if (userAnswer === null) {
+console.warn(`質問ID ${q.id} が未回答です。`);
+return;
+}
+
+if (q.isMChoice) {
+const axisNumChar = q.targetScore.charAt(1);
+let s_v_a_ScoreKey = "", p_g_e_ScoreKey = "", mScoreKey = "";
+
+if (axisNumChar === "1") { s_v_a_ScoreKey = "S1"; p_g_e_ScoreKey = "P1"; mScoreKey = "M1"; }
+else if (axisNumChar === "2") { s_v_a_ScoreKey = "V2"; p_g_e_ScoreKey = "G2"; mScoreKey = "M2"; }
+else if (axisNumChar === "3") { s_v_a_ScoreKey = "A3"; p_g_e_ScoreKey = "E3"; mScoreKey = "M3"; }
+
+// 3択質問も他と同じ2点満点に統一
+if (userAnswer === 0) scores[s_v_a_ScoreKey] += 2;
+else if (userAnswer === 1) scores[p_g_e_ScoreKey] += 2;
+else if (userAnswer === 2) scores[mScoreKey] += 2;
+
+} else if (q.targetScore === "CL") {
+// scoreEffect: 1 = 通常の質問（高スコア=高レベル）
+// scoreEffect: -1 = 逆転質問（高スコア=低レベル）
+let processedScore = q.scoreEffect === 1 ? userAnswer : -userAnswer;
+scores.CL += processedScore;
+} else {
+if (scores.hasOwnProperty(q.targetScore)) {
+scores[q.targetScore] += userAnswer;
+}
+}
+});
+
+let axis1Type, axis2Type, axis3Type;
+if (scores.M1 >= scores.S1 && scores.M1 >= scores.P1) axis1Type = "M";
+else if (scores.S1 >= scores.P1) axis1Type = "S"; else axis1Type = "P";
+if (scores.M2 >= scores.V2 && scores.M2 >= scores.G2) axis2Type = "M";
+else if (scores.V2 >= scores.G2) axis2Type = "V"; else axis2Type = "G";
+if (scores.M3 >= scores.A3 && scores.M3 >= scores.E3) axis3Type = "M";
+else if (scores.A3 >= scores.E3) axis3Type = "A"; else axis3Type = "E";
+const typeCode = axis1Type + axis2Type + axis3Type;
+
+// 意識レベル判定 - より厳しい基準に変更
+const clThresholds = {
+level1_end: -20,  // Level 1: -64点 ～ -20点
+level2_end: -5,   // Level 2: -19点 ～ -5点
+level3_end: 10,   // Level 3: -4点 ～ +10点
+level4_end: 25,   // Level 4: +11点 ～ +25点
+level5_end: 40,   // Level 5: +26点 ～ +40点
+};
+
+// パターン認識用の変数を追加
+let responsePatterns = {
+fearBased: 0,    // 恐怖ベースの回答数
+courageBased: 0, // 勇気ベースの回答数
+loveBased: 0,    // 愛ベースの回答数
+wisdomBased: 0   // 智慧ベースの回答数
+};
+
+// 特定のパターンを検出する質問IDを定義
+const patternQuestions = {
+fear: [1, 2, 3, 4, 5, 6, 28, 29],
+courage: [7, 8, 9, 10, 11, 12],
+love: [13, 14, 15, 16, 17, 18],
+wisdom: [19, 20, 21, 22, 23, 24]
+};
+
+// パターンをカウント
+patternQuestions.fear.forEach(id => {
+const q = allQuestions.find(question => question.id === id);
+const qIndex = allQuestions.indexOf(q);
+if (qIndex !== -1 && userRawAnswers[qIndex] <= -1) {
+responsePatterns.fearBased++;
+}
+});
+
+patternQuestions.courage.forEach(id => {
+const q = allQuestions.find(question => question.id === id);
+const qIndex = allQuestions.indexOf(q);
+if (qIndex !== -1 && userRawAnswers[qIndex] >= 1) {
+responsePatterns.courageBased++;
+}
+});
+
+let provisionalLevel;
+if (scores.CL <= clThresholds.level1_end) provisionalLevel = 1;
+else if (scores.CL <= clThresholds.level2_end) provisionalLevel = 2;
+else if (scores.CL <= clThresholds.level3_end) provisionalLevel = 3;
+else if (scores.CL <= clThresholds.level4_end) provisionalLevel = 4;
+else if (scores.CL <= clThresholds.level5_end) provisionalLevel = 5;
+else provisionalLevel = 6;
+
+// チェック質問による補正（14問）
+let clearedCheckQuestions = 0;
+allQuestions.forEach((q, index) => {
+if (q.isCheckQuestion) {
+const rawAnswerScore = userRawAnswers[index];
+if (q.checkClearIf && Array.isArray(q.checkClearIf) && q.checkClearIf.includes(rawAnswerScore)) {
+clearedCheckQuestions++;
+}
+}
+});
+
+let finalConsciousnessLevel = provisionalLevel;
+// より厳しい上限ルール
+const checkClearRate = clearedCheckQuestions / 14;
+if (checkClearRate < 0.15) { // 15%未満（2問以下）
+finalConsciousnessLevel = Math.min(provisionalLevel, 1);
+} else if (checkClearRate < 0.35) { // 35%未満（5問以下）
+finalConsciousnessLevel = Math.min(provisionalLevel, 2);
+} else if (checkClearRate < 0.55) { // 55%未満（8問以下）
+finalConsciousnessLevel = Math.min(provisionalLevel, 3);
+} else if (checkClearRate < 0.75) { // 75%未満（10問以下）
+finalConsciousnessLevel = Math.min(provisionalLevel, 4);
+} else if (checkClearRate < 0.95) { // 95%未満（13問以下）
+finalConsciousnessLevel = Math.min(provisionalLevel, 5);
+}
+
+// 恐怖ベースの回答が多い場合は更に下方修正
+if (responsePatterns.fearBased >= 6) {
+finalConsciousnessLevel = Math.min(finalConsciousnessLevel, 2);
+} else if (responsePatterns.fearBased >= 4) {
+finalConsciousnessLevel = Math.min(finalConsciousnessLevel, 3);
+}
+
+// レベル6到達の特別条件（極めて厳しく）
+if (finalConsciousnessLevel >= 5) {
+// 条件1: 意識レベル基本スコアが+41点以上
+// 条件2: チェック質問14問を全てクリア
+// 条件3: レベル6特有の質問3問（ID:25,26,27）全てに「非常によく当てはまる（+2点）」と回答
+// 条件4: 恐怖ベースの回答が0
+if (scores.CL >= 41 && clearedCheckQuestions === 14 && responsePatterns.fearBased === 0) {
+let level6SpecialConditionsMet = true;
+allQuestions.forEach((q, index) => {
+if (q.isLevel6Condition) {
+if (userRawAnswers[index] !== 2) {
+level6SpecialConditionsMet = false;
+}
+}
+});
+if (level6SpecialConditionsMet) {
+finalConsciousnessLevel = 6;
+} else {
+finalConsciousnessLevel = 5;
+}
+} else {
+// 条件を満たさない場合は最大でもレベル5
+if (finalConsciousnessLevel > 5) {
+finalConsciousnessLevel = 5;
+}
+}
+}
+
+// 最終的な分布調整
+// レベル5以上は極めて稀に
+if (finalConsciousnessLevel >= 5 && scores.CL < 35) {
+finalConsciousnessLevel = 4;
+}
+
+return { typeCode, consciousnessLevel: finalConsciousnessLevel };
+}
+
+function showResults() {
+document.getElementById('quiz-screen').style.display = 'none';
+document.getElementById('progress-bar').style.width = '100%';
+
+let allAnswered = true;
+if (userRawAnswers.length !== allQuestions.length) {
+allAnswered = false;
+} else {
+for(let i=0; i < userRawAnswers.length; i++){
+if(userRawAnswers[i] === null){
+allAnswered = false;
+break;
+}
+}
+}
+
+if (allQuestions.length !== 107 || !allAnswered ) {
+document.getElementById('result-code').textContent = translations[currentLanguage].error;
+} else {
+const results = calculateAndDetermineTypes();
+document.getElementById('result-code').textContent = `${results.typeCode}-${results.consciousnessLevel}`;
+}
+document.getElementById('result-screen').style.display = 'block';
+}
+
+// 初期化
+updateUILanguage();
+</script>
 </body>
 </html>
