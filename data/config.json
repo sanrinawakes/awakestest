@@ -1,1 +1,25 @@
-
+{
+  "scoring": {
+    "choiceScores": [-2, -1, 0, 1, 2],
+    "levelThresholds": {
+      "level1_end": -5,
+      "level2_end": 25,
+      "level3_end": 40,
+      "level4_end": 52,
+      "level5_end": 60
+    },
+    "populationDistribution": {
+      "level1": 0.20,
+      "level2": 0.60,
+      "level3": 0.15,
+      "level4": 0.04,
+      "level5": 0.0095,
+      "level6": 0.0005
+    }
+  },
+  "mChoiceAxes": {
+    "axis1": "M1",
+    "axis2": "M2", 
+    "axis3": "M3"
+  }
+}
