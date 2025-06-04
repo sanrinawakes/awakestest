@@ -834,8 +834,8 @@ targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2
 // ここでは最初の2問のみを例として示しています
 
 // === 簡略化のため、以降の質問は日本語のみで定義（実際には全て多言語化が必要）===
-{ id: 3, question: {ja: "あまり運や環境が味方しなかったり、足をひっぱられることが多かったと感じますか？"},
-supplement: {ja: "（今までの人生を振り返ってみて例えば、理不尽な上司や、意地悪な人から被害を受けることはありましたか？）"},
+{ id: 3, question: {ja: "今までの人生を振り返って、あまり運や環境が味方しなかったり、誰かから足をひっぱられることが多かったと感じますか？"},
+supplement: {ja: "（例えば、理不尽な上司や、意地悪な人から被害を受けることはどれくらいありましたか？）"},
 targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
 { id: 4, question: "他人から批判されたり間違いを指摘されると、傷ついて落ち込んだり、その人を避けたくなりますか？",
@@ -846,12 +846,12 @@ targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2
 supplement: "（例えば、レジで並んでいる時に「遅い」とイライラしたり、テレビを見て「この人嫌い」と思ったり、家族の行動に「なんでこうなの」と腹を立てたりすることはどれくらいありますか？）",
 targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
-{ id: 6, question: "社会のニュースを見て「この国はもうダメだ」「権力者が悪い」と怒りや無力感を感じたり、SNSなどで批判的な意見を発信することはありますか？",
+{ id: 6, question: "社会のニュースを見て「この国はもうダメだ」「権力者が悪い」と怒りや無力感を感じたり、場合によってはSNSなどで批判的な意見を発信することはありますか？",
 supplement: "（例えば、政治のニュースを見て憤慨し友人同士でそのことについて語り合ったり、「庶民は搾取されている」といった投稿をシェアしたりすること）",
 targetScore: "CL", scoreEffect: -1, isCheckQuestion: true, checkClearIf: [-1, -2], isLevel6Condition: false, isMChoice: false },
 
 // === レベル3（勇気・中立・意欲）測定: 6問 ===
-{ id: 7, question: "困難な状況でも「なんとかなる」「自分にもできることがある」と前向きに考え、実際に行動を起こすことができますか？",
+{ id: 7, question: "困難な状況でも「なんとかなる」「自分にもできることがある」と前向きに考え、実際に行動を起こすことができていますか？",
 supplement: "（例えば、仕事で大きな課題を任されても「まずはここから始めよう」と一歩踏み出したり、問題が起きても「解決策を探そう」と動けること）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
 
@@ -867,11 +867,11 @@ targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, i
 supplement: "（例えば、収入を増やすために資格の勉強を始めたり、健康のために食事を見直したり、人間関係改善のために自分から連絡を取ったりすること）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
-{ id: 11, question: "以前は嫌いだった人や苦手だった状況でも、今は比較的平静に対処できるようになっていますか？",
+{ id: 11, question: "以前は嫌いだった人や苦手だった状況でも、仲良くしたり平静に対処できるようになっていますか？",
 supplement: "（例えば、昔は顔も見たくなかった人とも普通に挨拶できたり、苦手だった場面（人前で話すなど）でも落ち着いて対応できるようになったこと）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
-{ id: 12, question: "日々の生活の中で、小さな成長や改善を実感し、「少しずつでも前進している」と感じることがありますか？",
+{ id: 12, question: "日々の生活の中で、小さな成長や改善を実感し、「自分は前進している」と感じることがありますか？",
 supplement: "（例えば、仕事のスキルが向上したり、家族との会話が増えたり、部屋が前より片付いているなど、日常の中での前向きな変化を感じること）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
