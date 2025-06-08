@@ -1576,6 +1576,36 @@ if (finalConsciousnessLevel >= 5 && scores.CL < 35) {
 finalConsciousnessLevel = 4;
 }
 
+// 社会貢献に関する質問への回答を追跡
+let socialContributionScore = 0;
+const socialContributionQuestions = [16, 18, 32]; // 社会貢献を測る質問のID
+
+socialContributionQuestions.forEach(id => {
+const q = allQuestions.find(question => question.id === id);
+const qIndex = allQuestions.indexOf(q);
+if (qIndex !== -1 && userRawAnswers[qIndex] >= 1) {
+socialContributionScore += userRawAnswers[qIndex];
+}
+});
+
+// レベル4以上の追加条件：社会貢献が必須
+if (finalConsciousnessLevel >= 4) {
+// レベル4の条件：少なくとも1つの社会貢献質問で「当てはまる」以上
+if (socialContributionScore < 1) {
+finalConsciousnessLevel = 3; // 社会貢献がない場合は最大レベル3
+}
+
+// レベル5の条件：社会貢献質問で高得点が必要
+if (finalConsciousnessLevel >= 5 && socialContributionScore < 4) {
+finalConsciousnessLevel = 4; // 社会貢献が不十分な場合はレベル4止まり
+}
+
+// レベル6の条件：すべての社会貢献質問で最高評価が必要
+if (finalConsciousnessLevel >= 6 && socialContributionScore < 6) {
+finalConsciousnessLevel = 5; // 完全な社会貢献でない場合はレベル5止まり
+}
+}
+
 return { typeCode, consciousnessLevel: finalConsciousnessLevel };
 }
 
