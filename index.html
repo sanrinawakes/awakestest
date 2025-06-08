@@ -888,17 +888,23 @@ targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], 
 supplement: "（例えば、家族で意見が分かれても「君はこうしたいんだね」と受け止め、みんなが納得できる新しい案を一緒に作り上げられること）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
 
-{ id: 16, question: "見返りを期待せず、相手の幸せが自分の喜びになるような、純粋な思いやりの行動を取ることがありますか？",
-supplement: "（例えば、誰も見ていなくても困っている人を助けたり、相手が気づかなくても陰で支えたり、「ありがとう」を言われなくても満足できる行動）",
-targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+{ 
+id: 16, 
+question: "あなたの行動や活動が、家族や親しい友人を超えて、地域社会や職場、あるいはもっと広い範囲の人々に実際に良い影響を与えていると実感することがありますか？",
+supplement: "（例えば、ボランティア活動で地域が明るくなったり、仕事を通じて多くの人の生活が改善されたり、SNSでの発信が誰かの励みになったり、後輩の指導で彼らが成長したりなど、具体的に誰かの人生にプラスの変化をもたらしている実感）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false 
+},
 
 { id: 17, question: "複雑な問題に対して、感情論や偏見を排除し、データと論理に基づいて、より大きな視点から解決策を見出せますか？",
 supplement: "（例えば、家族の問題でも感情的にならず全体最適を考えたり、仕事で利害が対立しても客観的な基準で判断できること）",
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
-{ id: 18, question: "本当に困った時に心から頼れる人が、家族以外にも10人以上いて、お互いに深い信頼関係を築けていますか？",
-supplement: "（例えば、深夜でも電話できる友人、人生相談ができる先輩、困った時に駆けつけてくれる仲間など、利害関係を超えた繋がりがある人の数）",
-targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false },
+{ 
+id: 18, 
+question: "あなたが大切にしている価値観や信念に基づいて、実際に社会に対して何か具体的な貢献をしており、その活動を通じて複数の人から感謝されたり、頼りにされたりしていますか？",
+supplement: "（例えば、専門知識を活かして相談を行ったり、技術を教えることで人材育成に貢献したり、地域の問題解決に取り組んだり、社会的な活動に参加したりして、実際に『あなたのおかげで助かった』と言われるような経験）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false 
+},
 
 // === レベル5（喜び・平和・至福）測定: 6問 ===
 { id: 19, question: "日常の何気ない瞬間に、深い喜びや感謝の気持ちが湧き上がり、「生きているだけで素晴らしい」と感じることがありますか？",
@@ -958,9 +964,12 @@ supplement: "（例えば、ボランティアをする時も『履歴書に書�
 targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
 
 // === レベル5の追加質問（創造性・貢献）===
-{ id: 32, question: "自分の才能や経験を活かして、社会や他者に価値を提供することに深い喜びを感じ、それが自然なライフワークになっていますか？",
-supplement: "（例えば、自分の得意分野で人を助けたり、培ってきた知識を次世代に伝えたり、創作活動で人々に感動を与えたりすることが、義務感ではなく自然な喜びとして日常的に行えている状態）",
-targetScore: "CL", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false },
+{ { 
+id: 32, 
+question: "自分の才能や経験を活かして、社会や他者に価値を提供することに深い喜びを感じ、それが自然なライフワークになっており、実際に多くの人々（50人以上）の人生に良い影響を与えていますか？",
+supplement: "（例えば、自分の得意分野で定期的に講演やワークショップを開催したり、執筆活動で多くの読者に影響を与えたり、事業やプロジェクトを通じて雇用を生み出したり、教育活動で多数の生徒の成長に貢献したりなど、明確に数えられる範囲で50人以上の人生に良い変化をもたらしている状態）",
+targetScore: "CL", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [1, 2], isLevel6Condition: false, isMChoice: false 
+},
 
 // === 第1軸：内向/外向（25問）===
 // === 内向型（S1）の質問: 8問 ===
