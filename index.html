@@ -1405,6 +1405,9 @@ let choiceTextsForAxis;
 if (questionData.targetScore === "CL_special") {
     // 意識レベル用の3択質問
     choiceTextsForAxis = clChoiceTexts.reaction[currentLanguage] || clChoiceTexts.reaction.ja;
+} else if (questionData.targetScore === "CL_special2") {
+    // 有名人に関する3択質問
+    choiceTextsForAxis = clChoiceTexts.celebrity[currentLanguage] || clChoiceTexts.celebrity.ja;
 } else if (questionData.targetScore && questionData.targetScore.includes("1")) {
 choiceTextsForAxis = mChoiceTexts.axis1[currentLanguage] || mChoiceTexts.axis1.ja;
 } else if (questionData.targetScore && questionData.targetScore.includes("2")) {
