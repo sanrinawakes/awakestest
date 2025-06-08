@@ -1288,7 +1288,27 @@ targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, i
 // === 特別な3択M質問（第3軸）===
 { id: 107, question: "何か大切なことを決める際、あなたが最終的に最も重視し、「これこそが最善の判断だ」と心から納得できるのは、どのような基準で判断した時ですか？",
 supplement: "（3つの選択肢から1つだけ選んでください）", targetScore: "M3", scoreEffect: 1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: true }
-];
+
+{
+id: 108,
+question: "最近、理不尽だと感じる出来事があった時、あなたの反応として最も多いのはどれですか？",
+supplement: "（3つの選択肢から1つだけ選んでください）",
+targetScore: "CL_special", scoreEffect: 1, isCheckQuestion: true, checkClearIf: [2], isLevel6Condition: false, isMChoice: true
+},
+
+{
+id: 109,
+question: "最近のニュースやSNSを見ていて、有名人やインフルエンサーの問題行動（不倫、失言、炎上など）について、どのように感じることが多いですか？",
+supplement: "（例えば、有名人の不適切な発言が炎上したり、YouTuberが迷惑行為で批判されたり、芸能人の私生活が暴露されたりするニュースを見た時の、あなたの正直な感想）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false
+},
+
+{
+id: 110,
+question: "あなたは『正義感が強い』『間違っていることを見過ごせない』タイプだと思いますか？実際に、SNSで問題のある投稿を見た時、どう行動することが多いですか？",
+supplement: "（例えば、明らかに間違った情報や、モラルに反する投稿を見つけた時の、あなたの実際の行動パターン）",
+targetScore: "CL", scoreEffect: -1, isCheckQuestion: false, checkClearIf: null, isLevel6Condition: false, isMChoice: false
+}]
 
 // グローバル関数として定義
 window.startQuiz = function() {
