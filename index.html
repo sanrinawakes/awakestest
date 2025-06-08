@@ -1395,7 +1395,10 @@ const previousAnswer = userRawAnswers[index];
 
 if (questionData.isMChoice) {
 let choiceTextsForAxis;
-if (questionData.targetScore && questionData.targetScore.includes("1")) {
+if (questionData.targetScore === "CL_special") {
+    // 意識レベル用の3択質問
+    choiceTextsForAxis = clChoiceTexts.reaction[currentLanguage] || clChoiceTexts.reaction.ja;
+} else if (questionData.targetScore && questionData.targetScore.includes("1")) {
 choiceTextsForAxis = mChoiceTexts.axis1[currentLanguage] || mChoiceTexts.axis1.ja;
 } else if (questionData.targetScore && questionData.targetScore.includes("2")) {
 choiceTextsForAxis = mChoiceTexts.axis2[currentLanguage] || mChoiceTexts.axis2.ja;
