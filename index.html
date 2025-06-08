@@ -1464,17 +1464,28 @@ return;
 }
 
 if (q.isMChoice) {
-const axisNumChar = q.targetScore.charAt(1);
-let s_v_a_ScoreKey = "", p_g_e_ScoreKey = "", mScoreKey = "";
+if (q.targetScore === "CL_special") {
+    // 意識レベル用の3択質問の処理
+    // 0: 怒りの表出（レベル1-2）
+    // 1: 抑圧された怒り（レベル2）
+    // 2: 平静・受容（レベル3以上）
+    if (userAnswer === 0) scores.CL -= 2;
+    else if (userAnswer === 1) scores.CL -= 1;
+    else if (userAnswer === 2) scores.CL += 1;
+} else {
+    // 既存の3択質問の処理
+    const axisNumChar = q.targetScore.charAt(1);
+    let s_v_a_ScoreKey = "", p_g_e_ScoreKey = "", mScoreKey = "";
 
-if (axisNumChar === "1") { s_v_a_ScoreKey = "S1"; p_g_e_ScoreKey = "P1"; mScoreKey = "M1"; }
-else if (axisNumChar === "2") { s_v_a_ScoreKey = "V2"; p_g_e_ScoreKey = "G2"; mScoreKey = "M2"; }
-else if (axisNumChar === "3") { s_v_a_ScoreKey = "A3"; p_g_e_ScoreKey = "E3"; mScoreKey = "M3"; }
+    if (axisNumChar === "1") { s_v_a_ScoreKey = "S1"; p_g_e_ScoreKey = "P1"; mScoreKey = "M1"; }
+    else if (axisNumChar === "2") { s_v_a_ScoreKey = "V2"; p_g_e_ScoreKey = "G2"; mScoreKey = "M2"; }
+    else if (axisNumChar === "3") { s_v_a_ScoreKey = "A3"; p_g_e_ScoreKey = "E3"; mScoreKey = "M3"; }
 
-// 3択質問も他と同じ2点満点に統一
-if (userAnswer === 0) scores[s_v_a_ScoreKey] += 2;
-else if (userAnswer === 1) scores[p_g_e_ScoreKey] += 2;
-else if (userAnswer === 2) scores[mScoreKey] += 2;
+    // 3択質問も他と同じ2点満点に統一
+    if (userAnswer === 0) scores[s_v_a_ScoreKey] += 2;
+    else if (userAnswer === 1) scores[p_g_e_ScoreKey] += 2;
+    else if (userAnswer === 2) scores[mScoreKey] += 2;
+}
 
 } else if (q.targetScore === "CL") {
 // scoreEffect: 1 = 通常の質問（高スコア=高レベル）
