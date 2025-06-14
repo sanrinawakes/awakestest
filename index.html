@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACT診断 - Awakening Consciousness Type Exam</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap');
+
+:root {
+--primary-gradient: linear-gradient(135deg, #7c4dff 0%, #3949ab 100%);
+--secondary-gradient: linear-gradient(135deg, #536dfe 0%, #3f51b5 100%);
+--background-gradient: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+--card-background: rgba(255, 255, 255, 0.98);
+--text-primary: #2d3436;
+--text-secondary: #636e72;
+--shadow-soft: 0 10px 30px rgba(0,0,0,0.2);
+--shadow-hover: 0 15px 40px rgba(0,0,0,0.25);
+--border-radius: 20px;
+--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Noto Sans JP', sans-serif;
+background: var(--background-gradient);
+color: var(--text-primary);
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+line-height: 1.6;
+position: relative;
+overflow-x: hidden;
+}
+
+body::before {
+content: '';
+position: fixed;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+background-size: 50px 50px;
+animation: backgroundMove 20s linear infinite;
+z-index: -1;
+}
+
+@keyframes backgroundMove {
+0% { transform: translate(0, 0); }
+100% { transform: translate(50px, 50px); }
+}
+
+.container {
+background: var(--card-background);
+backdrop-filter: blur(10px);
+padding: 40px;
+border-radius: var(--border-radius);
+box-shadow: var(--shadow-soft);
+width: 100%;
+max-width: 800px;
+text-align: center;
+transition: var(--transition);
+animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+h1 {
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 30px;
+font-size: 2.5em;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
+
+h2 {
+color: var(--text-primary);
+margin: 30px 0 20px;
+font-size: 1.8em;
+font-weight: 400;
+}
+
+#start-screen p, #result-screen p {
+font-size: 1.1em;
+color: var(--text-secondary);
+margin-bottom: 25px;
+line-height: 1.8;
+}
+
+/* 同意セクションのスタイル */
+.agreement-section {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 25px;
+margin: 30px 0;
+text-align: left;
+border: 1px solid #e0e0e0;
+}
+
+.agreement-section h3 {
+color: #d32f2f;
+font-size: 1.2em;
+margin-bottom: 15px;
+font-weight: 500;
+}
+
+.agreement-text {
+font-size: 0.95em;
+line-height: 1.8;
+color: var(--text-primary);
+margin-bottom: 20px;
+}
+
+.agreement-checkbox {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-top: 20px;
+}
+
+.agreement-checkbox input[type="checkbox"] {
+width: 20px;
+height: 20px;
+cursor: pointer;
+}
+
+.agreement-checkbox label {
+cursor: pointer;
+font-size: 1em;
+color: var(--text-primary);
+font-weight: 500;
+}
+
+#question-text {
+font-size: 1.3em;
+color: var(--text-primary);
+margin-bottom: 15px;
+text-align: left;
+font-weight: 400;
+}
+
+.question-supplement {
+font-size: 0.95em;
+color: var(--text-secondary);
+margin-bottom: 30px;
+text-align: left;
+padding: 20px;
+background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+border-left: 4px solid #5c6bc0;
+border-radius: 10px;
+line-height: 1.8;
+}
+
+#choices-area {
+display: flex;
+flex-direction: column;
+gap: 15px;
+margin-bottom: 30px;
+}
+
+.choice-button {
+background: white;
+border: 2px solid #e0e0e0;
+padding: 18px 25px;
+border-radius: 15px;
+cursor: pointer;
+font-size: 1.05em;
+transition: var(--transition);
+text-align: left;
+position: relative;
+overflow: hidden;
+}
+
+.choice-button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: var(--primary-gradient);
+transition: var(--transition);
+z-index: -1;
+}
+
+.choice-button:hover {
+transform: translateY(-3px);
+box-shadow: var(--shadow-hover);
+border-color: #5c6bc0;
+}
+
+.choice-button:hover::before {
+left: 0;
+}
+
+.choice-button:hover {
+color: white;
+}
+
+.choice-button.selected {
+background: var(--primary-gradient);
+color: white;
+border-color: transparent;
+transform: scale(1.02);
+box-shadow: 0 5px 20px rgba(92, 107, 192, 0.4);
+}
+
+.button-primary {
+background: var(--primary-gradient);
+color: white;
+border: none;
+padding: 15px 40px;
+border-radius: 30px;
+cursor: pointer;
+font-size: 1.1em;
+font-weight: 500;
+transition: var(--transition);
+margin: 10px;
+box-shadow: 0 4px 15px rgba(92, 107, 192, 0.3);
+}
+
+.button-secondary {
+background: white;
+color: #5c6bc0;
+border: 2px solid #5c6bc0;
+padding: 15px 40px;
+border-radius: 30px;
+cursor: pointer;
+font-size: 1.1em;
+font-weight: 500;
+transition: var(--transition);
+margin: 10px;
+}
+
+.button-primary:hover:not(:disabled) {
+transform: translateY(-3px);
+box-shadow: 0 8px 25px rgba(92, 107, 192, 0.4);
+}
+
+.button-secondary:hover:not(:disabled) {
+background: #5c6bc0;
+color: white;
+transform: translateY(-3px);
+box-shadow: 0 8px 25px rgba(92, 107, 192, 0.4);
+}
+
+.button-primary:disabled, .button-secondary:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+}
+
+#question-counter {
+font-size: 0.95em;
+color: var(--text-secondary);
+margin-bottom: 25px;
+font-weight: 300;
+}
+
+#progress-bar-container {
+width: 100%;
+background: rgba(224, 224, 224, 0.5);
+border-radius: 20px;
+margin-bottom: 30px;
+height: 8px;
+overflow: hidden;
+position: relative;
+}
+
+#progress-bar {
+height: 100%;
+background: var(--primary-gradient);
+border-radius: 20px;
+transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
+
+#progress-bar::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+);
+animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+
+#result-code {
+font-size: 3em;
+font-weight: 700;
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin: 30px 0;
+padding: 20px;
+display: inline-block;
+animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.05); }
+100% { transform: scale(1); }
+}
+
+.result-details {
+text-align: left;
+background: #f8f9fa;
+border-radius: 15px;
+padding: 25px;
+margin: 20px 0;
+}
+
+.result-section {
+margin: 20px 0;
+}
+
+.result-section h3 {
+color: #5c6bc0;
+font-size: 1.2em;
+margin-bottom: 10px;
+}
+
+.gpt-guidance {
+background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+border-radius: 15px;
+padding: 30px;
+margin: 30px 0;
+text-align: center;
+}
+
+.gpt-guidance p {
+font-size: 1.1em;
+line-height: 1.8;
+color: var(--text-primary);
+margin: 0;
+}
+
+.gpt-guidance span {
+font-weight: 700;
+color: #5c6bc0;
+background: rgba(255, 255, 255, 0.5);
+padding: 2px 8px;
+border-radius: 5px;
+}
+
+.button-container {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-top: 30px;
+flex-wrap: wrap;
+}
+
+.statistics-info {
+background: #f0f4f8;
+border-radius: 10px;
+padding: 20px;
+margin: 20px 0;
+text-align: left;
+}
+
+.statistics-info h4 {
+color: #5c6bc0;
+margin-bottom: 10px;
+}
+
+.statistics-info p {
+margin: 5px 0;
+font-size: 0.95em;
+}
+
+#personality-intro {
+text-align: center;
+padding: 40px 20px;
+}
+
+#personality-intro h2 {
+color: var(--text-primary);
+margin-bottom: 30px;
+font-size: 1.8em;
+font-weight: 400;
+}
+
+#personality-intro p {
+font-size: 1.1em;
+color: var(--text-secondary);
+line-height: 1.8;
+}
+
+#personality-intro ul {
+text-align: left;
+max-width: 600px;
+margin: 20px auto 30px;
+}
+
+#personality-intro li {
+margin-bottom: 10px;
+line-height: 1.6;
+color: var(--text-secondary);
+}
+
+#trait-guidance {
+background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+padding: 15px 20px;
+border-radius: 10px;
+text-align: center;
+box-shadow: 0 2px 10px rgba(92, 107, 192, 0.1);
+}
+
+@media (max-width: 600px) {
+.container {
+padding: 25px;
+}
+h1 {
+font-size: 2em;
+}
+.button-primary, .button-secondary {
+padding: 12px 30px;
+font-size: 1em;
+}
+.agreement-section {
+padding: 20px;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 id="main-title">ACT診断</h1>
+
+<div id="start-screen">
+<p id="intro-text-1">この診断は、あなたの内面を探求し、自己変容の道筋を照らし出すためのお手伝いをします。</p>
+<p id="intro-text-2">質問を通じて、あなたの現在のタイプと人生のステージが明らかになります。</p>
+<p id="intro-text-3">※ 正直に、今の自分の実際の行動や感じ方を答えてください。</p>
+
+<div class="agreement-section">
+<h3>⚠️ 著作権および利用規約について</h3>
+<div class="agreement-text">
+この診断は三凛さとしが開発した独自の「ACT診断」に基づくものであり、著作権法により保護されています。<br><br>
+無断での転載・引用・複製・改変・販売・公開・SNSへの掲載は禁止されています。
+</div>
+<div class="agreement-checkbox">
+<input type="checkbox" id="agreement-check" />
+<label for="agreement-check">私は上記の利用規約・著作権ポリシーに同意します。</label>
+</div>
+</div>
+
+<button id="start-button" class="button-primary" onclick="startQuiz()" disabled>診断を開始する</button>
+</div>
+
+<div id="personality-intro" style="display:none;">
+<h2>次は、あなたの【ふだんの行動や好み】について</h2>
+<p style="margin: 20px 0;">
+このパートでは、「どちらが正しいか」ではなく、<br>
+<strong>あなたが日常で"つい選びがち"な行動や、心地よいと感じる選択</strong>を思い出して、素直に選んでください。
+</p>
+<ul style="text-align:left; margin: 20px 0 30px; padding-left: 1.2em;">
+<li>たとえば、人と一緒にいると元気が出るなら、それがあなたらしさです</li>
+<li>一人の時間が一番落ち着くなら、それも大事な個性です</li>
+<li>新しいことを感覚で試すタイプか、計画を立ててから動くタイプかも含めて</li>
+</ul>
+<p>
+<strong>「理想」ではなく「現実の自分のパターン」</strong>を大切にして答えてくださいね。
+</p>
+<button class="button-primary" onclick="startPersonalityQuestions()">診断を続ける</button>
+</div>
+
+<div id="quiz-screen" style="display:none;">
+<div id="trait-guidance" style="display:none; margin-bottom: 20px; color: #5c6bc0; font-weight: 500;">
+※「どちらが正しいか」ではなく、「普段どちらを選びがちか」で答えてください。
+</div>
+<div id="progress-bar-container">
+<div id="progress-bar"></div>
+</div>
+<div id="question-counter"></div>
+<div id="question-container"></div>
+<div id="choices-area"></div>
+<div class="button-container">
+<button id="prev-question-button" class="button-secondary" onclick="loadPreviousQuestion()">戻る</button>
+<button id="next-question-button" class="button-primary" onclick="loadNextQuestion()" disabled>次へ</button>
+</div>
+</div>
+
+<div id="result-screen" style="display:none;">
+<h2 id="result-title">診断結果</h2>
+<p id="result-text">あなたのACT診断コードは</p>
+<h3 id="result-code"></h3>
+<div class="gpt-guidance">
+<p>このコードの意味や、今のあなたに合った行動のヒントを知りたい方は、<br>
+ACT診断コーチングAIbotに「<span id="code-example"></span>の意味を教えて」などと尋ねてみてください。</p>
+</div>
+<div class="statistics-info" id="statistics-container"></div>
+<button id="restart-button" class="button-primary" onclick="restartQuiz()">もう一度診断する</button>
+</div>
+</div>
+
+<script>
+// ===== グローバル変数 =====
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let scores = {
+    S1: 0, M1: 0, P1: 0,  // 行動エネルギー軸
+    V2: 0, M2: 0, G2: 0,  // 思考傾向軸
+    A3: 0, M3: 0, E3: 0,  // 評価基準軸
+    CL: 0  // 意識レベル
+};
+
+// レベル別スコア集計用
+let levelScores = {
+    level1: 0,  // 防衛的な回答数
+    level2: 0,  // 葛藤的な回答数
+    level3: 0,  // 中立的な回答数
+    level4: 0,  // 受容的な回答数
+    level5: 0,  // 高次的な回答数
+    level6: 0   // 超越的な回答数
+};
+
+// レベル4判定用の質問への回答を保存
+let level4Requirements = {
+    receivesMonthlyGratitude: false
+};
+
+// レベル5判定用の質問への回答を保存
+let level5Requirements = {
+    hasPublicRecognition: false,
+    hasTrainedSuccessors: false,
+    hasPassiveIncome: false,
+    hasLifetimeAssets: false
+};
+
+// ===== 同意チェックボックスの監視 =====
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('agreement-check');
+    const startButton = document.getElementById('start-button');
+    
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            startButton.disabled = false;
+        } else {
+            startButton.disabled = true;
+        }
+    });
+});
+
+// ===== 意識レベル測定用質問（46問）改善版 =====
+const clQuestions = [
+    // 1. 朝起きたとき
+    {
+        id: 1,
+        text: "朝起きたとき、直近の自分に一番近いものを選んでください（1ヶ月を振り返って）",
+        choices: [
+            { text: "毎朝すっと前向きな気持ちで目覚めている", score: 1 },
+            { text: "年齢や体調、環境、メンタルが原因で、どうも朝がしんどい", score: -2 },
+            { text: "毎日が忙しくて急いで起きて慌ただしく支度する", score: -2 },
+            { text: "その日の予定や体調次第で気持ちよく起きられる日とそうでない日がある", score: -1 },
+            { text: "今日は何があるかな、と楽しみに思って起きられる日が多い", score: 1 },
+            { text: "「またキツイ1日がはじまる」とあまり乗り気ではない", score: -2 },
+            { text: "特に辛さは感じず、普通に起きている", score: 0 }
+        ]
+    },
+    
+    // 2. 他人のSNSや成功話（No.27と統合）
+    {
+        id: 2,
+        text: "他人のSNSや知人の成功・成長を見たとき",
+        choices: [
+            { text: "とても嬉しくなり、いいねを押したりお祝いのメッセージを送る", score: 1 },
+            { text: "あまり自慢するのは承認欲求だし、よくないと思う", score: -2 },
+            { text: "正直、ちょっと失敗してくれたら安心する", score: -2 },
+            { text: "特に何も思わない/あまり興味がない", score: 0 },
+            { text: "今が良いだけであとで失敗するのでは？と感じる", score: -2 },
+            { text: "他人の成長や成功が自分のことのようにうれしい", score: 1, isHighLevel: true },
+            { text: "少し心がざわつくが自分は自分と思えている", score: -1 }
+        ]
+    },
+    
+    // 3. 理不尽・納得いかないとき
+    {
+        id: 3,
+        text: "理不尽・納得いかないことをされたとき",
+        choices: [
+            { text: "そんな理不尽なことに巻き込まれたことはほぼ記憶にない", score: 1 },
+            { text: "ちゃんと指摘するか言い返すようにしている", score: -1 },
+            { text: "「これも自分の学びかも」と受け止めて実際に自分の人生に活かすことが多い", score: 1 },
+            { text: "嫌な気持ちにはなるが仕方ないと納得することが多い", score: 0 },
+            { text: "理不尽なことをしてくる人とは縁を持ちたくないので離れる", score: -1 },
+            { text: "配慮や思いやりが足りない人のせいで、自分が損な役回りになることが多い", score: -2 }
+        ]
+    },
+    
+    // 4. 「ありがとう」を言う頻度
+    {
+        id: 4,
+        text: "仕事以外で「ありがとう」を言う回数",
+        choices: [
+            { text: "1週間に数回はあると思う", score: -1 },
+            { text: "自然と「ありがとう」をたくさん言っている（1日10回以上）", score: 1 },
+            { text: "言う機会がない日もある", score: -1 },
+            { text: "感謝したくても環境や状況的にする機会が少ない", score: -2 },
+            { text: "1日3~5回", score: 0 }
+        ]
+    },
+    
+    // 5. 困難な状況への対応（No.5、13、28を統合）
+    {
+        id: 5,
+        text: "困難な状況・失敗・トラブルに遭遇した時",
+        choices: [
+            { text: "全てではないが何か意味があったと思えることもある", score: 0 },
+            { text: "運が悪かったり環境が味方しないことも多く、自分のせいではないので意味なんて考えない方が楽だと感じる", score: -2 },
+            { text: "どんな経験にも深い意味と感謝を感じ、必ず糧にする", score: 1 },
+            { text: "前向きな意味を見つけられないことが多い", score: -1 },
+            { text: "困難からも学びや成長の機会を見つけ、人生をよりよくするヒントにしている", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 6. 誰かのために行動
+    {
+        id: 6,
+        text: "誰かのために自分から行動した経験",
+        choices: [
+            { text: "頼まれれば協力する", score: 0 },
+            { text: "人助けをしても損をすることが多い", score: -2 },
+            { text: "人をサポートし喜んでもらえることが自分の喜びだから実践している", score: 1 },
+            { text: "思えば誰かのために見返りなく行動することが少ない", score: -1 },
+            { text: "困っている人には自分から声をかけて手伝うことが多い", score: 1 }
+        ]
+    },
+    
+    // 7. グループでの自分
+    {
+        id: 7,
+        text: "グループや集団の中での自分",
+        choices: [
+            { text: "自分からグループやチームのために動くことは少ない", score: -1 },
+            { text: "特に何も考えず、みんなと同じくらい協力している", score: 0 },
+            { text: "チームの成長や幸せが自分の幸せだと感じるので積極的に動く", score: 1 },
+            { text: "立場や環境的に自分の意見や行動が活かされにくいので、積極的にはなりたいがあまり積極的になれない", score: -2 },
+            { text: "そもそも集団やグループに所属していない", score: 0 }
+        ]
+    },
+    
+    // 8. 自分の影響力
+    {
+        id: 8,
+        text: "自分の存在が周囲に与えている影響",
+        choices: [
+            { text: "「前向きな言動で雰囲気を良くしてくれる」と言われることがある", score: 1 },
+            { text: "可もなく不可もなく。もっとできることはあるのかもしれないが思いつかない", score: 0 },
+            { text: "環境的に結局自分が何をやってもマイナスの反応が返ってくることが多い", score: -2 },
+            { text: "周囲の変化や挑戦のきっかけになることが多い", score: 1 },
+            { text: "事実、自分が頑張ってもあまり評価や感謝が返ってこない環境にいる", score: -1 }
+        ]
+    },
+    
+    // 9. つながりの感覚
+    {
+        id: 9,
+        text: "世の中や周囲とのつながり",
+        choices: [
+            { text: "「人は人、自分は自分」と割り切れることが多い", score: -1 },
+            { text: "いつも「すべてはつながっている」と実感している", score: 1 },
+            { text: "今の世の中は理不尽だと気づき、心を痛めている", score: -2 },
+            { text: "特に意識していない", score: 0 },
+            { text: "つながっていることはつながっているが、つながっていないこともあると感じる", score: 0 },
+            { text: "「自分と周り、世界はお互いに深いところでつながっている」と感じる", score: 1 }
+        ]
+    },
+    
+    // 10. 人生の目的
+    {
+        id: 10,
+        text: "人生の目的や生きる意味",
+        choices: [
+            { text: "なんとなくは意識している", score: 0 },
+            { text: "生きる意味や目的を探している", score: -1 },
+            { text: "はっきりした使命感やビジョンで日々動いている", score: 1 },
+            { text: "環境や周囲がゆるさず、やりたいことがあっても物事がなかなか思い通りにできない", score: -2 },
+            { text: "目標やテーマをもち、日々進化しながら毎日を過ごしている", score: 1 }
+        ]
+    },
+    
+    // 11. 家族との意見の違い
+    {
+        id: 11,
+        text: "家族や身近な人との意見の違い",
+        choices: [
+            { text: "違うこと自体が発見と気づきの連続なのでありがたいと受け止めている", score: 1 },
+            { text: "言いたいことはあるけど我慢してあげている", score: -1 },
+            { text: "意見の違いは気になるが仕方ないので妥協している", score: 0 },
+            { text: "周囲の都合や無理解に振り回されることが多い", score: -2 },
+            { text: "話し合い、理解し合えている", score: 1 }
+        ]
+    },
+    
+    // 12. 日常の過ごし方
+    {
+        id: 12,
+        text: "日々どのような過ごし方をしているか？",
+        choices: [
+            { text: "とても元気。毎日新鮮な気持ちで生きていて楽しい", score: 1 },
+            { text: "日々を楽しめていない、どんよりした気持ちで過ごすことが多い", score: -2 },
+            { text: "楽しい瞬間はあるが落ち込んだり嫌な気持ちになることもある", score: 0 },
+            { text: "毎日がとても幸せだ", score: 1 },
+            { text: "楽しいことよりやるべきことを優先している", score: -1 }
+        ]
+    },
+    
+    // 13. フィードバックへの反応
+    {
+        id: 13,
+        text: "他人からの指摘やフィードバック",
+        choices: [
+            { text: "必要なものは受け入れてあとは気にしないようにしている", score: 0 },
+            { text: "どんな指摘も感謝して受け止め、人生に活かし、状況を改善している", score: 1 },
+            { text: "いいアドバイスならありがたいが、上から目線や的外れな意見もあり、腹がたつこともある", score: -1 },
+            { text: "環境的に評価されづらく、指摘や批判ばかりされてしまうので辛い", score: -2 },
+            { text: "前向きに活かし、財産としている。おかげでものごとが好転することも多い", score: 1 }
+        ]
+    },
+    
+    // 14. 価値観の違い
+    {
+        id: 14,
+        text: "意見や価値観が違う人と接する時",
+        choices: [
+            { text: "多様性そのものを面白いと感じ、実際に状況を好転させたりより良い環境づくりに努めている", score: 1 },
+            { text: "世の中分かり合えない人がいるので、最初から諦めた方が賢い", score: -2 },
+            { text: "お互いの違いを尊重したいが難しさを感じる", score: 0 },
+            { text: "波風を立てたくないので合わせることが多い", score: -1 },
+            { text: "違いを学びや成長のきっかけにし、より良いものを生み出せている", score: 1 }
+        ]
+    },
+    
+    // 15. 自己批判・限界との向き合い方（No.16と29を統合）
+    {
+  id: 15,
+  text: "本や講座などで得た知識を、日常でどう扱っていますか？",
+  choices: [
+    { text: "学んでも忙しくてあまり活かせていない", score: -1 },
+    { text: "自分のために使うことがほとんど", score: 0 },
+    { text: "学びたくてもお金や時間がなく諦めることが多い", score: -2 },
+    { text: "学んだことを実践して、他人の人生に良い影響を与えている", score: 1, isHighLevel: true },
+    { text: "自分が学ぶのは、たくさんの方の幸せに貢献したいから", score: 1, isLevel5Check: true }
+  ]
+},
+    
+    // 16. 他人の成長への反応
+    {
+        id: 16,
+        text: "他人の良い所・変化を見つけた時",
+        choices: [
+            { text: "良い所に気づいたらできるだけ伝えている", score: 0 },
+            { text: "成長や変化をお互いに喜び合える環境にいる", score: 1 },
+            { text: "恵まれた環境にいる人はいいなと正直に思う", score: -2 },
+            { text: "褒めるのが苦手なのであまり褒めない", score: -1 },
+            { text: "積極的に褒めたり感謝を伝え、自分まで幸せになる", score: 1 }
+        ]
+    },
+    
+    // 17. お金の制約と意識レベル
+    {
+        id: 17,
+        text: "過去半年間を振り返り、お金のことで我慢したことはありますか？",
+        choices: [
+            { text: "日常的にお金が足りず、我慢することが多く、自分の可能性も制限されていた", score: -2 },
+            { text: "買えるものと我慢するものがあり、バランスを取りながらやりくりしていた", score: 0 },
+            { text: "高価なものは望まないようにしており、日常で我慢しているが納得している", score: -1 },
+            { text: "高額なものも含めて、必要と感じたものは無理なく手に入れられる状態だった", score: 1 },
+             { text: "高額かどうかに関係なく、必要なら迷いなく手に入れていたので我慢はしなかった", score: 1 },
+            { text: "必要な時に誰かに借りたり、支払いを待ってもらうことがあった", score: -2 },
+            { text: "家族や他人の制約により自由にお金を使えなかった", score: -2 }
+        ]
+    },
+    
+    // 18. 相談を受けた時
+    {
+        id: 18,
+        text: "人から悩みを相談された時",
+        choices: [
+            { text: "できる範囲でサポートする", score: 0 },
+            { text: "自分の方が大変な状況を背負っていることが多い", score: -2 },
+            { text: "その人の成長や気づきも自分の喜びと感じ、話を聞いて感謝されることが多い", score: 1 },
+            { text: "しっかり話を聞き、共感し、解決策もアドバイスし、頼りにされている", score: 1 },
+            { text: "一応話は聞くが自分も悩みを相談したいと思う", score: -1 }
+        ]
+    },
+    
+    // 19. 予定変更への対応
+    {
+        id: 19,
+        text: "突然のトラブルや予定変更があった時",
+        choices: [
+            { text: "戸惑ったり嫌な気持ちになるが何とか合わせられている", score: -1 },
+            { text: "そっちの方が良かったんだと100%納得している", score: 1 },
+            { text: "起きたことは仕方ないと受け入れられている", score: 0 },
+            { text: "周囲の段取りの悪さでいつも振り回されると感じてイライラさせられることが多い", score: -2 },
+            { text: "全ては完璧なので、どんな変化も楽しめる・学びにできている", score: 1 }
+        ]
+    },
+    
+    // 20. 苦手な人との距離感
+    {
+        id: 20,
+        text: "苦手な人との距離感",
+        choices: [
+            { text: "苦手な人からこそ学びを得られるので、避けない", score: 1 },
+            { text: "必要な場面では普通に接する", score: 0 },
+            { text: "自分を守るのも大切なので、必要最低限だけ付き合うようにしている", score: -1 },
+            { text: "相手の良い面も見つけ、そのあと仲良くなれることが多い", score: 1 },
+            { text: "問題のある性格の人に関られてしまうことがよくあり、避けるようにしている", score: -2 }
+        ]
+    },
+    
+    // 21. 未来について考えるとき
+    {
+        id: 21,
+        text: "未来について考えるとき",
+        choices: [
+            { text: "新しいチャレンジや可能性にワクワクする", score: 1 },
+            { text: "うまくいかないことを考え、心の準備をする", score: -1 },
+            { text: "自分やみんなの未来に大きな希望と喜びを感じている", score: 1 },
+            { text: "さすがに今の社会情勢や自分の環境を考えると、不安や心配の方が大きい", score: -2 },
+            { text: "今よりよくなるとか悪くなるというイメージがあまりない", score: 0 }
+        ]
+    },
+    
+    // 22. 心身の健康状態
+    {
+        id: 22,
+        text: "心身の健康状態（過去1ヶ月を振り返り）",
+        choices: [
+            { text: "心も体も満ち足りている感覚がある", score: 1 },
+            { text: "可も不可もなく", score: 0 },
+            { text: "肉体は疲れることがあるが、心は前向き", score: 1 },
+            { text: "仕事や生活環境が味方せず、不調や疲れを感じている", score: -2 },
+            { text: "おおむね元気に過ごせている", score: 1 },
+            { text: "あまり調子がいいとは言えない", score: -1 }
+        ]
+    },
+    
+    // 23. 誰かと意見が食い違ったとき
+    {
+        id: 23,
+        text: "過去半年であなたはどれくらいチャレンジをしましたか？",
+        choices: [
+            { text: "積極的に挑戦した結果、半年前の自分を思い出せないくらい変わった", score: 1 },
+            { text: "家族や環境など、横槍が入ることが多いのでなかなか難しかった", score: -2 },
+            { text: "挑戦はしたがあまり良い結果が出なかった", score: 0 },
+            { text: "腰が重く、一歩踏み出すまでに時間がかかった", score: -1 },
+            { text: "積極的に挑戦し、思い通りの結果が出ているので満足している", score: 1 }
+        ]
+    },
+    
+    // 24. 家族や身近な人の幸せについて
+    {
+        id: 24,
+        text: "タイミングや運のよさ",
+        choices: [
+            { text: "可もなく不可もなく", score: 0 },
+            { text: "あまり意識していない", score: 0 },
+            { text: "なぜか物事がトントン拍子ですすみ、奇跡的なタイミングで発展していく", score: 1 },
+            { text: "タイミングが悪いと思うことが多い", score: -2 },
+            { text: "いい意味で予想外の、想像していたより素晴らしい展開になることが多い", score: 1 },
+            { text: "すすめようと思っても物事がなかなか展開していかない", score: -1 }
+        ]
+    },
+    
+    // 25. 新しい出会いや人間関係
+    {
+        id: 25,
+        text: "新しい出会いや人間関係について",
+        choices: [
+            { text: "どんな形であれ人と関わること自体にチャンスを感じる", score: 1 },
+            { text: "緊張はするが必要なら関わる", score: -1 },
+            { text: "新しい人間関係は面倒なことが多いので苦手意識がある", score: -2 },
+            { text: "安心できる出会いであってほしいと思う", score: 0 },
+            { text: "新しい出会いが楽しみだ", score: 1 }
+        ]
+    },
+    
+    // 26. 感謝の気持ち
+    {
+        id: 26,
+        text: "リーダーシップを取ることについて",
+        choices: [
+            { text: "他に誰もいなければまとめ役やリーダーをやっても良いと思う", score: 0 },
+            { text: "リーダーシップを取るからこそ人生は充実する", score: 1 },
+            { text: "できれば責任を追いたくないと思う", score: -1 },
+            { text: "最終的に責任を取らされる損な役回りだと思う", score: -2 },
+            { text: "よく任されるか自らリーダーになることが多い", score: 1 }
+        ]
+    },
+    
+    // 27. 人生全体への態度
+    {
+        id: 27,
+        text: "人生全体をどう捉えていますか？",
+        choices: [
+            { text: "自分の人生は楽しく豊かで、とても素晴らしいものだと思う", score: 1 },
+            { text: "自分は生まれた環境や時代が悪かったことがあり、人生は基本的に苦しいものだ", score: -2 },
+            { text: "良いことも悪いこともあるのが人生だ", score: 0 },
+            { text: "楽しいこともあるが、今の時代は苦労の方が多いと気づいている", score: -1 },
+            { text: "自分の人生は学びと成長の機会、そして喜びに満ちている", score: 1 }
+        ]
+    },
+    
+    // 28. 政治・政府への態度
+    {
+        id: 28,
+        text: "今の政治や政府について",
+        choices: [
+            { text: "政治や政府関係なく、自分自身は全く心配なことがない", score: 1 },
+            { text: "政治家や官僚が無能で腐敗しているせいで、国民が苦しんでいることに胸を痛めている", score: -2 },
+            { text: "何か強く思うこともないが、自分の生活を脅かさないでほしいなとは感じている", score: 0 },
+            { text: "すべては必要なプロセスなので、特に問題視していない", score: 1 },
+            { text: "政治に不満はあるが、自分には変えられないので諦めた方が良い", score: -1 }
+        ]
+    },
+    
+    // 29. 社会の不公平感
+    {
+        id: 29,
+        text: "社会の格差や不公平について",
+        choices: [
+            { text: "格差はあるが、自分なりに生きていける", score: 0 },
+            { text: "金持ちや権力者ばかりが得をして、一般人は搾取されていることに気づいている", score: -2 },
+            { text: "すべての人に価値があり、それぞれの役割がある", score: 1 },
+            { text: "不公平だと思うが、どうしようもないこともわかっている", score: -1 },
+            { text: "誰にでもチャンスがあり、実際自らチャンスを引き寄せている", score: 1 }
+        ]
+    },
+    
+    // 30. 目標の継続性
+    {
+        id: 30,
+        text: "自分で決めた目標や習慣（運動、勉強、片付けなど）を、少なくとも1ヶ月以上継続できていますか？",
+        choices: [
+            { text: "1週間くらいは続くが、その後は忘れてしまうことが多い", score: -1 },
+            { text: "ものによっては1ヶ月くらい続くこともある", score: 0 },
+            { text: "続けたいと思っても、いつも3日坊主で終わってしまう", score: -2 },
+            { text: "いくつかの習慣を数ヶ月以上続けられている", score: 1 },
+            { text: "複数の良い習慣が自然に生活の一部になっている", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 31. 空回りと努力の関係
+    {
+        id: 31,
+        text: "一生懸命努力しているのに、なぜか空回りして結果が出ず、『もっと頑張らないと』と自分を追い込んでしまうことがありますか？",
+        supplement: "例：長時間働いているのに評価されない、ダイエットしているのに効果が出ない等",
+        choices: [
+            { text: "ない", score: 1 },
+            { text: "あまり努力が報われず、運が味方しない", score: -2 },
+            { text: "頑張っても思うような結果が出ないことが多い", score: -1 },
+            { text: "努力と結果のバランスを理解し、無理なく継続できている", score: 1 },
+            { text: "非効率で、頑張りに対しての報いが少ない気がする", score: -1 },
+            { text: "時々そういうこともあるが、気にしないようにしている", score: 0 },
+            { text: "努力の方向を見直して、効果的な方法を見つけられることが多い", score: 1 }
+        ]
+    },
+    
+    // 32. 他者への純粋な貢献
+    {
+        id: 32,
+        text: "人のためになることをどのような思いでやっていますか？",
+        supplement: "例：誰も見ていなくてもゴミを拾う、匿名での寄付など",
+        choices: [
+            { text: "思えばあまり人のために行動することがない", score: -2 },
+            { text: "特に意識しておらず、やることもあるしやらないこともある", score: 0 },
+            { text: "純粋に役立つと自分が幸せなので積極的にそうしている", score: 1 },
+            { text: "やっておいたほうが運が良くなりそうなのでやっている", score: -1 },
+            { text: "誰かに認められたいという気持ちでやっている", score: -1 },
+            { text: "見返りは周りの人の笑顔。人に優しくできている自分が好きだ", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 33. 深い信頼関係の数
+    {
+        id: 33,
+        text: "本当に困った時に心から頼れる人が、家族以外にも何人いますか？",
+        supplement: "何も説明しなくてもとりあえず協力してくれたり助けてくれる頼もしい友人",
+        choices: [
+            { text: "家族以外にはほとんどいない", score: -2 },
+            { text: "1-2人はいるかもしれない", score: -1 },
+            { text: "3-5人くらいはいる", score: 0 },
+            { text: "6-10人くらいのなんでも話せる信頼できる人がいる", score: 1 },
+            { text: "10人以上の人たちと深い信頼関係を築けている", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 34. 日常の神聖さ
+    {
+        id: 34,
+        text: "日常の何気ない瞬間に、深い喜びや感謝の気持ちが湧き上がり、『生きているだけで素晴らしい』と感じることがありますか？",
+        supplement: "例：朝日を見て心が震える、ご飯を食べながら涙が出そうになる等",
+        choices: [
+            { text: "日常の中で感謝や喜びを感じることが増えてきた", score: 1 },
+            { text: "たまに感動することはあるが、すぐに日常に戻る", score: -1 },
+            { text: "時々、ふとした瞬間に幸せを感じることがある", score: 0 },
+            { text: "そんな感覚はない。環境が良くない", score: -2 },
+            { text: "毎日が奇跡のように感じられ、深い感謝に包まれている", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 35. レベル3確認質問1：主体的行動と選択
+    {
+        id: 35,
+        text: "周囲がどうであっても、自分の意思で決めた目標に向かって行動できていますか？",
+        choices: [
+            { text: "周囲の空気に合わせて行動することが多い", score: -1 },
+            { text: "他人の期待や思惑に関係なく、自分の意志で行動する", score: 1 },
+            { text: "時々迷うこともあるが、基本的には自分の意思で動くように心がけている", score: 0 },
+            { text: "誰かに背中を押して欲しい", score: -2 },
+            { text: "周囲や家族の目がありなかなか難しい", score: -2 },
+            { text: "自分の選択や行動が周囲にも良い影響を与えている", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 36. レベル3確認質問2：感情との向き合い方
+    {
+        id: 36,
+        text: "最近、怒りや不安などのネガティブ感情が湧いたとき、どうしましたか？",
+        choices: [
+            { text: "感情を発散させる術を知っていて、他人に対して出すことはなかった", score: 1 },
+            { text: "感情に飲まれたり周囲にぶつけてしまい、あとで後悔した", score: -1 },
+            { text: "一旦落ち着いてから、冷静に対処するようにした", score: 0 },
+            { text: "正当な理由があったので、やむなく怒ったり不安を表現した", score: -2 },
+            { text: "感情の奥にある気づきを得て、前向きな行動に変えた結果、状況が好転した", score: 1, isHighLevel: true }
+        ]
+    },
+    
+    // 37. レベル4確認質問1（既存No.40の改善版）
+    {
+        id: 37,
+        text: "「あなたがいると場が落ち着く」もしくは「間に入ると話が進む」など、周囲から言われることがありますか？",
+        choices: [
+            { text: "言われたことはあるが、自覚はない", score: 0 },
+            { text: "一度や二度言われたことはある", score: -1 },
+            { text: "そういった言葉を言われたことはあまりない", score: -2 },
+            { text: "複数回言われていて、その役割を自覚している", score: 1, isLevel4Check: true },
+            { text: "日常的にその役割を担い、場を調和させている", score: 1, isLevel4Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 38. レベル4確認質問2：対立の中でも調和的に関わる
+    {
+        id: 38,
+        text: "最近、(自他問わず）対立やすれ違いがあった場で、あなた自身が『関係性を良くしよう』と思って何か具体的に行動したことはありますか？",
+        choices: [
+            { text: "関係性がよくなるように意図的に行動し、感謝されたり実際に状況が好転した", score: 1, isLevel4Check: true },
+            { text: "傍観することが多い", score: -2 },
+            { text: "場の空気を読んで発言を控えた", score: -1 },
+            { text: "あまり自信はなかったが、少しだけ声をかけたり話をつなごうとした", score: 0 },
+            { text: "対立やすれ違いでトラブルになるシーンに遭遇しない", score: 1, isLevel4Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 39. レベル5確認質問1（既存No.41の改善）
+    {
+        id: 39,
+        text: "発信・提案・制作・指導などを通じて、100人以上に影響を与えたと自覚でき、実際にフィードバックも複数受け取ったことがありますか？",
+        choices: [
+            { text: "数人から感謝されたことはある", score: -1 },
+            { text: "10〜50人程度には影響を与えたことがある", score: 0 },
+            { text: "そういった経験はない", score: -2 },
+            { text: "100人以上に影響を与え、実際に変化の報告も受けている", score: 1, isLevel5Check: true },
+            { text: "定期的に影響を与え、感謝の声が止まらない", score: 1, isLevel5Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 40. レベル5確認質問2：継続的な貢献と変容支援
+    {
+        id: 40,
+        text: "自分の活動が、他人の変化・挑戦・人生の転機になっていると継続的に感じていますか？",
+        choices: [
+            { text: "そういった手応えは感じたことがない", score: -2 },
+            { text: "数人から「あなたに会って変わることができた」「勇気をもらえた」と言われたことがある", score: 0 },
+            { text: "少しはそんなことがあればいいなと思い行動することもある", score: -1 },
+            { text: "定期的に、たくさんの方から変化・挑戦の報告をもらっている", score: 1, isLevel5Check: true },
+            { text: "多くの人が自分をきっかけに変わっていると実感している", score: 1, isLevel5Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 41. レベル6確認質問1：自他一体の体験
+    {
+        id: 41,
+        text: "「自分という存在が溶けて、世界とひとつにつながっている」と深く感じた体験があり、それが自分の生き方に影響を与えていますか？",
+        choices: [
+            { text: "そういった感覚はまったくない。考えたことすらない", score: -2 },
+            { text: "想像することはあるが、正直よくわからない", score: -1 },
+            { text: "ときどき、そう感じるような気がする", score: 0 },
+            { text: "定期的に自我のない深い一体感を体験している", score: 1, isLevel6Check: true },
+            { text: "常に境界のない意識で世界を見ている", score: 1, isLevel6Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 42. レベル6確認質問2：自己の手放しと委ね
+    {
+        id: 42,
+        text: "他者を見たとき何を感じる？",
+        choices: [
+            { text: "警戒する", score: -2 },
+            { text: "好き嫌いがある", score: -1 },
+            { text: "どんな人にも共感と思いやりが湧く", score: 0 },
+            { text: "どんな人にも深い愛と慈悲、つながりを感じる", score: 1, isLevel6Check: true },
+            { text: "他者はいない/自分自身を見ている感覚になる", score: 1, isLevel6Check: true, isHighLevel: true }
+        ]
+    },
+    
+    // 追加のレベル4判定質問
+    // 43. 月次感謝
+    {
+        id: 43,
+        text: "毎月5人以上の人からあなたの専門性、知識、スキル、言動などで直接的に助けられた、救われたと感謝されていますか？",
+        choices: [
+            { text: "はい", score: 1, isLevel4Requirement: 'receivesMonthlyGratitude' },
+            { text: "いいえ", score: 0 }
+        ]
+    },
+    
+    // 追加のレベル5判定質問
+    // 44. 公的認知度
+    {
+        id: 44,
+        text: "とある分野や地域であなたのことを肯定的なイメージで認識している人たちが1万人以上いますか？",
+        choices: [
+            { text: "はい", score: 1, isLevel5Requirement: 'hasPublicRecognition' },
+            { text: "いいえ", score: 0 }
+        ]
+    },
+    
+    // 45. 後継者育成
+    {
+        id: 45,
+        text: "知見や経験をシェアしたりアドバイスすることで、後続・後継となる人たちを100人以上育てた経験はありますか？",
+        choices: [
+            { text: "はい", score: 1, isLevel5Requirement: 'hasTrainedSuccessors' },
+            { text: "いいえ", score: 0 }
+        ]
+    },
+    
+    // 46. 受動的収入
+    {
+        id: 46,
+        text: "あなたが提供してきた価値に対して、豊かに暮らして行く上で十分な対価や支援が循環する仕組みができていますか？ （例：印税、収入、売上、講演依頼、寄付、支援、コンテンツ収益、恩返しなど）",
+        choices: [
+            { text: "はい", score: 1, isLevel5Requirement: 'hasPassiveIncome' },
+            { text: "いいえ", score: 0 }
+        ]
+    },
+    
+    // 47. 生涯資産
+    {
+        id: 47,
+        text: "仮に今すぐ活動を全て休止し一年中遊んでいても、これまでの貢献に対する感謝や支援によって、何不自由ない生活が維持できる状態ですか？ （例：資産、不労所得、過去生み出した価値、支援者、ファン、チーム、仕組み、育てた人材などからの継続的な還元）",
+        choices: [
+            { text: "はい", score: 1, isLevel5Requirement: 'hasLifetimeAssets' },
+            { text: "いいえ", score: 0 }
+        ]
+    }
+];
+
+// ===== 性格タイプ測定用質問（75問）=====
+const personalityQuestions = [
+    // === 行動エネルギー軸の質問（25問）===
+    {
+        id: 48,
+        text: "週末の理想的な過ごし方は？",
+        supplement: "最もリラックスでき、充実感を得られる休日",
+        choices: [
+            { text: "家でゆっくり本を読んだり、趣味に没頭したり、一人の時間を満喫する", scores: { S1: 2 } },
+            { text: "友達と会ったり、イベントに参加したり、人と一緒に楽しむ", scores: { P1: 2 } },
+            { text: "午前は一人でゆっくり、午後は家族や友人と過ごすなど、バランスよく", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 49,
+        text: "パーティーや飲み会が終わるタイミングのあなたは？",
+        supplement: "楽しい時間を過ごした後の心身の状態",
+        choices: [
+            { text: "楽しかったし、程よい疲れ。明日はゆっくり過ごそう", scores: { M1: 2 } },
+            { text: "まだまだ元気！二次会行く？もっと話したい！", scores: { P1: 2 } },
+            { text: "大勢は疲れるから、一人きりでゆっくりしよう", scores: { S1: 2 } }
+        ]
+    },
+    
+    {
+        id: 50,
+        text: "新しいアイデアを思いついた時、どうする？",
+        supplement: "ひらめいた瞬間の行動パターン",
+        choices: [
+            { text: "すぐに誰かに話して、一緒にワクワクしながら発展させる", scores: { P1: 2 } },
+            { text: "まず一人でじっくり考えて、ある程度まとまってから人に話す", scores: { S1: 2 } },
+            { text: "少し考えてから、信頼できる人に相談してブラッシュアップ", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 51,
+        text: "カフェで勉強や仕事をする時、どんな席を選ぶ？",
+        choices: [
+            { text: "角の静かな席、できれば壁に向かって座れるところ", scores: { S1: 2 } },
+            { text: "程よく人がいて、でも集中できる窓際の席", scores: { M1: 2 } },
+            { text: "にぎやかな中央付近、人の動きが見える開放的な席", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 52,
+        text: "友達から『今度みんなで集まろう！』と誘われたら？",
+        supplement: "大人数での集まりへの誘いに対する本音",
+        choices: [
+            { text: "やった！楽しみ！AさんもBさんも来るかな？", scores: { P1: 2 } },
+            { text: "メンバーと内容次第かな。楽しそうなら参加する", scores: { M1: 2 } },
+            { text: "少人数か一対一の方がいいな", scores: { S1: 2 } }
+        ]
+    },
+    
+    {
+        id: 53,
+        text: "電話がかかってきた時の反応は？",
+        choices: [
+            { text: "できればメッセージの方がいいな", scores: { S1: 2 } },
+            { text: "相手と用件による。急ぎなら普通に出る", scores: { M1: 2 } },
+            { text: "嬉しい！誰だろう？すぐ出て長話になることも", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 54,
+        text: "旅行の計画を立てる時のスタイルは？",
+        choices: [
+            { text: "人数や行き先は柔軟に。その時の気分で決める", scores: { M1: 2 } },
+            { text: "一人旅", scores: { S1: 2 } },
+            { text: "大人数でワイワイ！", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 55,
+        text: "初対面の人が多い場所での振る舞いは？",
+        supplement: "パーティや交流会など、知らない人ばかりの集まりでの行動",
+        choices: [
+            { text: "端の方で様子を見ながら。親しい人とだけ話す", scores: { S1: 2 } },
+            { text: "積極的に自己紹介して、どんどん輪を広げていく", scores: { P1: 2 } },
+            { text: "最初は様子見、慣れてきたら自然に会話に参加", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 56,
+        text: "ストレス解消法として効果的なのは？",
+        choices: [
+            { text: "友達とおしゃべりしたり、にぎやかに過ごして発散", scores: { P1: 2 } },
+            { text: "一人で音楽を聴いたり、散歩したり、静かに過ごす", scores: { S1: 2 } },
+            { text: "状況によって一人の時間と人と会うことを使い分ける", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 57,
+        text: "誕生日の理想的な過ごし方は？",
+        choices: [
+            { text: "昼は家族と、夜は友達となど、複数の小さなお祝い", scores: { M1: 2 } },
+            { text: "家族や親友とささやかにお祝い、または一人でゆっくり", scores: { S1: 2 } },
+            { text: "サプライズパーティー！たくさんの人に祝ってもらいたい", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 58,
+        text: "会議やミーティングでの発言スタイルは？",
+        choices: [
+            { text: "思いついたらすぐ発言、議論を活発にする", scores: { P1: 2 } },
+            { text: "じっくり考えてから、必要な時に的確に発言", scores: { S1: 2 } },
+            { text: "様子を見ながら、タイミングを見て発言", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 59,
+        text: "SNSの使い方は？",
+        choices: [
+            { text: "見る専門、または限られた人とだけつながる/仕事柄やっているだけでプライベートではほぼしない", scores: { S1: 2 } },
+            { text: "適度に投稿し、適度に交流する", scores: { M1: 2 } },
+            { text: "積極的に投稿し、たくさんの人と交流を楽しむ", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 60,
+        text: "新しい趣味を始める時のアプローチは？",
+        choices: [
+            { text: "本や動画やオンラインでじっくり学びはじめる", scores: { S1: 2 } },
+            { text: "基礎は独学、分からないところは人に聞く", scores: { M1: 2 } },
+            { text: "すぐにサークルや教室に入って仲間と一緒に", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 61,
+        text: "買い物に行く時のスタイルは？",
+        choices: [
+            { text: "時には一人で、時には誰かと一緒に", scores: { M1: 2 } },
+            { text: "友達や家族と一緒に、相談しながら楽しく選ぶ", scores: { P1: 2 } },
+            { text: "一人でじっくり見て回り、自分のペースで決める", scores: { S1: 2 } }
+        ]
+    },
+    
+    {
+        id: 62,
+        text: "カラオケに誘われたら？",
+        choices: [
+            { text: "メンバー次第で楽しめる。適度に歌う", scores: { M1: 2 } },
+            { text: "みんなを盛り上げながら歌うのはちょっと苦手…行っても聞き役が多い", scores: { S1: 2 } },
+            { text: "大好き！盛り上げ上手なタイプ", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 63,
+        text: "休憩時間の理想の過ごし方は？",
+        choices: [
+            { text: "一人で静かに休む、スマホを見たり本を読んだり", scores: { S1: 2 } },
+            { text: "気分によって一人の時と誰かと話す時がある", scores: { M1: 2 } },
+            { text: "同僚や友達とおしゃべりして気分転換", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 64,
+        text: "グループLINEでの振る舞いは？",
+        choices: [
+            { text: "積極的に発言して盛り上げる", scores: { P1: 2 } },
+            { text: "基本的に見てるだけ、必要な時だけ返信", scores: { S1: 2 } },
+            { text: "話題によって参加したり、静観したり", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 65,
+        text: "運動やスポーツをするなら？",
+        choices: [
+            { text: "一人でできるランニングやヨガ、筋トレなど", scores: { S1: 2 } },
+            { text: "チームスポーツやグループレッスンが楽しい", scores: { P1: 2 } },
+            { text: "一人でも団体でもどちらも楽しめる", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 66,
+        text: "映画を見るなら？",
+        choices: [
+            { text: "誰かと一緒に見て、終わったら感想を語り合いたい", scores: { P1: 2 } },
+            { text: "一人で集中して見たい。感想は心の中に", scores: { S1: 2 } },
+            { text: "一人でも誰かとでも、どちらも良い", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 67,
+        text: "何か悩み事がある時は？",
+        choices: [
+            { text: "基本的に一人で考えて決める", scores: { S1: 2 } },
+            { text: "すぐに誰かに話して、一緒に考えてもらう", scores: { P1: 2 } },
+            { text: "ある程度考えてから、信頼できる人に相談", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 68,
+        text: "理想的な仕事環境は？",
+        choices: [
+            { text: "個室や仕切りがあって、集中できる静かな環境", scores: { S1: 2 } },
+            { text: "適度にプライバシーがあり、必要な時は相談できる", scores: { M1: 2 } },
+            { text: "オープンスペースで、いつでも相談や雑談ができる", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 69,
+        text: "待ち合わせの時間より早く着いたら？",
+        choices: [
+            { text: "本を読んだりスマホを見たり、一人の時間を楽しむ", scores: { S1: 2 } },
+            { text: "周りを観察したり、ぼーっとしたり、気楽に過ごす", scores: { M1: 2 } },
+            { text: "店員さんや近くの人と話したり、誰かとメッセージして時間をつぶす", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 70,
+        text: "プレゼントを選ぶ時は？",
+        choices: [
+            { text: "じっくり相手のことを考えて、一人で選ぶ", scores: { S1: 2 } },
+            { text: "友達と一緒に買い物に行って、みんなで選ぶ", scores: { P1: 2 } },
+            { text: "基本は一人で選ぶが、迷ったら誰かに相談", scores: { M1: 2 } }
+        ]
+    },
+    
+    {
+        id: 71,
+        text: "新しい職場や学校での最初の一週間は？",
+        choices: [
+            { text: "まずは観察して、できれば向こうから話しかけてくれるのを待つ", scores: { S1: 2 } },
+            { text: "様子を見ながら、少しずつ人間関係を築く", scores: { M1: 2 } },
+            { text: "積極的に話しかけて、すぐに友達を作る", scores: { P1: 2 } }
+        ]
+    },
+    
+    {
+        id: 72,
+        text: "感動した時の反応は？",
+        choices: [
+            { text: "状況によって、表現したり内に秘めたり", scores: { M1: 2 } },
+            { text: "すぐに誰かと共有したい！SNSに投稿することも", scores: { P1: 2 } },
+            { text: "心の中で深く味わい、あまり表に出さない", scores: { S1: 2 } }
+        ]
+    },
+    
+    // === 思考傾向軸（25問）===
+    {
+        id: 73,
+        text: "料理を作る時のアプローチは？",
+        supplement: "新しい料理に挑戦する時の姿勢",
+        choices: [
+            { text: "『この組み合わせ面白そう！』と直感でアレンジを加える", scores: { V2: 2 } },
+            { text: "レシピ通りに正確に、分量もきっちり計る", scores: { G2: 2 } },
+            { text: "基本のレシピを参考に、少しだけ自分流にアレンジ", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 74,
+        text: "旅行の計画を立てる時は？",
+        supplement: "行き先や日程の決め方",
+        choices: [
+            { text: "時間単位で綿密に計画、予約も全て事前に", scores: { G2: 2 } },
+            { text: "行き当たりばったりも楽しい！大まかな方向だけ決める", scores: { V2: 2 } },
+            { text: "主要な場所は決めるが、細かいところは現地で", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 75,
+        text: "新しい家電を買った時、説明書は？",
+        choices: [
+            { text: "見ないでとりあえず触ってみる。分からなくなったら見る", scores: { V2: 2 } },
+            { text: "基本操作だけ確認して、あとは使いながら覚える", scores: { M2: 2 } },
+            { text: "最初から最後まで全部読んでから使い始める", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 76,
+        text: "将来の夢や目標について聞かれたら？",
+        choices: [
+            { text: "『世界を変えたい！』みたいな大きなビジョンを語りたい", scores: { V2: 2 } },
+            { text: "実現可能な具体的な計画を詳しく説明したい", scores: { G2: 2 } },
+            { text: "理想と現実のバランスを考えた目標を話したい", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 77,
+        text: "友達との会話で盛り上がるのは？",
+        choices: [
+            { text: "最近の出来事から深い話まで、幅広い話題", scores: { M2: 2 } },
+            { text: "『もし宇宙人がいたら…』みたいな空想話やAIの可能性といったような未来の話", scores: { V2: 2 } },
+            { text: "実際にあった出来事や、役立つ情報交換", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 78,
+        text: "DIYや工作をする時は？",
+        choices: [
+            { text: "イメージだけで作り始め、作りながら形にしていく", scores: { V2: 2 } },
+            { text: "大まかな設計図を描いて、必要に応じて調整", scores: { M2: 2 } },
+            { text: "詳細な設計図と手順を準備してから始める", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 79,
+        text: "何か問題が起きた時の解決方法は？",
+        choices: [
+            { text: "新しい方法と実績ある方法を組み合わせて解決", scores: { M2: 2 } },
+            { text: "『こんな新しい方法はどう？』と革新的なアイデアを出す", scores: { V2: 2 } },
+            { text: "過去の成功事例を参考に、確実な方法を選ぶ", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 80,
+        text: "お金の使い方は？",
+        choices: [
+            { text: "予算を決めて、計画的に使う", scores: { G2: 2 } },
+            { text: "『これは面白そう！』と直感で使うことが多い", scores: { V2: 2 } },
+            { text: "計画的な部分と衝動的な部分のバランスを取る", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 81,
+        text: "新しいことを学ぶ時は？",
+        supplement: "例：新しい言語、楽器、スポーツなど",
+        choices: [
+            { text: "全体像や理論から入り、なぜそうなるのかを理解したい", scores: { V2: 2 } },
+            { text: "理論と実践を交互に、バランスよく学ぶ", scores: { M2: 2 } },
+            { text: "まず実際にやってみて、体で覚える", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 82,
+        text: "片付けや整理整頓は？",
+        choices: [
+            { text: "整理整頓はあまり得意ではない", scores: { V2: 2 } },
+            { text: "すべて定位置に。きっちり整理整頓されている", scores: { G2: 2 } },
+            { text: "基本は整理するが、多少の散らかりは気にしない", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 83,
+        text: "新商品や新サービスへの反応は？",
+        choices: [
+            { text: "評判を少し確認してから試してみる", scores: { M2: 2 } },
+            { text: "『面白そう！』とすぐ飛びつく。失敗も経験", scores: { V2: 2 } },
+            { text: "十分に実績ができてから、慎重に導入", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 84,
+        text: "時間の感覚は？",
+        choices: [
+            { text: "時間を忘れて没頭することが多い。", scores: { V2: 2 } },
+            { text: "5分前行動が基本。時間はきっちり守る", scores: { G2: 2 } },
+            { text: "基本は時間を守るが、柔軟に対応もできる", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 85,
+        text: "写真を撮る時のスタイルは？",
+        choices: [
+            { text: "記録として正確に、分かりやすく撮る", scores: { G2: 2 } },
+            { text: "アーティスティックな構図や不思議な角度で撮る", scores: { V2: 2 } },
+            { text: "きれいに撮れればOK。時々凝った写真も", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 86,
+        text: "占いや心理テストに対しては？",
+        choices: [
+            { text: "大好き！可能性や自分の知らない一面を知りたい", scores: { V2: 2 } },
+            { text: "科学的根拠がないものは信じない", scores: { G2: 2 } },
+            { text: "話のネタとして楽しむ程度", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 87,
+        text: "仕事や勉強のスタイルは？",
+        choices: [
+            { text: "計画も立てるが、状況に応じて柔軟に進める", scores: { M2: 2 } },
+            { text: "毎日コツコツ、計画通りに進める", scores: { G2: 2 } },
+            { text: "インスピレーションが湧いた時に一気に進める", scores: { V2: 2 } }
+        ]
+    },
+    
+    {
+        id: 88,
+        text: "服を選ぶ基準は？",
+        choices: [
+            { text: "個性的で人と違うもの、新しいスタイルに挑戦もしくは、最先端のトレンドを意識", scores: { V2: 2 } },
+            { text: "実用的で長く使える定番アイテムを選ぶ", scores: { G2: 2 } },
+            { text: "トレンドも意識しつつ、自分に似合うものを", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 89,
+        text: "会議やブレストでの発言は？",
+        choices: [
+            { text: "『突拍子もないけど…』と斬新なアイデアを出す", scores: { V2: 2 } },
+            { text: "現実的な制約も考慮した建設的な提案", scores: { M2: 2 } },
+            { text: "実現可能性の高い、地に足のついた意見", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 90,
+        text: "ニュースを見る時に注目するのは？",
+        choices: [
+            { text: "幅広いジャンルをバランスよくチェック", scores: { M2: 2 } },
+            { text: "未来を変える新技術や、社会の大きな変化", scores: { V2: 2 } },
+            { text: "生活に直結する実用的な情報", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 91,
+        text: "ゲームをする時のプレイスタイルは？",
+        choices: [
+            { text: "基本に忠実に、時々冒険もする", scores: { M2: 2 } },
+            { text: "攻略法通りに、確実にクリアを目指す", scores: { G2: 2 } },
+            { text: "新しい戦略や裏技を見つけるのが楽しい", scores: { V2: 2 } }
+        ]
+    },
+    
+    {
+        id: 92,
+        text: "話し方の特徴は？",
+        choices: [
+            { text: "相手に合わせて、分かりやすく話す", scores: { M2: 2 } },
+            { text: "例え話や比喩を使って、イメージ豊かに話す", scores: { V2: 2 } },
+            { text: "事実と数字を使って、具体的に話す", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 93,
+        text: "よくまわりから言われる言葉は？？",
+        choices: [
+            { text: "アイディアマンだね、夢があるね、ビジョンがすごいね", scores: { V2: 2 } },
+            { text: "冷静だね、調整役だね、バランス感覚があるね", scores: { M2: 2 } },
+            { text: "落ち着いてるね、堅実だね、バランス感覚があるね", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 94,
+        text: "プレゼントをもらった時、嬉しいのは？",
+        choices: [
+            { text: "センスが良くて、使い勝手も良いもの", scores: { M2: 2 } },
+            { text: "欲しいものリストから選んでくれたもの", scores: { G2: 2 } },
+            { text: "サプライズ！予想外のユニークなもの", scores: { V2: 2 } }
+        ]
+    },
+    
+    {
+        id: 95,
+        text: "新年の抱負や目標は？",
+        choices: [
+            { text: "現実的だけど、少しチャレンジングな目標", scores: { M2: 2 } },
+            { text: "『今年は人生を変える！』大きな変革を目指す", scores: { V2: 2 } },
+            { text: "確実に達成できる、具体的で測定可能な目標", scores: { G2: 2 } }
+        ]
+    },
+    
+    {
+        id: 96,
+        text: "部屋の模様替えをする時は？",
+        choices: [
+            { text: "『こんな感じ！』とイメージ優先で大胆に変える", scores: { V2: 2 } },
+            { text: "サイズを測って、配置図を描いてから実行", scores: { G2: 2 } },
+            { text: "だいたいのイメージを決めて、やりながら調整", scores: { M2: 2 } }
+        ]
+    },
+    
+    {
+        id: 97,
+        text: "『もし1億円当たったら？』という話題では？",
+        choices: [
+            { text: "壮大な夢を語る。世界一周旅行とか起業とか！", scores: { V2: 2 } },
+            { text: "現実的な部分と夢の部分をバランスよく", scores: { M2: 2 } },
+            { text: "投資配分や税金まで考えた現実的なプラン", scores: { G2: 2 } }
+        ]
+    },
+    
+    // === 評価基準軸（25問）===
+    {
+        id: 98,
+        text: "友達が『この服似合う？』と聞いてきたら？",
+        supplement: "正直微妙だなと思った時の対応",
+        choices: [
+            { text: "『悪くないけど、こっちの方がもっと似合いそう！』と代案", scores: { M3: 2 } },
+            { text: "『うん、いいと思う！』と相手の気持ちを優先", scores: { E3: 2 } },
+            { text: "『正直に言うと、前の方が似合ってたかな』と言ってあげるのが誠実", scores: { A3: 2 } }
+        ]
+    },
+    
+    {
+        id: 99,
+        text: "グループで何かを決める時、重視するのは？",
+        choices: [
+            { text: "最も効率的で合理的な選択肢かどうか", scores: { A3: 2 } },
+            { text: "効率と皆の満足度のバランス", scores: { M3: 2 } },
+            { text: "みんなが納得して、気持ちよく進められるか", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 100,
+        text: "誰かが泣いている時の対応は？",
+        choices: [
+            { text: "原因を聞いて、解決策を一緒に考える", scores: { A3: 2 } },
+            { text: "まず共感して、落ち着いたら一緒に考える", scores: { M3: 2 } },
+            { text: "とにかく寄り添って、『大丈夫だよ』と抱きしめる", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 101,
+        text: "仕事や勉強でチームを組む時、どんな人と組みたい？",
+        choices: [
+            { text: "能力と人柄のバランスが良い人", scores: { M3: 2 } },
+            { text: "実力があって、確実に成果を出せる人", scores: { A3: 2 } },
+            { text: "一緒にいて楽しく、お互いを思いやれる人", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 102,
+        text: "褒められて一番嬉しいのは？",
+        choices: [
+            { text: "『論理的で頭がいい』『仕事ができる』", scores: { A3: 2 } },
+            { text: "『優しい』『一緒にいると安心する』", scores: { E3: 2 } },
+            { text: "『バランスが取れてて頼りになる』", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 103,
+        text: "映画やドラマを選ぶなら？",
+        choices: [
+            { text: "感動系、恋愛もの、人間ドラマ", scores: { E3: 2 } },
+            { text: "ミステリーやSF、ドキュメンタリーなど知的なもの", scores: { A3: 2 } },
+            { text: "ジャンルは問わず、評価の高い作品", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 104,
+        text: "議論や討論の時のスタイルは？",
+        choices: [
+            { text: "データと論理で、客観的に正しさを証明する", scores: { A3: 2 } },
+            { text: "論理も大事だが、相手の立場も考慮する", scores: { M3: 2 } },
+            { text: "対立を避け、みんなが納得する着地点を探す", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 105,
+        text: "リーダーとして大切にしたいことは？",
+        choices: [
+            { text: "メンバー一人一人の気持ちと成長", scores: { E3: 2 } },
+            { text: "明確な目標設定と、効率的な達成方法", scores: { A3: 2 } },
+            { text: "成果も大切だが、チームの調和も重視", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 106,
+        text: "プレゼントを選ぶ時の基準は？",
+        choices: [
+            { text: "実用的で長く使えるもの", scores: { A3: 2 } },
+            { text: "実用性とセンスのバランスが良いもの", scores: { M3: 2 } },
+            { text: "相手の気持ちを考えて、心がこもったもの", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 107,
+        text: "誰かがミスをした時の対応は？",
+        choices: [
+            { text: "原因を分析して、再発防止策を一緒に考える", scores: { A3: 2 } },
+            { text: "『誰にでもあることだよ』と優しくフォロー", scores: { E3: 2 } },
+            { text: "まず励まして、それから改善策を考える", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 108,
+        text: "恋愛において重視するのは？",
+        choices: [
+            { text: "感情的なつながり、心の温かさ", scores: { E3: 2 } },
+            { text: "価値観の一致、将来性、条件面", scores: { A3: 2 } },
+            { text: "相性の良さ、バランスの取れた関係", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 109,
+        text: "会話中に「それってちょっと違うんじゃないかな？」と思うような意見を誰かが言っていたとき、あなたはどうしますか？",
+        choices: [
+            { text: "事実や論理をもとに、自分の考えをその場でハッキリ伝える", scores: { A3: 2 } },
+            { text: "相手の考えを一度受け止めたうえで、場の空気を見ながら補足や別の視点をそっと加える", scores: { E3: 2 } },
+            { text: "まず相手がどうしてそう思ったのかを丁寧に聞いて、気持ちに寄り添う", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 110,
+        text: "怒りを感じた時の表現は？",
+        choices: [
+            { text: "感情も伝えながら、建設的に伝える", scores: { M3: 2 } },
+            { text: "冷静に問題点を指摘し、改善を求める", scores: { A3: 2 } },
+            { text: "感情を素直に表現し、気持ちを伝える", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 111,
+        text: "チームの雰囲気が悪い時、あなたは？",
+        choices: [
+            { text: "問題の原因を分析し、解決策を提案", scores: { A3: 2 } },
+            { text: "明るく振る舞って、雰囲気を和ませる", scores: { E3: 2 } },
+            { text: "みんなの意見を聞いて、調整役になる", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 112,
+        text: "大切な決断をする時の判断基準は？",
+        choices: [
+            { text: "論理と直感の両方を考慮", scores: { M3: 2 } },
+            { text: "心の声、直感、関わる人の幸せ", scores: { E3: 2 } },
+            { text: "データ、確率、論理的な分析結果", scores: { A3: 2 } }
+        ]
+    },
+    
+    {
+        id: 113,
+        text: "感動して涙が出るのは？",
+        choices: [
+            { text: "めったに泣かない。論理的に感動を理解", scores: { A3: 2 } },
+            { text: "感動も悲しみも素直に表現する", scores: { E3: 2 } },
+            { text: "時々。でも人前では我慢することも", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 114,
+        text: "ケンカや対立が起きた時は？",
+        choices: [
+            { text: "どちらが正しいか、論理的に判断する", scores: { A3: 2 } },
+            { text: "両方の言い分を聞いて、妥協点を探す", scores: { M3: 2 } },
+            { text: "みんなの気持ちを大切に、関係修復を優先", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 115,
+        text: "人を評価する時、最も重視するのは？",
+        choices: [
+            { text: "能力、実績、結果", scores: { A3: 2 } },
+            { text: "能力と人柄のバランス", scores: { M3: 2 } },
+            { text: "人柄、思いやり、誠実さ", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 116,
+        text: "アドバイスをする時のスタイルは？",
+        choices: [
+            { text: "問題点と解決策を明確に伝える", scores: { A3: 2 } },
+            { text: "まず共感して、一緒に考える姿勢", scores: { E3: 2 } },
+            { text: "相手の状況に応じて伝え方を調整", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 117,
+        text: "『正しさ』と『優しさ』どちらが大切？",
+        choices: [
+            { text: "正しいことを貫くのが結果的に皆のため", scores: { A3: 2 } },
+            { text: "優しさがあれば、多少の間違いは許される", scores: { E3: 2 } },
+            { text: "時と場合による。バランスが大切", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 118,
+        text: "SNSで好きな発信内容は？",
+        choices: [
+            { text: "役立つ情報、論理的な意見、分析", scores: { A3: 2 } },
+            { text: "バランスよく、いろんな内容を発信", scores: { M3: 2 } },
+            { text: "日常の感動、感謝、人との温かい交流", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 119,
+        text: "買い物で迷った時の決め手は？",
+        choices: [
+            { text: "機能、性能、コストパフォーマンス", scores: { A3: 2 } },
+            { text: "機能も見た目も、総合的に判断", scores: { M3: 2 } },
+            { text: "『これが好き！』という直感", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 120,
+        text: "理想の上司・先輩は？",
+        choices: [
+            { text: "実力もあり、人間的にも尊敬できる人", scores: { M3: 2 } },
+            { text: "的確な指示と公平な評価をしてくれる人", scores: { A3: 2 } },
+            { text: "温かく見守り、成長を応援してくれる人", scores: { E3: 2 } }
+        ]
+    },
+    
+    {
+        id: 121,
+        text: "会話で大切にしているのは？",
+        choices: [
+            { text: "心が通い合う、温かいコミュニケーション", scores: { E3: 2 } },
+            { text: "正確な情報伝達と論理的な展開", scores: { A3: 2 } },
+            { text: "内容も大切だが、相手との関係性も重視", scores: { M3: 2 } }
+        ]
+    },
+    
+    {
+        id: 122,
+        text: "理想の世界は？",
+        choices: [
+            { text: "合理的で効率的、公平な世界", scores: { A3: 2 } },
+            { text: "バランスが取れた調和のある世界", scores: { M3: 2 } },
+            { text: "愛と思いやりに満ちた温かい世界", scores: { E3: 2 } }
+        ]
+    }
+];
+
+// 全質問を統合
+const questions = [...clQuestions, ...personalityQuestions];
+
+// ===== 意識レベル判定関数（6段階対応版）=====
+function determineLevel() {
+    // レベル別スコアをリセット
+    levelScores = {
+        level1: 0,
+        level2: 0,
+        level3: 0,
+        level4: 0,
+        level5: 0,
+        level6: 0
+    };
+    
+    let hasLevel4Check = false;
+    let hasLevel5Check = false;
+    let hasLevel6Check = false;
+    
+    // レベル確認質問の回答を個別にチェック
+    let level3CheckScores = [];
+    let level4CheckScores = [];
+    let level5CheckScores = [];
+    let level6CheckScores = [];
+    
+    // 17番目の質問（お金の制約）の回答を取得
+    let moneyQuestionScore = null;
+    const moneyQuestionIndex = 16; // 配列は0から始まるので16
+    if (userAnswers[moneyQuestionIndex] !== undefined && clQuestions[moneyQuestionIndex].choices[userAnswers[moneyQuestionIndex]]) {
+        moneyQuestionScore = clQuestions[moneyQuestionIndex].choices[userAnswers[moneyQuestionIndex]].score;
+    }
+    
+    // 各回答をレベル別に集計
+    let positiveAnswerCount = 0; // ポジティブな回答数をカウント
+    let negativeOneCount = 0; // -1の回答数をカウント
+    let negativeTwoCount = 0; // -2の回答数をカウント
+    
+    clQuestions.forEach((question, index) => {
+        const answerIndex = userAnswers[index];
+        if (answerIndex !== undefined && question.choices[answerIndex]) {
+            const choice = question.choices[answerIndex];
+            const score = choice.score;
+            
+            // レベル4要件のチェック
+            if (choice.isLevel4Requirement) {
+                level4Requirements[choice.isLevel4Requirement] = (score === 1);
+            }
+            
+            // レベル5要件のチェック
+            if (choice.isLevel5Requirement) {
+                level5Requirements[choice.isLevel5Requirement] = (score === 1);
+            }
+            
+            // レベル確認質問をチェック
+            if (choice.isLevel4Check && score > 0) hasLevel4Check = true;
+            if (choice.isLevel5Check && score > 0) hasLevel5Check = true;
+            if (choice.isLevel6Check && score > 0) hasLevel6Check = true;
+            
+            // レベル3確認質問（質問35, 36）
+            if (index === 34 || index === 35) {
+                level3CheckScores.push(score);
+            }
+            // レベル4確認質問（質問37, 38）
+            if (index === 36 || index === 37) {
+                if (choice.isLevel4Check) level4CheckScores.push(score);
+            }
+            // レベル5確認質問（質問39, 40）
+            if (index === 38 || index === 39) {
+                if (choice.isLevel5Check) level5CheckScores.push(score);
+            }
+            // レベル6確認質問（質問41, 42）
+            if (index === 40 || index === 41) {
+                if (choice.isLevel6Check) level6CheckScores.push(score);
+            }
+            
+            if (score === -2) {
+                levelScores.level1++;
+                negativeTwoCount++;
+            }
+            else if (score === -1) {
+                levelScores.level2++;
+                negativeOneCount++;
+            }
+            else if (score === 0) levelScores.level3++;
+            else if (score === 1) {
+                positiveAnswerCount++; // ポジティブ回答をカウント
+                // ポジティブな回答をさらに分類
+                if (choice.isLevel6Check) levelScores.level6++;
+                else if (choice.isLevel5Check) levelScores.level5++;
+                else if (choice.isLevel4Check) levelScores.level4++;
+                else if (choice.isHighLevel) levelScores.level5++;
+                else levelScores.level4++;
+            }
+        }
+    });
+    
+    // レベルゲート方式での判定
+    const totalQuestions = 47; // 質問数を47に更新
+    
+    // レベル1のゲート：防衛的回答が10%以上（5個以上）ならレベル1
+if (levelScores.level1 / totalQuestions >= 0.10) return 1;
+    
+    // レベル2のゲート：葛藤的回答が30%以上ならレベル2
+    if ((levelScores.level1 + levelScores.level2) / totalQuestions >= 0.30) return 2;
+    
+    // ネガティブ回答による制限
+// レベル1：-2が5つ以上
+if (negativeTwoCount >= 5) {
+    return 1;
+}
+// レベル2上限：-2が3つ以上、または-1と-2合わせて10個以上
+else if (negativeTwoCount >= 3 || (negativeOneCount + negativeTwoCount) >= 10) {
+    return 2;
+}
+// レベル3上限：-2が1つ以上、または-1と-2合わせて5個以上
+else if (negativeTwoCount >= 1 || (negativeOneCount + negativeTwoCount) >= 5) {
+    return 3;
+}
+    
+    // 通常のレベル判定
+    let determinedLevel = 3; // デフォルト
+    
+    // レベル3確認質問（質問35, 36）の合計が+1以上でないとレベル3以上にはなれない
+const level3SumPositive = level3CheckScores.length === 2 && level3CheckScores.reduce((sum, score) => sum + score, 0) >= 1;
+    
+    // レベル4確認質問（質問37, 38）が両方+1でないとレベル4以上にはなれない
+    const level4BothPositive = level4CheckScores.length === 2 && level4CheckScores.every(score => score === 1);
+    
+    // レベル5確認質問（質問39, 40）が両方+1でないとレベル5以上にはなれない
+    const level5BothPositive = level5CheckScores.length === 2 && level5CheckScores.every(score => score === 1);
+    
+    // レベル3確認質問をクリアしていない場合はレベル2で確定
+if (!level3SumPositive) {
+    return 2;
+}
+    
+    // レベル4の新しい要件チェック
+    const meetsLevel4Requirements = level4Requirements.receivesMonthlyGratitude;
+    
+    // レベル5の新しい要件チェック
+    const meetsLevel5Requirements = 
+        level5Requirements.hasPublicRecognition &&
+        level5Requirements.hasTrainedSuccessors &&
+        level5Requirements.hasPassiveIncome &&
+        level5Requirements.hasLifetimeAssets;
+    
+    // レベル6の判定：レベル4,5要件も満たしている必要がある
+    if (hasLevel6Check && levelScores.level6 >= 3 && level5BothPositive && level4BothPositive && meetsLevel4Requirements && meetsLevel5Requirements) {
+        determinedLevel = 6;
+    }
+    // レベル5の判定：レベル4要件も満たしている必要がある
+    else if (hasLevel5Check && levelScores.level5 >= 3 && level4BothPositive && meetsLevel4Requirements && meetsLevel5Requirements) {
+        determinedLevel = 5;
+    }
+    // レベル4の判定：新しい要件を満たしている必要がある
+    else if (hasLevel4Check && levelScores.level4 >= 3 && meetsLevel4Requirements) {
+        determinedLevel = 4;
+    }
+    // レベル3の判定（レベル3確認質問は既にクリア済み）
+    else if (levelScores.level3 / totalQuestions >= 0.25) {
+        determinedLevel = 3;
+    }
+    
+   // お金の制約による上限設定
+if (moneyQuestionScore !== null) {
+    if (moneyQuestionScore === -2) {
+        // -2なら問答無用でレベル2上限
+        determinedLevel = Math.min(determinedLevel, 2);
+    } else if (moneyQuestionScore === -1) {
+        // -1ならポジティブ回答が70%以下ならレベル2上限、それ以外はレベル3上限
+        const totalAnswered = clQuestions.filter((_, i) => userAnswers[i] !== undefined).length;
+        const positiveRate = positiveAnswerCount / totalAnswered;
+        if (positiveRate <= 0.7) {
+            determinedLevel = Math.min(determinedLevel, 2);
+        } else {
+            determinedLevel = Math.min(determinedLevel, 3);
+        }
+    } else if (moneyQuestionScore === 0) {
+        // 0ならレベル4上限
+        determinedLevel = Math.min(determinedLevel, 4);
+    }
+}
+    
+    return determinedLevel;
+}
+
+// ===== タイプ判定関数 =====
+function determineType() {
+    // 行動エネルギー軸
+    let axis1 = 'M1';
+    if (scores.S1 > scores.M1 && scores.S1 > scores.P1) axis1 = 'S1';
+    else if (scores.P1 > scores.M1 && scores.P1 > scores.S1) axis1 = 'P1';
+    
+    // 思考傾向軸
+    let axis2 = 'M2';
+    if (scores.V2 > scores.M2 && scores.V2 > scores.G2) axis2 = 'V2';
+    else if (scores.G2 > scores.M2 && scores.G2 > scores.V2) axis2 = 'G2';
+    
+    // 評価基準軸
+    let axis3 = 'M3';
+    if (scores.A3 > scores.M3 && scores.A3 > scores.E3) axis3 = 'A3';
+    else if (scores.E3 > scores.M3 && scores.E3 > scores.A3) axis3 = 'E3';
+    
+    const typeMap = {
+        'S1': 'S', 'M1': 'M', 'P1': 'P',
+        'V2': 'V', 'M2': 'M', 'G2': 'G',
+        'A3': 'A', 'M3': 'M', 'E3': 'E'
+    };
+    
+    return typeMap[axis1] + typeMap[axis2] + typeMap[axis3];
+}
+
+// ===== UI関数 =====
+function startQuiz() {
+    const checkbox = document.getElementById('agreement-check');
+    
+    // チェックボックスが確認されているか確認
+    if (!checkbox.checked) {
+        alert('診断を開始するには、利用規約・著作権ポリシーに同意していただく必要があります。');
+        return;
+    }
+    
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    scores = {
+        S1: 0, M1: 0, P1: 0,
+        V2: 0, M2: 0, G2: 0,
+        A3: 0, M3: 0, E3: 0,
+        CL: 0
+    };
+    level4Requirements = {
+        receivesMonthlyGratitude: false
+    };
+    level5Requirements = {
+        hasPublicRecognition: false,
+        hasTrainedSuccessors: false,
+        hasPassiveIncome: false,
+        hasLifetimeAssets: false
+    };
+    loadQuestion();
+}
+
+function startPersonalityIntro() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('personality-intro').style.display = 'block';
+}
+
+function startPersonalityQuestions() {
+    document.getElementById('personality-intro').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    currentQuestionIndex = clQuestions.length; // 特性診断の最初から再開
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const question = questions[currentQuestionIndex];
+    const container = document.getElementById('question-container');
+    const choicesArea = document.getElementById('choices-area');
+    
+    // 特性質問中はガイダンスを表示
+    if (currentQuestionIndex >= clQuestions.length) {
+        document.getElementById('trait-guidance').style.display = 'block';
+    } else {
+        document.getElementById('trait-guidance').style.display = 'none';
+    }
+    
+    // 質問文を表示
+    container.innerHTML = `<div id="question-text">${question.text}</div>`;
+    if (question.supplement) {
+        container.innerHTML += `<div class="question-supplement">${question.supplement}</div>`;
+    }
+    
+    // 選択肢を表示
+    choicesArea.innerHTML = '';
+    question.choices.forEach((choice, index) => {
+        const button = document.createElement('div');
+        button.className = 'choice-button';
+        button.textContent = choice.text;
+        button.onclick = () => selectChoice(index);
+        
+        // 既に選択されている場合はハイライト
+        if (userAnswers[currentQuestionIndex] === index) {
+            button.classList.add('selected');
+        }
+        
+        choicesArea.appendChild(button);
+    });
+    
+    // カウンターとプログレスバー更新
+    document.getElementById('question-counter').textContent = 
+        `質問 ${currentQuestionIndex + 1} / ${questions.length}`;
+    
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+    
+    // ボタンの状態更新
+    document.getElementById('prev-question-button').disabled = currentQuestionIndex === 0;
+    updateNextButton();
+}
+
+function selectChoice(choiceIndex) {
+    userAnswers[currentQuestionIndex] = choiceIndex;
+    
+    // 選択状態を更新
+    const buttons = document.querySelectorAll('.choice-button');
+    buttons.forEach((button, index) => {
+        if (index === choiceIndex) {
+            button.classList.add('selected');
+        } else {
+            button.classList.remove('selected');
+        }
+    });
+    
+    updateNextButton();
+}
+
+function updateNextButton() {
+    const nextButton = document.getElementById('next-question-button');
+    nextButton.disabled = userAnswers[currentQuestionIndex] === undefined;
+}
+
+function loadNextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        
+        // 特性質問の冒頭で説明画面へ切り替え
+        if (currentQuestionIndex === clQuestions.length) {
+            startPersonalityIntro();
+            return;
+        }
+        
+        loadQuestion();
+    } else {
+        calculateResults();
+    }
+}
+
+function loadPreviousQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        
+        // 特性質問の最初から意識レベル質問に戻る場合
+        if (currentQuestionIndex === clQuestions.length - 1) {
+            // personality-introを非表示にしてquiz-screenを表示
+            document.getElementById('personality-intro').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+        }
+        
+        loadQuestion();
+    }
+}
+
+function calculateResults() {
+    // スコアをリセット
+    scores = {
+        S1: 0, M1: 0, P1: 0,
+        V2: 0, M2: 0, G2: 0,
+        A3: 0, M3: 0, E3: 0,
+        CL: 0
+    };
+    
+    // 各回答のスコアを集計
+    userAnswers.forEach((answerIndex, questionIndex) => {
+        const question = questions[questionIndex];
+        const choice = question.choices[answerIndex];
+        
+        if (choice.score !== undefined) {
+            // 意識レベル質問
+            scores.CL += choice.score;
+        } else if (choice.scores) {
+            // 性格タイプ質問
+            Object.keys(choice.scores).forEach(key => {
+                scores[key] += choice.scores[key];
+            });
+        }
+    });
+    
+    // CLスコアの正規化（最大47問なので、範囲を調整）
+    const maxPossibleCL = 47;
+    const minPossibleCL = -94; // -2 * 47
+    // スコアを0-100の範囲に正規化
+    scores.CL = ((scores.CL - minPossibleCL) / (maxPossibleCL - minPossibleCL)) * 100;
+    
+    showResults();
+}
+
+function showResults() {
+    const level = determineLevel();
+    const type = determineType();
+    const resultCode = type + level;
+    
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    document.getElementById('result-code').textContent = resultCode;
+    document.getElementById('code-example').textContent = resultCode;
+    
+    // 統計情報を空にする
+    const statsContainer = document.getElementById('statistics-container');
+    statsContainer.innerHTML = '';
+}
+
+function getPercentileEstimate(level) {
+    const percentiles = {
+        1: '80-100',    // 下位20%
+        2: '50-80',     // 次の30%
+        3: '20-50',     // 次の30%
+        4: '5-20',      // 上位20%
+        5: '1-5',       // 上位5%
+        6: '0.01-1'     // 上位1%
+    };
+    return percentiles[level];
+}
+
+function getTypeFrequency(type) {
+    // 実際の統計データに基づいて調整が必要
+    // より現実的な分布にする
+    const frequencies = {
+        'MMM': 8, 'MGM': 7, 'MMA': 6, 'MME': 7,
+        'SMM': 5, 'PMM': 5, 'MVM': 4, 'MGE': 6,
+        'MGA': 5, 'MVE': 4, 'MVA': 3, 'SGM': 4,
+        'SGE': 5, 'SGA': 3, 'PGM': 4, 'PGE': 5,
+        'PGA': 3, 'SVM': 3, 'SVE': 3, 'SVA': 2,
+        'PVM': 3, 'PVE': 3, 'PVA': 2, 'SME': 4,
+        'SMA': 3, 'PME': 4, 'PMA': 3
+    };
+    return frequencies[type] || 3;
+}
+
+function restartQuiz() {
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    
+    // チェックボックスもリセット
+    document.getElementById('agreement-check').checked = false;
+    document.getElementById('start-button').disabled = true;
+}
+</script>
+</body>
+</html>
