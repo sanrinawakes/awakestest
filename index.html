@@ -2499,8 +2499,8 @@ function proceedFromGrowthQuestion() {
     const validChoices = ['A', 'D', 'F', 'H'];
     const selectedValidCount = additionalAnswers.growth.filter(choice => validChoices.includes(choice)).length;
     
-    if (selectedValidCount >= 1) {
-        // A, D, F, Hのうち少なくとも1つを選んでいれば次の質問へ
+    if (selectedValidCount === 2) {
+        // A, D, F, Hの2つとも選んでいれば次の質問へ
         document.getElementById('growth-question').style.display = 'none';
         document.getElementById('immaturity-question').style.display = 'block';
     } else {
