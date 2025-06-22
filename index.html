@@ -225,6 +225,41 @@ transform: scale(1.02);
 box-shadow: 0 5px 20px rgba(92, 107, 192, 0.4);
 }
 
+/* 複数選択用のスタイル */
+.multi-choice-button {
+background: white;
+border: 2px solid #e0e0e0;
+padding: 18px 25px;
+border-radius: 15px;
+cursor: pointer;
+font-size: 1.05em;
+transition: var(--transition);
+text-align: left;
+position: relative;
+margin-bottom: 10px;
+}
+
+.multi-choice-button.selected {
+background: var(--primary-gradient);
+color: white;
+border-color: transparent;
+transform: scale(1.02);
+box-shadow: 0 5px 20px rgba(92, 107, 192, 0.4);
+}
+
+.multi-choice-button:hover {
+transform: translateY(-3px);
+box-shadow: var(--shadow-hover);
+border-color: #5c6bc0;
+}
+
+.selection-counter {
+font-size: 0.95em;
+color: #5c6bc0;
+margin-bottom: 20px;
+font-weight: 500;
+}
+
 .button-primary {
 background: var(--primary-gradient);
 color: white;
@@ -441,42 +476,19 @@ text-align: center;
 box-shadow: 0 2px 10px rgba(92, 107, 192, 0.1);
 }
 
-/* 追加質問のスタイル */
-#level-check-screen {
-text-align: center;
-padding: 40px 20px;
+/* 追加質問画面のスタイル */
+#additional-questions-screen {
+display: none;
 }
 
-#level-check-screen h2 {
-color: var(--text-primary);
-margin-bottom: 30px;
-font-size: 1.8em;
-font-weight: 400;
+#additional-questions-screen h2 {
+margin-bottom: 20px;
 }
 
-#level-check-screen p {
+#additional-questions-screen p {
 font-size: 1.1em;
 color: var(--text-secondary);
-line-height: 1.8;
 margin-bottom: 30px;
-}
-
-.multi-choice-instruction {
-background: #e8eaf6;
-padding: 15px;
-border-radius: 10px;
-margin-bottom: 20px;
-font-weight: 500;
-color: #5c6bc0;
-}
-
-.choice-button.multi-select {
-background: white;
-}
-
-.choice-button.multi-select.selected {
-background: var(--primary-gradient);
-color: white;
 }
 
 @media (max-width: 600px) {
@@ -537,13 +549,6 @@ padding: 20px;
 <button class="button-primary" onclick="startPersonalityQuestions()">診断を続ける</button>
 </div>
 
-<div id="level-check-screen" style="display:none;">
-<h2 id="level-check-title"></h2>
-<p id="level-check-text"></p>
-<div id="level-check-choices"></div>
-<button id="level-check-button" class="button-primary" onclick="submitLevelCheck()" disabled>次へ</button>
-</div>
-
 <div id="quiz-screen" style="display:none;">
 <div id="trait-guidance" style="display:none; margin-bottom: 20px; color: #5c6bc0; font-weight: 500;">
 ※「どちらが正しいか」ではなく、「普段どちらを選びがちか」で答えてください。
@@ -557,6 +562,40 @@ padding: 20px;
 <div class="button-container">
 <button id="prev-question-button" class="button-secondary" onclick="loadPreviousQuestion()">戻る</button>
 <button id="next-question-button" class="button-primary" onclick="loadNextQuestion()" disabled>次へ</button>
+</div>
+</div>
+
+<!-- 追加質問画面 -->
+<div id="additional-questions-screen">
+<div id="growth-question" style="display:none;">
+<h2>成長について</h2>
+<p><strong>どんな時に最も自分の成長を感じますか？2つ選んでください。</strong></p>
+<div class="selection-counter" id="growth-selection-counter">選択: 0 / 2</div>
+<div id="growth-choices">
+<div class="multi-choice-button" data-choice="A">A. 自分の未熟さを受け入れ行動を変えたとき。</div>
+<div class="multi-choice-button" data-choice="B">B. まわりの反応が肯定的なものに変わったとき。</div>
+<div class="multi-choice-button" data-choice="C">C. 冷静に中庸に物事を見られていると確信が持てたとき。</div>
+<div class="multi-choice-button" data-choice="D">D. 他者や状況をコントロールしていたことに気づいたとき。</div>
+<div class="multi-choice-button" data-choice="E">E. 他人や社会の反応に動じず、自分の価値基準で判断できたとき。</div>
+<div class="multi-choice-button" data-choice="F">F. つい反応してしまった自分に気づいたとき。</div>
+<div class="multi-choice-button" data-choice="G">G. 自分の影響力が広がったとき。</div>
+<div class="multi-choice-button" data-choice="H">H. 他人を見下していたことに気づいたとき。</div>
+</div>
+<button class="button-primary" id="growth-next-btn" onclick="proceedFromGrowthQuestion()" disabled>次へ</button>
+</div>
+
+<div id="immaturity-question" style="display:none;">
+<h2>未熟さについて</h2>
+<p><strong>"自分はまだまだだ"と感じるのはどんな時ですか？一つ選んでください</strong></p>
+<div id="immaturity-choices">
+<div class="choice-button" onclick="selectImmaturityChoice('A')">A. 結果的に人間関係を悪くしてしまった時</div>
+<div class="choice-button" onclick="selectImmaturityChoice('B')">B. 自分が"正しく伝えた"と思っていたことが、相手にとってはただの支配だったと気づいたとき</div>
+<div class="choice-button" onclick="selectImmaturityChoice('C')">C. 私の話をまだ受け取れるレベルではない人に伝えようとしてしまったとき</div>
+<div class="choice-button" onclick="selectImmaturityChoice('D')">D. 相手から誤解されてしまったとき</div>
+<div class="choice-button" onclick="selectImmaturityChoice('E')">E. そもそも全ては完璧なのでまだまだも未熟もない</div>
+<div class="choice-button" onclick="selectImmaturityChoice('F')">F. 誰かが苦しんでいるのを前に、自分には何もできないと痛感したとき</div>
+</div>
+<button class="button-primary" id="immaturity-next-btn" onclick="finalizeResults()" disabled>診断を完了する</button>
 </div>
 </div>
 
@@ -608,13 +647,13 @@ let level5Requirements = {
 };
 
 // 追加質問の回答を保存
-let levelCheckAnswers = {
-    growth: [],
-    maturity: null
+let additionalAnswers = {
+    growth: [], // 成長に関する選択（2つ）
+    immaturity: null // 未熟さに関する選択（1つ）
 };
 
-// 一時的なレベル保存用
-let temporaryLevel = null;
+// 仮の意識レベルを保存
+let preliminaryLevel = null;
 
 // ===== 同意チェックボックスの監視 =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -2014,39 +2053,6 @@ const personalityQuestions = [
     }
 ];
 
-// 追加質問の定義
-const levelCheckQuestions = {
-    growth: {
-        text: "どんな時に最も自分の成長を感じますか？2つ選んでください。",
-        multiSelect: true,
-        maxSelect: 2,
-        choices: [
-            { id: 'A', text: "自分の未熟さを受け入れ行動を変えたとき。" },
-            { id: 'B', text: "まわりの反応が肯定的なものに変わったとき。" },
-            { id: 'C', text: "冷静に中庸に物事を見られていると確信が持てたとき。" },
-            { id: 'D', text: "他者や状況をコントロールしていたことに気づいたとき。" },
-            { id: 'E', text: "他人や社会の反応に動じず、自分の価値基準で判断できたとき。" },
-            { id: 'F', text: "つい反応してしまった自分に気づいたとき。" },
-            { id: 'G', text: "自分の影響力が広がったとき。" },
-            { id: 'H', text: "他人を見下していたことに気づいたとき。" }
-        ],
-        validChoices: ['A', 'D', 'F', 'H']
-    },
-    maturity: {
-        text: '"自分はまだまだだ"と感じるのはどんな時ですか？一つ選んでください',
-        multiSelect: false,
-        choices: [
-            { id: 'A', text: "結果的に人間関係を悪くしてしまった時" },
-            { id: 'B', text: '自分が"正しく伝えた"と思っていたことが、相手にとってはただの支配だったと気づいたとき' },
-            { id: 'C', text: "私の話をまだ受け取れるレベルではない人に伝えようとしてしまったとき" },
-            { id: 'D', text: "相手から誤解されてしまったとき" },
-            { id: 'E', text: "そもそも全ては完璧なのでまだまだも未熟もない" },
-            { id: 'F', text: "誰かが苦しんでいるのを前に、自分には何もできないと痛感したとき" }
-        ],
-        validChoice: 'B'
-    }
-};
-
 // 全質問を統合
 const questions = [...clQuestions, ...personalityQuestions];
 
@@ -2147,30 +2153,30 @@ function determineLevel() {
     const totalQuestions = 47; // 質問数を47に更新
     
     // レベル1のゲート：防衛的回答が10%以上（5個以上）ならレベル1
-if (levelScores.level1 / totalQuestions >= 0.10) return 1;
+    if (levelScores.level1 / totalQuestions >= 0.10) return 1;
     
     // レベル2のゲート：葛藤的回答が30%以上ならレベル2
     if ((levelScores.level1 + levelScores.level2) / totalQuestions >= 0.30) return 2;
     
     // ネガティブ回答による制限
-// レベル1：-2が5つ以上
-if (negativeTwoCount >= 5) {
-    return 1;
-}
-// レベル2上限：-2が3つ以上、または-1と-2合わせて10個以上
-else if (negativeTwoCount >= 3 || (negativeOneCount + negativeTwoCount) >= 10) {
-    return 2;
-}
-// レベル3上限：-2が1つ以上、または-1と-2合わせて5個以上
-else if (negativeTwoCount >= 1 || (negativeOneCount + negativeTwoCount) >= 5) {
-    return 3;
-}
+    // レベル1：-2が5つ以上
+    if (negativeTwoCount >= 5) {
+        return 1;
+    }
+    // レベル2上限：-2が3つ以上、または-1と-2合わせて10個以上
+    else if (negativeTwoCount >= 3 || (negativeOneCount + negativeTwoCount) >= 10) {
+        return 2;
+    }
+    // レベル3上限：-2が1つ以上、または-1と-2合わせて5個以上
+    else if (negativeTwoCount >= 1 || (negativeOneCount + negativeTwoCount) >= 5) {
+        return 3;
+    }
     
     // 通常のレベル判定
     let determinedLevel = 3; // デフォルト
     
     // レベル3確認質問（質問35, 36）の合計が+1以上でないとレベル3以上にはなれない
-const level3SumPositive = level3CheckScores.length === 2 && level3CheckScores.reduce((sum, score) => sum + score, 0) >= 1;
+    const level3SumPositive = level3CheckScores.length === 2 && level3CheckScores.reduce((sum, score) => sum + score, 0) >= 1;
     
     // レベル4確認質問（質問37, 38）が両方+1でないとレベル4以上にはなれない
     const level4BothPositive = level4CheckScores.length === 2 && level4CheckScores.every(score => score === 1);
@@ -2179,9 +2185,9 @@ const level3SumPositive = level3CheckScores.length === 2 && level3CheckScores.re
     const level5BothPositive = level5CheckScores.length === 2 && level5CheckScores.every(score => score === 1);
     
     // レベル3確認質問をクリアしていない場合はレベル2で確定
-if (!level3SumPositive) {
-    return 2;
-}
+    if (!level3SumPositive) {
+        return 2;
+    }
     
     // レベル4の新しい要件チェック
     const meetsLevel4Requirements = level4Requirements.receivesMonthlyGratitude;
@@ -2210,25 +2216,387 @@ if (!level3SumPositive) {
         determinedLevel = 3;
     }
     
-   // お金の制約による上限設定
-if (moneyQuestionScore !== null) {
-    if (moneyQuestionScore === -2) {
-        // -2なら問答無用でレベル2上限
-        determinedLevel = Math.min(determinedLevel, 2);
-    } else if (moneyQuestionScore === -1) {
-        // -1ならポジティブ回答が70%以下ならレベル2上限、それ以外はレベル3上限
-        const totalAnswered = clQuestions.filter((_, i) => userAnswers[i] !== undefined).length;
-        const positiveRate = positiveAnswerCount / totalAnswered;
-        if (positiveRate <= 0.7) {
+    // お金の制約による上限設定
+    if (moneyQuestionScore !== null) {
+        if (moneyQuestionScore === -2) {
+            // -2なら問答無用でレベル2上限
             determinedLevel = Math.min(determinedLevel, 2);
-        } else {
-            determinedLevel = Math.min(determinedLevel, 3);
+        } else if (moneyQuestionScore === -1) {
+            // -1ならポジティブ回答が70%以下ならレベル2上限、それ以外はレベル3上限
+            const totalAnswered = clQuestions.filter((_, i) => userAnswers[i] !== undefined).length;
+            const positiveRate = positiveAnswerCount / totalAnswered;
+            if (positiveRate <= 0.7) {
+                determinedLevel = Math.min(determinedLevel, 2);
+            } else {
+                determinedLevel = Math.min(determinedLevel, 3);
+            }
+        } else if (moneyQuestionScore === 0) {
+            // 0ならレベル4上限
+            determinedLevel = Math.min(determinedLevel, 4);
         }
-    } else if (moneyQuestionScore === 0) {
-        // 0ならレベル4上限
-        determinedLevel = Math.min(determinedLevel, 4);
     }
-}
     
     return determinedLevel;
 }
+
+// ===== タイプ判定関数 =====
+function determineType() {
+    // 行動エネルギー軸
+    let axis1 = 'M1';
+    if (scores.S1 > scores.M1 && scores.S1 > scores.P1) axis1 = 'S1';
+    else if (scores.P1 > scores.M1 && scores.P1 > scores.S1) axis1 = 'P1';
+    
+    // 思考傾向軸
+    let axis2 = 'M2';
+    if (scores.V2 > scores.M2 && scores.V2 > scores.G2) axis2 = 'V2';
+    else if (scores.G2 > scores.M2 && scores.G2 > scores.V2) axis2 = 'G2';
+    
+    // 評価基準軸
+    let axis3 = 'M3';
+    if (scores.A3 > scores.M3 && scores.A3 > scores.E3) axis3 = 'A3';
+    else if (scores.E3 > scores.M3 && scores.E3 > scores.A3) axis3 = 'E3';
+    
+    const typeMap = {
+        'S1': 'S', 'M1': 'M', 'P1': 'P',
+        'V2': 'V', 'M2': 'M', 'G2': 'G',
+        'A3': 'A', 'M3': 'M', 'E3': 'E'
+    };
+    
+    return typeMap[axis1] + typeMap[axis2] + typeMap[axis3];
+}
+
+// ===== UI関数 =====
+function startQuiz() {
+    const checkbox = document.getElementById('agreement-check');
+    
+    // チェックボックスが確認されているか確認
+    if (!checkbox.checked) {
+        alert('診断を開始するには、利用規約・著作権ポリシーに同意していただく必要があります。');
+        return;
+    }
+    
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    scores = {
+        S1: 0, M1: 0, P1: 0,
+        V2: 0, M2: 0, G2: 0,
+        A3: 0, M3: 0, E3: 0,
+        CL: 0
+    };
+    level4Requirements = {
+        receivesMonthlyGratitude: false
+    };
+    level5Requirements = {
+        hasPublicRecognition: false,
+        hasTrainedSuccessors: false,
+        hasPassiveIncome: false,
+        hasLifetimeAssets: false
+    };
+    additionalAnswers = {
+        growth: [],
+        immaturity: null
+    };
+    preliminaryLevel = null;
+    loadQuestion();
+}
+
+function startPersonalityIntro() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('personality-intro').style.display = 'block';
+}
+
+function startPersonalityQuestions() {
+    document.getElementById('personality-intro').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    currentQuestionIndex = clQuestions.length; // 特性診断の最初から再開
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const question = questions[currentQuestionIndex];
+    const container = document.getElementById('question-container');
+    const choicesArea = document.getElementById('choices-area');
+    
+    // 特性質問中はガイダンスを表示
+    if (currentQuestionIndex >= clQuestions.length) {
+        document.getElementById('trait-guidance').style.display = 'block';
+    } else {
+        document.getElementById('trait-guidance').style.display = 'none';
+    }
+    
+    // 質問文を表示
+    container.innerHTML = `<div id="question-text">${question.text}</div>`;
+    if (question.supplement) {
+        container.innerHTML += `<div class="question-supplement">${question.supplement}</div>`;
+    }
+    
+    // 選択肢を表示
+    choicesArea.innerHTML = '';
+    question.choices.forEach((choice, index) => {
+        const button = document.createElement('div');
+        button.className = 'choice-button';
+        button.textContent = choice.text;
+        button.onclick = () => selectChoice(index);
+        
+        // 既に選択されている場合はハイライト
+        if (userAnswers[currentQuestionIndex] === index) {
+            button.classList.add('selected');
+        }
+        
+        choicesArea.appendChild(button);
+    });
+    
+    // カウンターとプログレスバー更新
+    document.getElementById('question-counter').textContent = 
+        `質問 ${currentQuestionIndex + 1} / ${questions.length}`;
+    
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+    
+    // ボタンの状態更新
+    document.getElementById('prev-question-button').disabled = currentQuestionIndex === 0;
+    updateNextButton();
+}
+
+function selectChoice(choiceIndex) {
+    userAnswers[currentQuestionIndex] = choiceIndex;
+    
+    // 選択状態を更新
+    const buttons = document.querySelectorAll('.choice-button');
+    buttons.forEach((button, index) => {
+        if (index === choiceIndex) {
+            button.classList.add('selected');
+        } else {
+            button.classList.remove('selected');
+        }
+    });
+    
+    updateNextButton();
+}
+
+function updateNextButton() {
+    const nextButton = document.getElementById('next-question-button');
+    nextButton.disabled = userAnswers[currentQuestionIndex] === undefined;
+}
+
+function loadNextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        
+        // 特性質問の冒頭で説明画面へ切り替え
+        if (currentQuestionIndex === clQuestions.length) {
+            startPersonalityIntro();
+            return;
+        }
+        
+        loadQuestion();
+    } else {
+        // 最後の質問まで完了したら、意識レベルを仮判定
+        calculatePreliminaryLevel();
+        if (preliminaryLevel >= 4) {
+            // レベル4以上の可能性がある場合は追加質問へ
+            showAdditionalQuestions();
+        } else {
+            // レベル3以下確定の場合は結果画面へ
+            calculateResults();
+        }
+    }
+}
+
+function loadPreviousQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        
+        // 特性質問の最初から意識レベル質問に戻る場合
+        if (currentQuestionIndex === clQuestions.length - 1) {
+            // personality-introを非表示にしてquiz-screenを表示
+            document.getElementById('personality-intro').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+        }
+        
+        loadQuestion();
+    }
+}
+
+// 仮の意識レベルを計算する関数
+function calculatePreliminaryLevel() {
+    // スコアをリセット
+    scores = {
+        S1: 0, M1: 0, P1: 0,
+        V2: 0, M2: 0, G2: 0,
+        A3: 0, M3: 0, E3: 0,
+        CL: 0
+    };
+    
+    // 各回答のスコアを集計
+    userAnswers.forEach((answerIndex, questionIndex) => {
+        const question = questions[questionIndex];
+        const choice = question.choices[answerIndex];
+        
+        if (choice.score !== undefined) {
+            // 意識レベル質問
+            scores.CL += choice.score;
+        } else if (choice.scores) {
+            // 性格タイプ質問
+            Object.keys(choice.scores).forEach(key => {
+                scores[key] += choice.scores[key];
+            });
+        }
+    });
+    
+    // 仮の意識レベルを判定
+    preliminaryLevel = determineLevel();
+}
+
+// 追加質問を表示する関数
+function showAdditionalQuestions() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('additional-questions-screen').style.display = 'block';
+    document.getElementById('growth-question').style.display = 'block';
+    
+    // 成長に関する質問の選択肢にクリックイベントを設定
+    const growthChoices = document.querySelectorAll('#growth-choices .multi-choice-button');
+    growthChoices.forEach(button => {
+        button.addEventListener('click', function() {
+            selectGrowthChoice(this);
+        });
+    });
+}
+
+// 成長質問の選択処理
+function selectGrowthChoice(button) {
+    const choice = button.getAttribute('data-choice');
+    const currentSelections = additionalAnswers.growth;
+    
+    if (button.classList.contains('selected')) {
+        // 既に選択されている場合は解除
+        button.classList.remove('selected');
+        const index = currentSelections.indexOf(choice);
+        if (index > -1) {
+            currentSelections.splice(index, 1);
+        }
+    } else {
+        // 新たに選択
+        if (currentSelections.length < 2) {
+            button.classList.add('selected');
+            currentSelections.push(choice);
+        } else {
+            alert('選択は2つまでです。選択を解除してから選び直してください。');
+        }
+    }
+    
+    // 選択数を更新
+    document.getElementById('growth-selection-counter').textContent = `選択: ${currentSelections.length} / 2`;
+    
+    // 次へボタンの有効/無効を切り替え
+    document.getElementById('growth-next-btn').disabled = currentSelections.length !== 2;
+}
+
+// 成長質問から進む処理
+function proceedFromGrowthQuestion() {
+    const validChoices = ['A', 'D', 'F', 'H'];
+    const selectedValidCount = additionalAnswers.growth.filter(choice => validChoices.includes(choice)).length;
+    
+    if (selectedValidCount >= 1) {
+        // A, D, F, Hのうち少なくとも1つを選んでいれば次の質問へ
+        document.getElementById('growth-question').style.display = 'none';
+        document.getElementById('immaturity-question').style.display = 'block';
+    } else {
+        // それ以外の場合はレベル3以下確定
+        preliminaryLevel = Math.min(preliminaryLevel, 3);
+        finalizeResults();
+    }
+}
+
+// 未熟さに関する質問の選択処理
+function selectImmaturityChoice(choice) {
+    additionalAnswers.immaturity = choice;
+    
+    // 選択状態を更新
+    const buttons = document.querySelectorAll('#immaturity-choices .choice-button');
+    buttons.forEach(button => {
+        if (button.textContent.startsWith(choice + '.')) {
+            button.classList.add('selected');
+        } else {
+            button.classList.remove('selected');
+        }
+    });
+    
+    // 次へボタンを有効化
+    document.getElementById('immaturity-next-btn').disabled = false;
+}
+
+// 最終的な結果を計算して表示
+function finalizeResults() {
+    // 未熟さの質問でB以外を選んだ場合はレベル3以下
+    if (additionalAnswers.immaturity && additionalAnswers.immaturity !== 'B') {
+        preliminaryLevel = Math.min(preliminaryLevel, 3);
+    }
+    
+    // 最終的なレベルを設定
+    scores.finalLevel = preliminaryLevel;
+    
+    calculateResults();
+}
+
+function calculateResults() {
+    // 既にスコアが計算されている場合は再計算しない
+    if (!scores.finalLevel) {
+        scores.finalLevel = preliminaryLevel || determineLevel();
+    }
+    
+    showResults();
+}
+
+function showResults() {
+    const level = scores.finalLevel || determineLevel();
+    const type = determineType();
+    const resultCode = type + level;
+    
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('additional-questions-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    document.getElementById('result-code').textContent = resultCode;
+    document.getElementById('code-example').textContent = resultCode;
+    
+    // 統計情報を空にする
+    const statsContainer = document.getElementById('statistics-container');
+    statsContainer.innerHTML = '';
+}
+
+function restartQuiz() {
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    additionalAnswers = {
+        growth: [],
+        immaturity: null
+    };
+    preliminaryLevel = null;
+    
+    // チェックボックスもリセット
+    document.getElementById('agreement-check').checked = false;
+    document.getElementById('start-button').disabled = true;
+    
+    // 追加質問の選択状態もリセット
+    const growthButtons = document.querySelectorAll('#growth-choices .multi-choice-button');
+    growthButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+    
+    const immaturityButtons = document.querySelectorAll('#immaturity-choices .choice-button');
+    immaturityButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+    
+    document.getElementById('growth-selection-counter').textContent = '選択: 0 / 2';
+    document.getElementById('growth-next-btn').disabled = true;
+    document.getElementById('immaturity-next-btn').disabled = true;
+}
+</script>
+</body>
+</html>
