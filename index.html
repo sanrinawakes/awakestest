@@ -1926,12 +1926,12 @@ const personalityQuestions = [
     
     {
         id: 110,
-        text: "怒りを感じた時の表現は？",
+        text: "会話中に『それってちょっと違うんじゃないかな？』と思う意見を聞いたとき、あなたはどうしますか？",
         choices: [
             { text: "感情も伝えながら、建設的に伝える", scores: { M3: 2 } },
             { text: "冷静に問題点を指摘し、改善を求める", scores: { A3: 2 } },
             { text: "感情を素直に表現し、気持ちを伝える", scores: { E3: 2 } },
-            { text: "言いたいことがあっても黙っている" }
+            { text: "特に反応しない" }
         ]
     },
     
@@ -2068,21 +2068,21 @@ const noSpeakReasonQuestion = {
     ]
 };
 
-// 怒りを感じても黙っている理由の追加入力用質問
+// 反応しない理由の追加入力用質問
 const angerSilentReasonQuestion = {
     id: 124,
-    text: "その時あなたの内側では、どんな気持ちや考えがあると思いますか？",
+    text: "その時あなたの中にはどんな思いがありますか？",
     choices: [
-        { text: "自分の気持ちをぶつけて相手を傷つけたくない", scores: { E3: 1 } },
-        { text: "波風を立てるくらいなら黙っていたほうがいい", scores: { M3: 1 } },
-        { text: "自分が間違っている可能性もあるので発言しないことが多い", scores: { A3: 1 } }
+        { text: "意見の違いがあると空気が悪くなるから", scores: { M3: 1 } },
+        { text: "自分が間違っているかもしれないから", scores: { A3: 1 } },
+        { text: "口論になり傷つけたり傷ついたりしたくないから", scores: { E3: 1 } }
     ]
 };
 
 // 雰囲気が悪い時に黙っている理由の追加入力用質問
 const teamSilentReasonQuestion = {
     id: 125,
-    text: "その時あなたにはどんな気持ちや考えがあると思いますか？",
+    text: "その時あなたの内側では、どんな気持ちや考えがあると思いますか？",
     choices: [
         { text: "下手に動いて感情がこじれると困る。誰かを傷つけたくない。", scores: { E3: 1 } },
         { text: "自分の立場ではどうにもできないと空気を読んでいる", scores: { M3: 1 } },
@@ -2433,7 +2433,7 @@ function selectChoice(choiceIndex) {
         }
     }
 
-    // 110番の質問で「言いたいことがあっても黙っている」を選んだ場合、理由の質問を挿入
+    // 110番の質問で「特に反応しない」を選んだ場合、理由の質問を挿入
     if (!insertedAngerSilentReason && currentQuestionIndex === angerSilentQuestionIndex && choiceIndex === 3) {
         questions.splice(currentQuestionIndex + 1, 0, angerSilentReasonQuestion);
         userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
