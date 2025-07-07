@@ -655,6 +655,14 @@ let additionalAnswers = {
 // 仮の意識レベルを保存
 let preliminaryLevel = null;
 
+// 追加質問の挿入状態を管理
+let additionalQuestionPenalties = {
+    noSpeak: false,
+    opinionSilent: false,
+    angerSilent: false,
+    teamSilent: false
+};
+
 // ===== 同意チェックボックスの監視 =====
 document.addEventListener('DOMContentLoaded', function() {
     const checkbox = document.getElementById('agreement-check');
@@ -669,7 +677,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// ===== 意識レベル測定用質問（46問）改善版 =====
+// ===== 意識レベル測定用質問（47問）=====
 const clQuestions = [
     // 1. 朝起きたとき
     {
@@ -686,7 +694,7 @@ const clQuestions = [
         ]
     },
     
-    // 2. 他人のSNSや成功話（No.27と統合）
+    // 2. 他人のSNSや成功話
     {
         id: 2,
         text: "他人のSNSや知人の成功・成長を見たとき",
@@ -728,7 +736,7 @@ const clQuestions = [
         ]
     },
     
-    // 5. 困難な状況への対応（No.5、13、28を統合）
+    // 5. 困難な状況への対応
     {
         id: 5,
         text: "困難な状況・失敗・トラブルに遭遇した時",
@@ -860,18 +868,18 @@ const clQuestions = [
         ]
     },
     
-    // 15. 自己批判・限界との向き合い方（No.16と29を統合）
+    // 15. 学んだ知識の活用
     {
-  id: 15,
-  text: "本や講座などで得た知識を、日常でどう扱っていますか？",
-  choices: [
-    { text: "学んでも忙しくてあまり活かせていない", score: -1 },
-    { text: "自分のために使うことがほとんど", score: 0 },
-    { text: "学びたくてもお金や時間がなく諦めることが多い", score: -2 },
-    { text: "学んだことを実践して、他人の人生に良い影響を与えている", score: 1, isHighLevel: true },
-    { text: "自分が学ぶのは、たくさんの方の幸せに貢献したいから", score: 1, isLevel5Check: true }
-  ]
-},
+        id: 15,
+        text: "本や講座などで得た知識を、日常でどう扱っていますか？",
+        choices: [
+            { text: "学んでも忙しくてあまり活かせていない", score: -1 },
+            { text: "自分のために使うことがほとんど", score: 0 },
+            { text: "学びたくてもお金や時間がなく諦めることが多い", score: -2 },
+            { text: "学んだことを実践して、他人の人生に良い影響を与えている", score: 1, isHighLevel: true },
+            { text: "自分が学ぶのは、たくさんの方の幸せに貢献したいから", score: 1, isLevel5Check: true }
+        ]
+    },
     
     // 16. 他人の成長への反応
     {
@@ -895,7 +903,7 @@ const clQuestions = [
             { text: "買えるものと我慢するものがあり、バランスを取りながらやりくりしていた", score: 0 },
             { text: "高価なものは望まないようにしており、日常で我慢しているが納得している", score: -1 },
             { text: "高額なものも含めて、必要と感じたものは無理なく手に入れられる状態だった", score: 1 },
-             { text: "高額かどうかに関係なく、必要なら迷いなく手に入れていたので我慢はしなかった", score: 1 },
+            { text: "高額かどうかに関係なく、必要なら迷いなく手に入れていたので我慢はしなかった", score: 1 },
             { text: "必要な時に誰かに借りたり、支払いを待ってもらうことがあった", score: -2 },
             { text: "家族や他人の制約により自由にお金を使えなかった", score: -2 }
         ]
@@ -967,7 +975,7 @@ const clQuestions = [
         ]
     },
     
-    // 23. 誰かと意見が食い違ったとき
+    // 23. チャレンジの頻度
     {
         id: 23,
         text: "過去半年であなたはどれくらいチャレンジをしましたか？",
@@ -980,7 +988,7 @@ const clQuestions = [
         ]
     },
     
-    // 24. 家族や身近な人の幸せについて
+    // 24. タイミングや運
     {
         id: 24,
         text: "タイミングや運のよさ",
@@ -1007,7 +1015,7 @@ const clQuestions = [
         ]
     },
     
-    // 26. 感謝の気持ち
+    // 26. リーダーシップ
     {
         id: 26,
         text: "リーダーシップを取ることについて",
@@ -1158,7 +1166,7 @@ const clQuestions = [
         ]
     },
     
-    // 37. レベル4確認質問1（既存No.40の改善版）
+    // 37. レベル4確認質問1
     {
         id: 37,
         text: "「あなたがいると場が落ち着く」もしくは「間に入ると話が進む」など、周囲から言われることがありますか？",
@@ -1184,7 +1192,7 @@ const clQuestions = [
         ]
     },
     
-    // 39. レベル5確認質問1（既存No.41の改善）
+    // 39. レベル5確認質問1
     {
         id: 39,
         text: "発信・提案・制作・指導などを通じて、100人以上に影響を与えたと自覚でき、実際にフィードバックも複数受け取ったことがありますか？",
@@ -1404,7 +1412,7 @@ const personalityQuestions = [
             { text: "思いついたらすぐ発言、議論を活発にする", scores: { P1: 2 } },
             { text: "じっくり考えてから、必要な時に的確に発言", scores: { S1: 2 } },
             { text: "様子を見ながら、タイミングを見て発言", scores: { M1: 2 } },
-            { text: "基本的に発言しない" }
+            { text: "基本的に発言しない" } // この選択肢で追加質問
         ]
     },
     
@@ -1678,7 +1686,7 @@ const personalityQuestions = [
         choices: [
             { text: "やるべきこと・成果が明確な順に進める", scores: { G2: 2 } },
             { text: "やりがいや面白さを感じる方を先にやる", scores: { V2: 2 } },
-            { text: "きれいに撮れればOK。時々凝った写真も", scores: { M2: 2 } }
+            { text: "効率と楽しさのバランスを考える", scores: { M2: 2 } }
         ]
     },
     
@@ -1754,11 +1762,11 @@ const personalityQuestions = [
     
     {
         id: 93,
-        text: "よくまわりから言われる言葉は？？",
+        text: "よくまわりから言われる言葉は？",
         choices: [
             { text: "アイディアマンだね、夢があるね、ビジョンがすごいね", scores: { V2: 2 } },
             { text: "冷静だね、調整役だね、バランス感覚があるね", scores: { M2: 2 } },
-            { text: "落ち着いてるね、堅実だね、バランス感覚があるね", scores: { G2: 2 } }
+            { text: "落ち着いてるね、堅実だね、責任感があるね", scores: { G2: 2 } }
         ]
     },
     
@@ -1920,18 +1928,19 @@ const personalityQuestions = [
         choices: [
             { text: "事実や論理をもとに、自分の考えをその場でハッキリ伝える", scores: { A3: 2 } },
             { text: "相手の考えを一度受け止めたうえで、場の空気を見ながら補足や別の視点をそっと加える", scores: { E3: 2 } },
-            { text: "まず相手がどうしてそう思ったのかを丁寧に聞いて、気持ちに寄り添う", scores: { M3: 2 } }
+            { text: "まず相手がどうしてそう思ったのかを丁寧に聞いて、気持ちに寄り添う", scores: { M3: 2 } },
+            { text: "特に反応しない" } // この選択肢で追加質問
         ]
     },
     
     {
         id: 110,
-        text: "怒りを感じた時の表現は？",
+        text: "最近、怒りや不安などのネガティブ感情が湧いたとき、どうしましたか？",
         choices: [
             { text: "感情も伝えながら、建設的に伝える", scores: { M3: 2 } },
             { text: "冷静に問題点を指摘し、改善を求める", scores: { A3: 2 } },
             { text: "感情を素直に表現し、気持ちを伝える", scores: { E3: 2 } },
-            { text: "言いたいことがあっても黙っている" }
+            { text: "言いたいことがあっても黙っている" } // この選択肢で追加質問
         ]
     },
     
@@ -1942,7 +1951,7 @@ const personalityQuestions = [
             { text: "問題の原因を分析し、解決策を提案", scores: { A3: 2 } },
             { text: "明るく振る舞って、雰囲気を和ませる", scores: { E3: 2 } },
             { text: "みんなの意見を聞いて、調整役になる", scores: { M3: 2 } },
-            { text: "雰囲気が悪くても特に動かず、様子を見ていることが多い" }
+            { text: "雰囲気が悪くても特に動かず、様子を見ていることが多い" } // この選択肢で追加質問
         ]
     },
     
@@ -2057,6 +2066,7 @@ const personalityQuestions = [
     }
 ];
 
+// ===== 追加質問の定義 =====
 // 発言しない理由の追加入力用質問
 const noSpeakReasonQuestion = {
     id: 123,
@@ -2068,9 +2078,20 @@ const noSpeakReasonQuestion = {
     ]
 };
 
+// 意見に反応しない理由の追加入力用質問  
+const opinionSilentReasonQuestion = {
+    id: 124,
+    text: "その時あなたの中にはどんな思いがありますか？",
+    choices: [
+        { text: "意見の違いがあると空気が悪くなるから", scores: { M3: 1 } },
+        { text: "自分が間違っているかもしれないから", scores: { A3: 1 } },
+        { text: "口論になり傷つけたり傷ついたりしたくないから", scores: { E3: 1 } }
+    ]
+};
+
 // 怒りを感じても黙っている理由の追加入力用質問
 const angerSilentReasonQuestion = {
-    id: 124,
+    id: 125,
     text: "その時あなたの内側では、どんな気持ちや考えがあると思いますか？",
     choices: [
         { text: "自分の気持ちをぶつけて相手を傷つけたくない", scores: { E3: 1 } },
@@ -2081,8 +2102,8 @@ const angerSilentReasonQuestion = {
 
 // 雰囲気が悪い時に黙っている理由の追加入力用質問
 const teamSilentReasonQuestion = {
-    id: 125,
-    text: "その時あなたにはどんな気持ちや考えがあると思いますか？",
+    id: 126,
+    text: "その時あなたの内側では、どんな気持ちや考えがあると思いますか？",
     choices: [
         { text: "下手に動いて感情がこじれると困る。誰かを傷つけたくない。", scores: { E3: 1 } },
         { text: "自分の立場ではどうにもできないと空気を読んでいる", scores: { M3: 1 } },
@@ -2092,15 +2113,14 @@ const teamSilentReasonQuestion = {
 
 // 全質問を統合
 let questions = [...clQuestions, ...personalityQuestions];
-let noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
-let insertedNoSpeakReason = false;
-let noSpeakPenalty = false;
-let angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
-let insertedAngerSilentReason = false;
-let angerSilentPenalty = false;
-let teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
-let insertedTeamSilentReason = false;
-let teamSilentPenalty = false;
+
+// 追加質問の挿入状態を管理する変数
+let insertedQuestions = {
+    noSpeak: false,
+    opinionSilent: false,
+    angerSilent: false,
+    teamSilent: false
+};
 
 // ===== 意識レベル判定関数（6段階対応版）=====
 function determineLevel() {
@@ -2326,15 +2346,23 @@ function startQuiz() {
     currentQuestionIndex = 0;
     userAnswers = [];
     questions = [...clQuestions, ...personalityQuestions];
-    noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
-    insertedNoSpeakReason = false;
-    noSpeakPenalty = false;
-    angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
-    insertedAngerSilentReason = false;
-    angerSilentPenalty = false;
-    teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
-    insertedTeamSilentReason = false;
-    teamSilentPenalty = false;
+    
+    // 追加質問の挿入状態をリセット
+    insertedQuestions = {
+        noSpeak: false,
+        opinionSilent: false,
+        angerSilent: false,
+        teamSilent: false
+    };
+    
+    // 追加質問に行った場合のペナルティフラグをリセット
+    additionalQuestionPenalties = {
+        noSpeak: false,
+        opinionSilent: false,
+        angerSilent: false,
+        teamSilent: false
+    };
+    
     scores = {
         S1: 0, M1: 0, P1: 0,
         V2: 0, M2: 0, G2: 0,
@@ -2418,38 +2446,107 @@ function loadQuestion() {
 
 function selectChoice(choiceIndex) {
     userAnswers[currentQuestionIndex] = choiceIndex;
+    const currentQuestion = questions[currentQuestionIndex];
 
-    // 58番の質問で「基本的に発言しない」を選んだ場合、理由の質問を挿入
-    if (!insertedNoSpeakReason && currentQuestionIndex === noSpeakQuestionIndex && choiceIndex === 3) {
+    console.log('Current Question ID:', currentQuestion.id);
+    console.log('Choice Index:', choiceIndex);
+    console.log('Choice Text:', currentQuestion.choices[choiceIndex].text);
+
+    // まず、以前に挿入された追加質問を削除する処理
+    
+    // 質問58で以前に追加質問を挿入していた場合の処理
+    if (currentQuestion.id === 58 && insertedQuestions.noSpeak) {
+        if (choiceIndex !== 3) {
+            // 第4の選択肢以外を選んだ場合は追加質問を削除
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            if (nextQuestion && nextQuestion.id === 123) {
+                questions.splice(currentQuestionIndex + 1, 1);
+                userAnswers.splice(currentQuestionIndex + 1, 1);
+                insertedQuestions.noSpeak = false;
+                additionalQuestionPenalties.noSpeak = false;
+                console.log('Removed noSpeakReasonQuestion');
+            }
+        }
+    }
+
+    // 質問109で以前に追加質問を挿入していた場合の処理
+    if (currentQuestion.id === 109 && insertedQuestions.opinionSilent) {
+        if (choiceIndex !== 3) {
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            if (nextQuestion && nextQuestion.id === 124) {
+                questions.splice(currentQuestionIndex + 1, 1);
+                userAnswers.splice(currentQuestionIndex + 1, 1);
+                insertedQuestions.opinionSilent = false;
+                additionalQuestionPenalties.opinionSilent = false;
+                console.log('Removed opinionSilentReasonQuestion');
+            }
+        }
+    }
+
+    // 質問110で以前に追加質問を挿入していた場合の処理
+    if (currentQuestion.id === 110 && insertedQuestions.angerSilent) {
+        if (choiceIndex !== 3) {
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            if (nextQuestion && nextQuestion.id === 125) {
+                questions.splice(currentQuestionIndex + 1, 1);
+                userAnswers.splice(currentQuestionIndex + 1, 1);
+                insertedQuestions.angerSilent = false;
+                additionalQuestionPenalties.angerSilent = false;
+                console.log('Removed angerSilentReasonQuestion');
+            }
+        }
+    }
+
+    // 質問111で以前に追加質問を挿入していた場合の処理
+    if (currentQuestion.id === 111 && insertedQuestions.teamSilent) {
+        if (choiceIndex !== 3) {
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            if (nextQuestion && nextQuestion.id === 126) {
+                questions.splice(currentQuestionIndex + 1, 1);
+                userAnswers.splice(currentQuestionIndex + 1, 1);
+                insertedQuestions.teamSilent = false;
+                additionalQuestionPenalties.teamSilent = false;
+                console.log('Removed teamSilentReasonQuestion');
+            }
+        }
+    }
+
+    // 次に、新しく追加質問を挿入する処理
+
+    // 58番の質問で「基本的に発言しない」（第4の選択肢、インデックス3）を選んだ場合
+    if (currentQuestion.id === 58 && choiceIndex === 3 && !insertedQuestions.noSpeak) {
+        console.log('Inserting noSpeakReasonQuestion');
         questions.splice(currentQuestionIndex + 1, 0, noSpeakReasonQuestion);
         userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
-        insertedNoSpeakReason = true;
-        noSpeakPenalty = true;
-        if (angerSilentQuestionIndex > currentQuestionIndex) {
-            angerSilentQuestionIndex++;
-        }
-        if (teamSilentQuestionIndex > currentQuestionIndex) {
-            teamSilentQuestionIndex++;
-        }
+        insertedQuestions.noSpeak = true;
+        additionalQuestionPenalties.noSpeak = true;
     }
 
-    // 110番の質問で「言いたいことがあっても黙っている」を選んだ場合、理由の質問を挿入
-    if (!insertedAngerSilentReason && currentQuestionIndex === angerSilentQuestionIndex && choiceIndex === 3) {
+    // 109番の質問で「特に反応しない」（第4の選択肢、インデックス3）を選んだ場合
+    if (currentQuestion.id === 109 && choiceIndex === 3 && !insertedQuestions.opinionSilent) {
+        console.log('Inserting opinionSilentReasonQuestion');
+        questions.splice(currentQuestionIndex + 1, 0, opinionSilentReasonQuestion);
+        userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
+        insertedQuestions.opinionSilent = true;
+        additionalQuestionPenalties.opinionSilent = true;
+    }
+
+    // 110番の質問で「言いたいことがあっても黙っている」（第4の選択肢、インデックス3）を選んだ場合
+    if (currentQuestion.id === 110 && choiceIndex === 3 && !insertedQuestions.angerSilent) {
+        console.log('Inserting angerSilentReasonQuestion');
         questions.splice(currentQuestionIndex + 1, 0, angerSilentReasonQuestion);
         userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
-        insertedAngerSilentReason = true;
-        angerSilentPenalty = true;
-        if (teamSilentQuestionIndex > currentQuestionIndex) {
-            teamSilentQuestionIndex++;
-        }
+        insertedQuestions.angerSilent = true;
+        additionalQuestionPenalties.angerSilent = true;
     }
 
-    // 111番の質問で「雰囲気が悪くても特に動かず、様子を見ていることが多い」を選んだ場合、理由の質問を挿入
-    if (!insertedTeamSilentReason && currentQuestionIndex === teamSilentQuestionIndex && choiceIndex === 3) {
+    // 111番の質問で「雰囲気が悪くても特に動かず、様子を見ていることが多い」（第4の選択肢、インデックス3）を選んだ場合
+    if (currentQuestion.id === 111 && choiceIndex === 3 && !insertedQuestions.teamSilent) {
+        console.log('Inserting teamSilentReasonQuestion');
         questions.splice(currentQuestionIndex + 1, 0, teamSilentReasonQuestion);
         userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
-        insertedTeamSilentReason = true;
-        teamSilentPenalty = true;
+        insertedQuestions.teamSilent = true;
+        additionalQuestionPenalties.teamSilent = true;
     }
     
     // 選択状態を更新
@@ -2475,7 +2572,11 @@ function loadNextQuestion() {
         currentQuestionIndex++;
         
         // 特性質問の冒頭で説明画面へ切り替え
-        if (currentQuestionIndex === clQuestions.length) {
+        // ただし、追加質問が挿入されている場合は元のclQuestions.lengthが変わっているので調整
+        const originalClQuestionsLength = clQuestions.length;
+        const additionalQuestionsCount = Object.values(insertedQuestions).filter(inserted => inserted).length;
+        
+        if (currentQuestionIndex === originalClQuestionsLength + additionalQuestionsCount) {
             startPersonalityIntro();
             return;
         }
@@ -2522,6 +2623,8 @@ function calculatePreliminaryLevel() {
     // 各回答のスコアを集計
     userAnswers.forEach((answerIndex, questionIndex) => {
         const question = questions[questionIndex];
+        if (!question || !question.choices || !question.choices[answerIndex]) return;
+        
         const choice = question.choices[answerIndex];
         
         if (choice.score !== undefined) {
@@ -2538,13 +2641,10 @@ function calculatePreliminaryLevel() {
 
     // 仮の意識レベルを判定
     preliminaryLevel = determineLevel();
-    if (noSpeakPenalty) {
-        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
-    }
-    if (angerSilentPenalty) {
-        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
-    }
-    if (teamSilentPenalty) {
+    
+    // 追加質問に行った場合は意識レベルを-1
+    const anyAdditionalPenalty = Object.values(additionalQuestionPenalties).some(penalty => penalty);
+    if (anyAdditionalPenalty) {
         preliminaryLevel = Math.max(1, preliminaryLevel - 1);
     }
 }
@@ -2644,6 +2744,12 @@ function calculateResults() {
     // 既にスコアが計算されている場合は再計算しない
     if (!scores.finalLevel) {
         scores.finalLevel = preliminaryLevel || determineLevel();
+        
+        // 追加質問に行った場合は意識レベルを-1
+        const anyAdditionalPenalty = Object.values(additionalQuestionPenalties).some(penalty => penalty);
+        if (anyAdditionalPenalty) {
+            scores.finalLevel = Math.max(1, scores.finalLevel - 1);
+        }
     }
     
     showResults();
@@ -2672,15 +2778,23 @@ function restartQuiz() {
     currentQuestionIndex = 0;
     userAnswers = [];
     questions = [...clQuestions, ...personalityQuestions];
-    noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
-    insertedNoSpeakReason = false;
-    noSpeakPenalty = false;
-    angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
-    insertedAngerSilentReason = false;
-    angerSilentPenalty = false;
-    teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
-    insertedTeamSilentReason = false;
-    teamSilentPenalty = false;
+    
+    // 追加質問の挿入状態をリセット
+    insertedQuestions = {
+        noSpeak: false,
+        opinionSilent: false,
+        angerSilent: false,
+        teamSilent: false
+    };
+    
+    // 追加質問のペナルティフラグもリセット
+    additionalQuestionPenalties = {
+        noSpeak: false,
+        opinionSilent: false,
+        angerSilent: false,
+        teamSilent: false
+    };
+    
     additionalAnswers = {
         growth: [],
         immaturity: null
