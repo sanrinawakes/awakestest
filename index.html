@@ -1403,7 +1403,8 @@ const personalityQuestions = [
         choices: [
             { text: "思いついたらすぐ発言、議論を活発にする", scores: { P1: 2 } },
             { text: "じっくり考えてから、必要な時に的確に発言", scores: { S1: 2 } },
-            { text: "様子を見ながら、タイミングを見て発言", scores: { M1: 2 } }
+            { text: "様子を見ながら、タイミングを見て発言", scores: { M1: 2 } },
+            { text: "基本的に発言しない" }
         ]
     },
     
@@ -1919,7 +1920,8 @@ const personalityQuestions = [
         choices: [
             { text: "事実や論理をもとに、自分の考えをその場でハッキリ伝える", scores: { A3: 2 } },
             { text: "相手の考えを一度受け止めたうえで、場の空気を見ながら補足や別の視点をそっと加える", scores: { E3: 2 } },
-            { text: "まず相手がどうしてそう思ったのかを丁寧に聞いて、気持ちに寄り添う", scores: { M3: 2 } }
+            { text: "まず相手がどうしてそう思ったのかを丁寧に聞いて、気持ちに寄り添う", scores: { M3: 2 } },
+            { text: "特に反応しない" }
         ]
     },
     
@@ -1929,7 +1931,8 @@ const personalityQuestions = [
         choices: [
             { text: "感情も伝えながら、建設的に伝える", scores: { M3: 2 } },
             { text: "冷静に問題点を指摘し、改善を求める", scores: { A3: 2 } },
-            { text: "感情を素直に表現し、気持ちを伝える", scores: { E3: 2 } }
+            { text: "感情を素直に表現し、気持ちを伝える", scores: { E3: 2 } },
+            { text: "怒りを感じても抑える" }
         ]
     },
     
@@ -1939,7 +1942,8 @@ const personalityQuestions = [
         choices: [
             { text: "問題の原因を分析し、解決策を提案", scores: { A3: 2 } },
             { text: "明るく振る舞って、雰囲気を和ませる", scores: { E3: 2 } },
-            { text: "みんなの意見を聞いて、調整役になる", scores: { M3: 2 } }
+            { text: "みんなの意見を聞いて、調整役になる", scores: { M3: 2 } },
+            { text: "雰囲気が悪くても特に動かず、様子を見ていることが多い" }
         ]
     },
     
@@ -2054,8 +2058,53 @@ const personalityQuestions = [
     }
 ];
 
+// 発言しない理由の追加入力用質問
+const noSpeakReasonQuestion = {
+    id: 123,
+    text: "発言しない理由は？",
+    choices: [
+        { text: "人前で話すのが苦手なので意見があっても黙っている", scores: { S1: 1 } },
+        { text: "誰かが言ってくれるなら、わざわざ自分が言わなくてもいいと思っている", scores: { M1: 1 } },
+        { text: "話したいことはあるのに、話す隙がない・遮られる・時間切れになることが多い", scores: { P1: 1 } }
+    ]
+};
+
+// 反応しない理由の追加入力用質問
+const angerSilentReasonQuestion = {
+    id: 124,
+    text: "その時あなたの中にはどんな思いがありますか？",
+    choices: [
+        { text: "意見の違いがあると空気が悪くなるから", scores: { M3: 1 } },
+        { text: "自分が間違っているかもしれないから", scores: { A3: 1 } },
+        { text: "口論になり傷つけたり傷ついたりしたくないから", scores: { E3: 1 } }
+    ]
+};
+
+// 雰囲気が悪い時に黙っている理由の追加入力用質問
+const teamSilentReasonQuestion = {
+    id: 125,
+    text: "その時あなたの内側では、どんな気持ちや考えがあると思いますか？",
+    choices: [
+        { text: "下手に動いて感情がこじれると困る。誰かを傷つけたくない。", scores: { E3: 1 } },
+        { text: "自分の立場ではどうにもできないと空気を読んでいる", scores: { M3: 1 } },
+        { text: "感情的な状況で動いても合理的でないので、沈静化を待ってから判断したい", scores: { A3: 1 } }
+    ]
+};
+
 // 全質問を統合
-const questions = [...clQuestions, ...personalityQuestions];
+let questions = [...clQuestions, ...personalityQuestions];
+let noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
+let insertedNoSpeakReason = false;
+let noSpeakPenalty = false;
+let opinionSilentQuestionIndex = questions.findIndex(q => q.id === 109);
+let insertedOpinionSilentReason = false;
+let opinionSilentPenalty = false;
+let angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
+let insertedAngerSilentReason = false;
+let angerSilentPenalty = false;
+let teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
+let insertedTeamSilentReason = false;
+let teamSilentPenalty = false;
 
 // ===== 意識レベル判定関数（6段階対応版）=====
 function determineLevel() {
@@ -2280,6 +2329,19 @@ function startQuiz() {
     document.getElementById('quiz-screen').style.display = 'block';
     currentQuestionIndex = 0;
     userAnswers = [];
+    questions = [...clQuestions, ...personalityQuestions];
+    noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
+    insertedNoSpeakReason = false;
+    noSpeakPenalty = false;
+    opinionSilentQuestionIndex = questions.findIndex(q => q.id === 109);
+    insertedOpinionSilentReason = false;
+    opinionSilentPenalty = false;
+    angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
+    insertedAngerSilentReason = false;
+    angerSilentPenalty = false;
+    teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
+    insertedTeamSilentReason = false;
+    teamSilentPenalty = false;
     scores = {
         S1: 0, M1: 0, P1: 0,
         V2: 0, M2: 0, G2: 0,
@@ -2363,6 +2425,53 @@ function loadQuestion() {
 
 function selectChoice(choiceIndex) {
     userAnswers[currentQuestionIndex] = choiceIndex;
+
+    // 58番の質問で「基本的に発言しない」を選んだ場合、理由の質問を挿入
+    if (!insertedNoSpeakReason && currentQuestionIndex === noSpeakQuestionIndex && choiceIndex === 3) {
+        questions.splice(currentQuestionIndex + 1, 0, noSpeakReasonQuestion);
+        userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
+        insertedNoSpeakReason = true;
+        noSpeakPenalty = true;
+        if (angerSilentQuestionIndex > currentQuestionIndex) {
+            angerSilentQuestionIndex++;
+        }
+        if (teamSilentQuestionIndex > currentQuestionIndex) {
+            teamSilentQuestionIndex++;
+        }
+    }
+
+    // 109番の質問で「特に反応しない」を選んだ場合、理由の質問を挿入
+    if (!insertedOpinionSilentReason && currentQuestionIndex === opinionSilentQuestionIndex && choiceIndex === 3) {
+        questions.splice(currentQuestionIndex + 1, 0, angerSilentReasonQuestion);
+        userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
+        insertedOpinionSilentReason = true;
+        opinionSilentPenalty = true;
+        if (angerSilentQuestionIndex > currentQuestionIndex) {
+            angerSilentQuestionIndex++;
+        }
+        if (teamSilentQuestionIndex > currentQuestionIndex) {
+            teamSilentQuestionIndex++;
+        }
+    }
+
+    // 110番の質問で「怒りを感じても抑える」を選んだ場合、理由の質問を挿入
+    if (!insertedAngerSilentReason && currentQuestionIndex === angerSilentQuestionIndex && choiceIndex === 3) {
+        questions.splice(currentQuestionIndex + 1, 0, angerSilentReasonQuestion);
+        userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
+        insertedAngerSilentReason = true;
+        angerSilentPenalty = true;
+        if (teamSilentQuestionIndex > currentQuestionIndex) {
+            teamSilentQuestionIndex++;
+        }
+    }
+
+    // 111番の質問で「雰囲気が悪くても特に動かず、様子を見ていることが多い」を選んだ場合、理由の質問を挿入
+    if (!insertedTeamSilentReason && currentQuestionIndex === teamSilentQuestionIndex && choiceIndex === 3) {
+        questions.splice(currentQuestionIndex + 1, 0, teamSilentReasonQuestion);
+        userAnswers.splice(currentQuestionIndex + 1, 0, undefined);
+        insertedTeamSilentReason = true;
+        teamSilentPenalty = true;
+    }
     
     // 選択状態を更新
     const buttons = document.querySelectorAll('.choice-button');
@@ -2439,16 +2548,29 @@ function calculatePreliminaryLevel() {
         if (choice.score !== undefined) {
             // 意識レベル質問
             scores.CL += choice.score;
-        } else if (choice.scores) {
+        }
+        if (choice.scores) {
             // 性格タイプ質問
             Object.keys(choice.scores).forEach(key => {
                 scores[key] += choice.scores[key];
             });
         }
     });
-    
+
     // 仮の意識レベルを判定
     preliminaryLevel = determineLevel();
+    if (noSpeakPenalty) {
+        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
+    }
+    if (opinionSilentPenalty) {
+        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
+    }
+    if (angerSilentPenalty) {
+        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
+    }
+    if (teamSilentPenalty) {
+        preliminaryLevel = Math.max(1, preliminaryLevel - 1);
+    }
 }
 
 // 追加質問を表示する関数
@@ -2573,6 +2695,19 @@ function restartQuiz() {
     document.getElementById('start-screen').style.display = 'block';
     currentQuestionIndex = 0;
     userAnswers = [];
+    questions = [...clQuestions, ...personalityQuestions];
+    noSpeakQuestionIndex = questions.findIndex(q => q.id === 58);
+    insertedNoSpeakReason = false;
+    noSpeakPenalty = false;
+    opinionSilentQuestionIndex = questions.findIndex(q => q.id === 109);
+    insertedOpinionSilentReason = false;
+    opinionSilentPenalty = false;
+    angerSilentQuestionIndex = questions.findIndex(q => q.id === 110);
+    insertedAngerSilentReason = false;
+    angerSilentPenalty = false;
+    teamSilentQuestionIndex = questions.findIndex(q => q.id === 111);
+    insertedTeamSilentReason = false;
+    teamSilentPenalty = false;
     additionalAnswers = {
         growth: [],
         immaturity: null
